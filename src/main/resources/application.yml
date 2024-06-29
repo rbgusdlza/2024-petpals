@@ -5,7 +5,7 @@ spring:
 
   datasource:
     url: jdbc:h2:mem:~/petpalsApplication
-    driver-class-name: org.h2.Driver # mysql? ??
+    driver-class-name: org.h2.Driver # Mysql 이용 예정
     username: sa
     password:
 
@@ -27,7 +27,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true # (2.5~) Hibernate ??? ?? data.sql ??
+    defer-datasource-initialization: true
 
   h2:
     console:
