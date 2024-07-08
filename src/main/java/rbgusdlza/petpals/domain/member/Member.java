@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.domain.member.entity;
+package rbgusdlza.petpals.domain.member;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
