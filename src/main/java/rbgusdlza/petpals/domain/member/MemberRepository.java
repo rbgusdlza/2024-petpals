@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.domain.member.repository;
+package rbgusdlza.petpals.domain.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import rbgusdlza.petpals.domain.member.Member;

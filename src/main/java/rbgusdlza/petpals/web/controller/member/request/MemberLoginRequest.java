@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.domain.member.controller.request;
+package rbgusdlza.petpals.web.controller.member.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberLoginRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "아이디를 입력하세요.")
     private String loginId;
 
-    @NotEmpty
+    @NotEmpty(message = "비밀번호를 입력하세요.")
     private String password;
 
 }
