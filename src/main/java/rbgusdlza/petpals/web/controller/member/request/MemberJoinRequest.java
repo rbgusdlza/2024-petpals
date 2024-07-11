@@ -1,28 +1,34 @@
 package rbgusdlza.petpals.web.controller.member.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import rbgusdlza.petpals.web.service.member.MemberJoinServiceRequest;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 public class MemberJoinRequest {
 
-    @NotEmpty(message = "아이디를 입력하세요.")
+    @NotBlank(message = "아이디는 필수입니다.")
     private String joinId;
 
-    @NotEmpty(message = "닉네임을 입력하세요.")
+    @NotBlank(message = "닉네임은 필수입니다.")
     private String nickname;
 
-    @NotEmpty(message = "비밀번호를 입력하세요.")
+    @NotBlank(message = "비밀번호는 필수입니다.")
     private String password;
 
-    @NotEmpty(message = "이메일을 입력하세요.")
+    @NotBlank(message = "이메일은 필수입니다.")
     private String email;
 
-    public MemberJoinRequest of(String joinId, String nickname, String password, String email) {
-        return MemberJoinRequest.builder()
+    @AssertTrue(message = "가입을 원하시면 약관에 동의해주세요.")
+    private boolean agreement;
+
+    public MemberJoinServiceRequest toServiceRequest() {
+        return MemberJoinServiceRequest.builder()
                 .joinId(joinId)
                 .nickname(nickname)
                 .password(password)
@@ -31,10 +37,11 @@ public class MemberJoinRequest {
     }
 
     @Builder
-    private MemberJoinRequest(String joinId, String nickname, String password, String email) {
+    private MemberJoinRequest(String joinId, String nickname, String password, String email, boolean agreement) {
         this.joinId = joinId;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
+        this.agreement = agreement;
     }
 }
