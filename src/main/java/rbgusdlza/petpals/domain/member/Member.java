@@ -2,6 +2,7 @@ package rbgusdlza.petpals.domain.member;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rbgusdlza.petpals.domain.BaseEntity;
@@ -21,4 +22,20 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
 
+    public Member of(String loginId, String nickname, String password, String email) {
+        return Member.builder()
+                .loginId(loginId)
+                .nickname(nickname)
+                .password(password)
+                .email(email)
+                .build();
+    }
+
+    @Builder
+    private Member(String loginId, String nickname, String password, String email) {
+        this.loginId = loginId;
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
+    }
 }
