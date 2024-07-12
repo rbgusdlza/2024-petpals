@@ -31,6 +31,14 @@ public class Member extends BaseEntity {
                 .build();
     }
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
     @Builder
     private Member(String loginId, String nickname, String password, String email) {
         this.loginId = loginId;
