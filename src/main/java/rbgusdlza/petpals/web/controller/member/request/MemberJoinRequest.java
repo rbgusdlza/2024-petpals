@@ -13,7 +13,7 @@ import rbgusdlza.petpals.web.service.member.MemberJoinServiceRequest;
 public class MemberJoinRequest {
 
     @NotBlank(message = "아이디는 필수입니다.")
-    private String joinId;
+    private String loginId;
 
     @NotBlank(message = "닉네임은 필수입니다.")
     private String nickname;
@@ -29,7 +29,7 @@ public class MemberJoinRequest {
 
     public MemberJoinServiceRequest toServiceRequest() {
         return MemberJoinServiceRequest.builder()
-                .joinId(joinId)
+                .loginId(loginId)
                 .nickname(nickname)
                 .password(password)
                 .email(email)
@@ -37,8 +37,8 @@ public class MemberJoinRequest {
     }
 
     @Builder
-    private MemberJoinRequest(String joinId, String nickname, String password, String email, boolean agreement) {
-        this.joinId = joinId;
+    private MemberJoinRequest(String loginId, String nickname, String password, String email, boolean agreement) {
+        this.loginId = loginId;
         this.nickname = nickname;
         this.password = password;
         this.email = email;

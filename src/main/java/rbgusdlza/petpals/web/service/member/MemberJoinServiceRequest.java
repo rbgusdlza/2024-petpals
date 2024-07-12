@@ -54,8 +54,8 @@ public class MemberJoinServiceRequest {
     }
 
     @Builder
-    private MemberJoinServiceRequest(String joinId, String nickname, String password, String email) {
-        this.loginId = joinId;
+    private MemberJoinServiceRequest(String loginId, String nickname, String password, String email) {
+        this.loginId = loginId;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
