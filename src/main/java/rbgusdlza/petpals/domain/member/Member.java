@@ -27,23 +27,24 @@ public class Member extends BaseEntity {
     private String email;
 
     public static Member of(String loginId, String nickname, String password, String email) {
-        checkIfMemberIsValid(loginId, nickname, password, email);
-        return Member.builder()
+        Member member = Member.builder()
                 .loginId(loginId)
                 .nickname(nickname)
                 .password(password)
                 .email(email)
                 .build();
+        member.checkIfMemberIsValid();
+        return member;
     }
 
-    private static void checkIfMemberIsValid(String loginId, String nickname, String password, String email) {
-        checkIfLoginIdIsValid(loginId);
+    private void checkIfMemberIsValid() {
+        checkIfLoginIdIsValid();
 //        checkIfNicknameIsValid(nickname);
 //        checkIfPasswordIsValid(password);
 //        checkIfEmailIsValid(email);
     }
 
-    private static void checkIfLoginIdIsValid(String loginId) {
+    private void checkIfLoginIdIsValid() {
         if (isInvalidLoginIdLength(loginId)) {
             throw new PetPalsException("아이디는 8자에서 15자 사이여야 합니다.");
         }
@@ -53,11 +54,11 @@ public class Member extends BaseEntity {
         }
     }
 
-    private static boolean isInvalidLoginIdFormat(String loginId) {
+    private boolean isInvalidLoginIdFormat(String loginId) {
         return !loginId.matches("[a-zA-Z0-9]+");
     }
 
-    private static boolean isInvalidLoginIdLength(String loginId) {
+    private boolean isInvalidLoginIdLength(String loginId) {
         return loginId.length() < MINIMUM_LOGIN_ID_LENGTH || loginId.length() > MAXIMUM_LOGIN_ID_LENGTH;
     }
 
