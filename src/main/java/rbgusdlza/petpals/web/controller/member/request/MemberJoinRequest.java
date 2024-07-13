@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rbgusdlza.petpals.web.service.member.MemberJoinServiceRequest;
+import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
 
 @Getter @Setter
 @NoArgsConstructor

@@ -1,9 +1,9 @@
-package rbgusdlza.petpals.web.service.member;
+package rbgusdlza.petpals.web.service.member.request;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import rbgusdlza.petpals.domain.error.PetPalsException;
+import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.domain.member.Member;
 
 @Getter

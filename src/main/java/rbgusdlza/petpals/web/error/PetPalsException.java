@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.domain.error;
+package rbgusdlza.petpals.web.error;
 
 public class PetPalsException extends RuntimeException {
 
