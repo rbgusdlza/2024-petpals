@@ -1,9 +1,11 @@
 package rbgusdlza.petpals.web.controller.member;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import rbgusdlza.petpals.web.controller.member.request.MemberJoinRequest;
 import rbgusdlza.petpals.web.service.member.MemberService;
@@ -23,8 +25,12 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(@ModelAttribute MemberJoinRequest request) {
-        memberService.joinMember(request.toServiceRequest());
+    public String join(@Valid @ModelAttribute MemberJoinRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult : {}", bindingResult);
+            return "member/join";
+        }
+         memberService.joinMember(request.toServiceRequest());
         return "redirect:/";
     }
 }
