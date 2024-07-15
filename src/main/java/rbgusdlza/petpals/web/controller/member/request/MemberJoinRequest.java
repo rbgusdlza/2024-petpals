@@ -1,5 +1,7 @@
 package rbgusdlza.petpals.web.controller.member.request;
 
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +12,19 @@ import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
 @NoArgsConstructor
 public class MemberJoinRequest {
 
+    @NotBlank
     private String loginId;
+
+    @NotBlank
     private String nickname;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String email;
+
+    @AssertTrue
     private boolean agreement;
 
     public MemberJoinServiceRequest toServiceRequest() {
