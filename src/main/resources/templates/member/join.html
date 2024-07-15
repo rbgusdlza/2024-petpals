@@ -43,7 +43,12 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="id">아이디</label>
-            <input type="text" class="form-control" id="id" name="loginId" placeholder="">
+            <div class="input-group">
+              <input type="text" class="form-control" id="id" name="loginId" placeholder="">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="checkIdButton">중복 체크</button>
+              </div>
+            </div>
             <small class="text-danger error-message" id="idError"></small>
           </div>
           <div class="col-md-6 mb-3">
@@ -72,7 +77,7 @@
           <small class="text-danger error-message" id="agreementError"></small>
         </div>
         <div class="mb-4"></div>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">가입 완료</button>
+        <button class="btn btn-primary btn-lg btn-block" type="submit" disabled>가입 완료</button>
       </form>
     </div>
   </div>
@@ -96,6 +101,8 @@
     const emailError = document.getElementById('emailError');
     const agreementError = document.getElementById('agreementError');
 
+    let isLoginIdValid = false;
+
     const loginIdPattern = /^[a-zA-Z0-9]{5,20}$/;
     const nicknamePattern = /^.{2,10}$/;
     const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,16}$/;
@@ -117,22 +124,17 @@
       }
     }
 
-    loginId.addEventListener('input', function () {
-      validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
-    });
+    function validateInputOnBlur(input, pattern, errorElement, errorMessageRequired, errorMessagePattern) {
+      input.addEventListener('blur', function () {
+        validateInput(input, pattern, errorElement, errorMessageRequired, errorMessagePattern);
+        updateSignupButtonState();
+      });
+    }
 
-    nickname.addEventListener('input', function () {
-      validateInput(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.");
-    });
-
-    password.addEventListener('input', function () {
-      validateInput(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
-    });
-
-    email.addEventListener('input', function () {
-      validateInput(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
-    });
-
+    validateInputOnBlur(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
+    validateInputOnBlur(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.");
+    validateInputOnBlur(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
+    validateInputOnBlur(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
     agreement.addEventListener('change', function () {
       if (!agreement.checked) {
         agreement.classList.add('field-error');
@@ -141,7 +143,53 @@
         agreement.classList.remove('field-error');
         agreementError.textContent = '';
       }
+      updateSignupButtonState();
     });
+
+    document.getElementById('checkIdButton').addEventListener('click', function () {
+      const loginIdValue = loginId.value;
+
+      if (validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.")) {
+        fetch('/api/member/check-login-id', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ loginId: loginIdValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'OK') {
+            if (data.data.isDuplicated) {
+              idError.textContent = '이미 사용 중인 아이디입니다.';
+              loginId.classList.add('field-error');
+              isLoginIdValid = false;
+            } else {
+              idError.textContent = '사용 가능한 아이디입니다.';
+              loginId.classList.remove('field-error');
+              isLoginIdValid = true;
+            }
+          } else {
+            idError.textContent = '아이디 중복 체크 중 오류가 발생했습니다.';
+          }
+          updateSignupButtonState();
+        })
+        .catch(error => {
+          idError.textContent = '아이디 중복 체크 중 오류가 발생했습니다.';
+          updateSignupButtonState();
+        });
+      }
+    });
+
+    function updateSignupButtonState() {
+      const isSignupButtonDisabled = !isLoginIdValid
+        || !nickname.value
+        || !password.value
+        || !email.value
+        || !agreement.checked;
+
+      document.querySelector('button[type="submit"]').disabled = isSignupButtonDisabled;
+    }
 
     form.addEventListener('submit', function (event) {
       const isLoginIdValid = validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
@@ -153,7 +201,12 @@
       if (!isAgreementValid) {
         agreement.classList.add('field-error');
         agreementError.textContent = "가입을 원하시면 약관에 동의해주세요.";
+      } else {
+        agreement.classList.remove('field-error');
+        agreementError.textContent = '';
       }
+
+      updateSignupButtonState();
 
       if (!isLoginIdValid || !isNicknameValid || !isPasswordValid || !isEmailValid || !isAgreementValid) {
         event.preventDefault();
@@ -161,5 +214,6 @@
     });
   });
 </script>
+
 </body>
 </html>
