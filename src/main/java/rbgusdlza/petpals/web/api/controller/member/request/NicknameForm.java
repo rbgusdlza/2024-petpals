@@ -7,21 +7,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rbgusdlza.petpals.web.service.member.request.NicknameServiceForm;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class NicknameForm {
 
     @NotBlank
     private String nickname;
 
+    @Builder
+    private NicknameForm(String nickname) {
+        this.nickname = nickname;
+    }
+
     public NicknameServiceForm toServiceForm() {
         return NicknameServiceForm.builder()
                 .nickname(nickname)
                 .build();
-    }
-
-    @Builder
-    private NicknameForm(String nickname) {
-        this.nickname = nickname;
     }
 }

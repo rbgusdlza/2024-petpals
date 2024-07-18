@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class MemberJoinRequest {
 
@@ -27,15 +28,6 @@ public class MemberJoinRequest {
     @AssertTrue
     private boolean agreement;
 
-    public MemberJoinServiceRequest toServiceRequest() {
-        return MemberJoinServiceRequest.builder()
-                .loginId(loginId)
-                .nickname(nickname)
-                .password(password)
-                .email(email)
-                .build();
-    }
-
     @Builder
     private MemberJoinRequest(String loginId, String nickname, String password, String email, boolean agreement) {
         this.loginId = loginId;
@@ -43,5 +35,14 @@ public class MemberJoinRequest {
         this.password = password;
         this.email = email;
         this.agreement = agreement;
+    }
+
+    public MemberJoinServiceRequest toServiceRequest() {
+        return MemberJoinServiceRequest.builder()
+                .loginId(loginId)
+                .nickname(nickname)
+                .password(password)
+                .email(email)
+                .build();
     }
 }

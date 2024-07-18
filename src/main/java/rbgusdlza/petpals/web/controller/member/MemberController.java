@@ -36,5 +36,10 @@ public class MemberController {
         memberService.joinMember(request.toServiceRequest());
         return "redirect:/";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "member/login";
+    }
 }
 

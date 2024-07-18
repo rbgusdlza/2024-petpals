@@ -8,14 +8,14 @@ public class NicknameCheckResponse {
 
     private Boolean isDuplicated;
 
+    @Builder
+    private NicknameCheckResponse(Boolean isDuplicated) {
+        this.isDuplicated = isDuplicated;
+    }
+
     public static NicknameCheckResponse from(Boolean isDuplicated) {
         return NicknameCheckResponse.builder()
                 .isDuplicated(isDuplicated)
                 .build();
-    }
-
-    @Builder
-    private NicknameCheckResponse(Boolean isDuplicated) {
-        this.isDuplicated = isDuplicated;
     }
 }

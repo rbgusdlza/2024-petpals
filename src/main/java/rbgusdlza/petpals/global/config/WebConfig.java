@@ -1,2 +1,4 @@
-package rbgusdlza.petpals.global.config;public class WebConfig {
+package rbgusdlza.petpals.global.config;
+
+public class WebConfig {
 }

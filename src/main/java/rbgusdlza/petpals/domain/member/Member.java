@@ -11,7 +11,7 @@ import rbgusdlza.petpals.domain.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member extends BaseEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -21,6 +21,14 @@ public class Member extends BaseEntity {
     private String nickname;
     private String password;
     private String email;
+
+    @Builder
+    private Member(String loginId, String nickname, String password, String email) {
+        this.loginId = loginId;
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
+    }
 
     public static Member of(String loginId, String nickname, String password, String email) {
         return Member.builder()
@@ -37,13 +45,5 @@ public class Member extends BaseEntity {
 
     public void updatePassword(String password) {
         this.password = password;
-    }
-
-    @Builder
-    private Member(String loginId, String nickname, String password, String email) {
-        this.loginId = loginId;
-        this.nickname = nickname;
-        this.password = password;
-        this.email = email;
     }
 }
