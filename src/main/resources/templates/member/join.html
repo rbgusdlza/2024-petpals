@@ -46,14 +46,19 @@
             <div class="input-group">
               <input type="text" class="form-control" id="id" name="loginId" placeholder="">
               <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary" id="checkIdButton">중복 체크</button>
+                <button type="button" class="btn btn-outline-secondary" id="checkIdButton">중복 확인</button>
               </div>
             </div>
             <small class="text-danger error-message" id="idError"></small>
           </div>
           <div class="col-md-6 mb-3">
             <label for="nickname">닉네임</label>
-            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="">
+            <div class="input-group">
+              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="checkNicknameButton">중복 확인</button>
+              </div>
+            </div>
             <small class="text-danger error-message" id="nicknameError"></small>
           </div>
         </div>
@@ -102,6 +107,7 @@
     const agreementError = document.getElementById('agreementError');
 
     let isLoginIdValid = false;
+    let isNicknameValid = false;
 
     const loginIdPattern = /^[a-zA-Z0-9]{5,20}$/;
     const nicknamePattern = /^.{2,10}$/;
@@ -170,12 +176,47 @@
               isLoginIdValid = true;
             }
           } else {
-            idError.textContent = '아이디 중복 체크 중 오류가 발생했습니다.';
+            idError.textContent = '아이디 중복 확인 중 오류가 발생했습니다.';
           }
           updateSignupButtonState();
         })
         .catch(error => {
-          idError.textContent = '아이디 중복 체크 중 오류가 발생했습니다.';
+          idError.textContent = '아이디 중복 확인 중 오류가 발생했습니다.';
+          updateSignupButtonState();
+        });
+      }
+    });
+
+    document.getElementById('checkNicknameButton').addEventListener('click', function () {
+      const nicknameValue = nickname.value;
+
+      if (validateInput(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.")) {
+        fetch('/api/member/check-nickname', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ nickname: nicknameValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'OK') {
+            if (data.data.isDuplicated) {
+              nicknameError.textContent = '이미 사용 중인 닉네임입니다.';
+              nickname.classList.add('field-error');
+              isNicknameValid = false;
+            } else {
+              nicknameError.textContent = '사용 가능한 닉네임입니다.';
+              nickname.classList.remove('field-error');
+              isNicknameValid = true;
+            }
+          } else {
+            nicknameError.textContent = '닉네임 중복 확인 중 오류가 발생했습니다.';
+          }
+          updateSignupButtonState();
+        })
+        .catch(error => {
+          nicknameError.textContent = '닉네임 중복 확인 중 오류가 발생했습니다.';
           updateSignupButtonState();
         });
       }
@@ -183,6 +224,7 @@
 
     function updateSignupButtonState() {
       const isSignupButtonDisabled = !isLoginIdValid
+        || !isNicknameValid
         || !nickname.value
         || !password.value
         || !email.value
