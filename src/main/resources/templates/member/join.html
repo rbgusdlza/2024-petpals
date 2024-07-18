@@ -71,8 +71,24 @@
 
         <div class="mb-3">
           <label for="email">이메일</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="member@example.com">
+          <div class="input-group">
+            <input type="email" class="form-control" id="email" name="email" placeholder="member@example.com">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary" id="verifyEmailButton">이메일 인증</button>
+            </div>
+          </div>
           <small class="text-danger error-message" id="emailError"></small>
+        </div>
+
+        <div class="mb-3" id="emailVerificationSection" style="display: none;">
+          <label for="emailVerificationCode">인증 번호</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="emailVerificationCode" name="emailVerificationCode" placeholder="">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary" id="verifyCodeButton">인증 번호 확인</button>
+            </div>
+          </div>
+          <small class="text-danger error-message" id="emailVerificationError"></small>
         </div>
 
         <hr class="mb-4">
@@ -105,6 +121,9 @@
     const passwordError = document.getElementById('passwordError');
     const emailError = document.getElementById('emailError');
     const agreementError = document.getElementById('agreementError');
+    const emailVerificationSection = document.getElementById('emailVerificationSection');
+    const emailVerificationCode = document.getElementById('emailVerificationCode');
+    const emailVerificationError = document.getElementById('emailVerificationError');
 
     let isLoginIdValid = false;
     let isNicknameValid = false;
@@ -220,6 +239,10 @@
           updateSignupButtonState();
         });
       }
+    });
+
+    document.getElementById('verifyEmailButton').addEventListener('click', function () {
+      emailVerificationSection.style.display = 'block';
     });
 
     function updateSignupButtonState() {
