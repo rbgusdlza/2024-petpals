@@ -19,22 +19,22 @@ public class Member extends BaseEntity {
 
     private String loginId;
     private String nickname;
-    private String password;
+    private String encryptedPassword;
     private String email;
 
     @Builder
-    private Member(String loginId, String nickname, String password, String email) {
+    private Member(String loginId, String nickname, String encryptedPassword, String email) {
         this.loginId = loginId;
         this.nickname = nickname;
-        this.password = password;
+        this.encryptedPassword = encryptedPassword;
         this.email = email;
     }
 
-    public static Member of(String loginId, String nickname, String password, String email) {
+    public static Member of(String loginId, String nickname, String encryptedPassword, String email) {
         return Member.builder()
                 .loginId(loginId)
                 .nickname(nickname)
-                .password(password)
+                .encryptedPassword(encryptedPassword)
                 .email(email)
                 .build();
     }
@@ -43,7 +43,7 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
     }
 
-    public void updatePassword(String password) {
-        this.password = password;
+    public void updateEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 }
