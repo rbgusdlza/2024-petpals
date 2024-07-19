@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class MailSender {
+public class EmailSender {
 
     private final JavaMailSender javaMailSender;
 
