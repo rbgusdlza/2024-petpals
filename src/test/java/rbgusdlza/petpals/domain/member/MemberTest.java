@@ -27,9 +27,9 @@ class MemberTest {
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
 
         //when
-        member.updatePassword("0123");
+        member.updateEncryptedPassword("0123");
 
         //then
-        assertThat(member.getPassword()).isEqualTo("0123");
+        assertThat(member.getEncryptedPassword()).isEqualTo("0123");
     }
 }

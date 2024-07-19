@@ -21,6 +21,7 @@ public class MemberService {
     @Transactional
     public void joinMember(MemberJoinServiceRequest request) {
         Member member = request.toEntity();
+        System.out.println("member = " + member.getEncryptedPassword());
         memberRepository.save(member);
     }
 
