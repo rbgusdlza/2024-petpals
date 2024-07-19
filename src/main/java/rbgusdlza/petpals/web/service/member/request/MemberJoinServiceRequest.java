@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rbgusdlza.petpals.domain.member.Member;
+import rbgusdlza.petpals.global.util.PasswordEncryptor;
 
 @Getter
 @NoArgsConstructor
@@ -23,10 +24,11 @@ public class MemberJoinServiceRequest {
     }
 
     public Member toEntity() {
+        String encryptedPassword = PasswordEncryptor.encryptPasswordFrom(password);
         return Member.builder()
                 .loginId(loginId)
                 .nickname(nickname)
-                .password(password)
+                .encryptedPassword(encryptedPassword)
                 .email(email)
                 .build();
     }
