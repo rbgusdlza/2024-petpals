@@ -9,11 +9,11 @@ public class LoginIdCheckResponse {
     private Boolean isDuplicated;
 
     @Builder
-    private LoginIdCheckResponse(Boolean isDuplicated) {
+    private LoginIdCheckResponse(boolean isDuplicated) {
         this.isDuplicated = isDuplicated;
     }
 
-    public static LoginIdCheckResponse from(Boolean isDuplicated) {
+    public static LoginIdCheckResponse from(boolean isDuplicated) {
         return LoginIdCheckResponse.builder()
                 .isDuplicated(isDuplicated)
                 .build();

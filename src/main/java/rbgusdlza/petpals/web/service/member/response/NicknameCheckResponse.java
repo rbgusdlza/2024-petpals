@@ -9,11 +9,11 @@ public class NicknameCheckResponse {
     private Boolean isDuplicated;
 
     @Builder
-    private NicknameCheckResponse(Boolean isDuplicated) {
+    private NicknameCheckResponse(boolean isDuplicated) {
         this.isDuplicated = isDuplicated;
     }
 
-    public static NicknameCheckResponse from(Boolean isDuplicated) {
+    public static NicknameCheckResponse from(boolean isDuplicated) {
         return NicknameCheckResponse.builder()
                 .isDuplicated(isDuplicated)
                 .build();
