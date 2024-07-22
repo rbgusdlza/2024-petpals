@@ -1,18 +1,19 @@
 package rbgusdlza.petpals.web.api.controller.member;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import rbgusdlza.petpals.global.event.EmailSender;
+import rbgusdlza.petpals.web.api.controller.member.request.EmailAuthCodeForm;
+import rbgusdlza.petpals.global.util.RandomAuthCodeGenerator;
 import rbgusdlza.petpals.web.api.ApiResponse;
+import rbgusdlza.petpals.web.api.controller.member.request.EmailForm;
 import rbgusdlza.petpals.web.api.controller.member.request.LoginIdForm;
 import rbgusdlza.petpals.web.api.controller.member.request.NicknameForm;
 import rbgusdlza.petpals.web.service.member.MemberService;
+import rbgusdlza.petpals.web.service.member.response.EmailCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.LoginIdCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.NicknameCheckResponse;
 
@@ -22,21 +23,46 @@ import rbgusdlza.petpals.web.service.member.response.NicknameCheckResponse;
 @RestController
 public class MemberApiController {
 
-    private final MemberService memberService;
+    public static final int AUTH_CODE_EXPIRATION_TIME = 300;
 
-    @PostMapping("/check-login-id")
-    public ApiResponse<LoginIdCheckResponse> checkLoginId(@Valid @RequestBody LoginIdForm form, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ApiResponse.of(HttpStatus.BAD_REQUEST, "Invalid Login ID", null);
-        }
+    private final MemberService memberService;
+    private final EmailSender emailSender;
+
+    @PostMapping("/login-id")
+    public ApiResponse<LoginIdCheckResponse> checkLoginId(@Valid @RequestBody LoginIdForm form) {
         return ApiResponse.ok(memberService.isLoginIdDuplicate(form.toServiceForm()));
     }
 
-    @PostMapping("/check-nickname")
-    public ApiResponse<NicknameCheckResponse> checkNickname(@Valid @RequestBody NicknameForm form, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ApiResponse.of(HttpStatus.BAD_REQUEST, "Invalid Nickname", null);
-        }
+    @PostMapping("/nickname")
+    public ApiResponse<NicknameCheckResponse> checkNickname(@Valid @RequestBody NicknameForm form) {
         return ApiResponse.ok(memberService.isNicknameDuplicate(form.toServiceForm()));
+    }
+
+    @PostMapping("/email")
+    public ApiResponse<EmailCheckResponse> checkEmail(@Valid @RequestBody EmailForm form) {
+        return ApiResponse.ok(memberService.isEmailDuplicate(form.toServiceForm()));
+    }
+
+    @PostMapping("/auth-code")
+    public ApiResponse<Void> sendAuthCode(@Valid @RequestBody EmailForm form, HttpSession session) {
+        String authCode = RandomAuthCodeGenerator.getAuthCode();
+        emailSender.sendAuthCode(form.getEmail(), authCode);
+        session.setAttribute("authCode", authCode);
+        session.setMaxInactiveInterval(AUTH_CODE_EXPIRATION_TIME);
+        return ApiResponse.ok();
+    }
+
+    @PutMapping("/auth-code")
+    public ApiResponse<Void> verifyAuthCode(@Valid @RequestBody EmailAuthCodeForm form, HttpSession session) {
+        String sessionAuthCode = (String) session.getAttribute("authCode");
+        if (sessionAuthCode == null || isInvalidAuthCode(form, sessionAuthCode)) {
+            return ApiResponse.fail("Invalid Auth Code");
+        }
+        session.removeAttribute("authCode");
+        return ApiResponse.ok();
+    }
+
+    private boolean isInvalidAuthCode(EmailAuthCodeForm form, String sessionAuthCode) {
+        return !sessionAuthCode.equals(form.getAuthCode());
     }
 }
