@@ -9,6 +9,8 @@ public enum ErrorCode {
 
     DUPLICATE_LOGIN_ID("중복된 아이디"),
     DUPLICATE_NICKNAME("중복된 닉네임"),
+    DUPLICATE_EMAIL("중복된 이메일"),
+    SENDING_EMAIL_ERROR("이메일 전송 실패"),
     ;
 
     private final String description;
