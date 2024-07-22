@@ -1,14 +1,12 @@
-package rbgusdlza.petpals.global.event.email;
+package rbgusdlza.petpals.global.event;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import rbgusdlza.petpals.global.util.RandomAuthCodeGenerator;
 import rbgusdlza.petpals.web.error.PetPalsException;
 
 import static rbgusdlza.petpals.web.error.ErrorCode.*;
@@ -23,7 +21,7 @@ public class EmailSender {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendAuthCode(String toEmail, int authCode) {
+    public void sendAuthCode(String toEmail, String authCode) {
         try {
             String content = getContentBy(authCode);
             MimeMessage message = getMessageOf(toEmail, content);
@@ -35,8 +33,6 @@ public class EmailSender {
         }
     }
 
-
-
     private MimeMessage getMessageOf(String email, String content) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message);
@@ -47,7 +43,7 @@ public class EmailSender {
         return message;
     }
 
-    private String getContentBy(int autoCode) {
+    private String getContentBy(String autoCode) {
         return "인증번호는 " + autoCode + "입니다.";
     }
 }
