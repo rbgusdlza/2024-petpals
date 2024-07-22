@@ -13,6 +13,7 @@ import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
 import rbgusdlza.petpals.web.service.member.request.NicknameServiceForm;
 import rbgusdlza.petpals.web.service.member.response.EmailCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.LoginIdCheckResponse;
+import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 import rbgusdlza.petpals.web.service.member.response.NicknameCheckResponse;
 
 @Transactional(readOnly = true)
@@ -23,13 +24,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void joinMember(MemberJoinServiceRequest request) {
+    public MemberResponse joinMember(MemberJoinServiceRequest request) {
         checkIfLoginIdDuplicate(request);
         checkIfNicknameDuplicate(request);
         checkIfEmailDuplicate(request);
 
         Member member = request.toEntity();
         memberRepository.save(member);
+        return MemberResponse.of(member);
     }
 
     public LoginIdCheckResponse isLoginIdDuplicate(LoginIdServiceForm form) {
