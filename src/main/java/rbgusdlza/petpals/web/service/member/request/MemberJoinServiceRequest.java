@@ -23,6 +23,15 @@ public class MemberJoinServiceRequest {
         this.email = email;
     }
 
+    public static MemberJoinServiceRequest of(String loginId, String nickname, String password, String email) {
+        return MemberJoinServiceRequest.builder()
+                .loginId(loginId)
+                .nickname(nickname)
+                .password(password)
+                .email(email)
+                .build();
+    }
+
     public Member toEntity() {
         String encryptedPassword = PasswordEncryptor.encryptPasswordFrom(password);
         return Member.builder()
