@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.global.event.email.request;
+package rbgusdlza.petpals.web.api.controller.member.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
