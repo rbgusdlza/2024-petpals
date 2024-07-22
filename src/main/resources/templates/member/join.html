@@ -109,174 +109,274 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById('signupForm');
-    const loginId = document.getElementById('id');
-    const nickname = document.getElementById('nickname');
-    const password = document.getElementById('password');
-    const email = document.getElementById('email');
-    const agreement = document.getElementById('agreement');
+      const form = document.getElementById('signupForm');
+      const loginId = document.getElementById('id');
+      const nickname = document.getElementById('nickname');
+      const password = document.getElementById('password');
+      const email = document.getElementById('email');
+      const agreement = document.getElementById('agreement');
+      const emailVerificationCode = document.getElementById('emailVerificationCode');
 
-    const idError = document.getElementById('idError');
-    const nicknameError = document.getElementById('nicknameError');
-    const passwordError = document.getElementById('passwordError');
-    const emailError = document.getElementById('emailError');
-    const agreementError = document.getElementById('agreementError');
-    const emailVerificationSection = document.getElementById('emailVerificationSection');
-    const emailVerificationCode = document.getElementById('emailVerificationCode');
-    const emailVerificationError = document.getElementById('emailVerificationError');
+      const idError = document.getElementById('idError');
+      const nicknameError = document.getElementById('nicknameError');
+      const passwordError = document.getElementById('passwordError');
+      const emailError = document.getElementById('emailError');
+      const agreementError = document.getElementById('agreementError');
+      const emailVerificationSection = document.getElementById('emailVerificationSection');
+      const emailVerificationError = document.getElementById('emailVerificationError');
 
-    let isLoginIdValid = false;
-    let isNicknameValid = false;
+      let isLoginIdValid = false;
+      let isNicknameValid = false;
+      let isPasswordValid = false;
+      let isEmailValid = false;
+      let isEmailVerified = false;
+      let isAgreementValid = false;
 
-    const loginIdPattern = /^[a-zA-Z0-9]{5,20}$/;
-    const nicknamePattern = /^.{2,10}$/;
-    const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,16}$/;
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const loginIdPattern = /^[a-zA-Z0-9]{5,20}$/;
+      const nicknamePattern = /^.{2,10}$/;
+      const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,16}$/;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    function validateInput(input, pattern, errorElement, errorMessageRequired, errorMessagePattern) {
-      if (!input.value) {
-        input.classList.add('field-error');
-        errorElement.textContent = errorMessageRequired;
-        return false;
-      } else if (!pattern.test(input.value)) {
-        input.classList.add('field-error');
-        errorElement.textContent = errorMessagePattern;
-        return false;
-      } else {
-        input.classList.remove('field-error');
-        errorElement.textContent = '';
-        return true;
+      function validateInput(input, pattern, errorElement, errorMessageRequired, errorMessagePattern) {
+          if (!input.value) {
+              input.classList.add('field-error');
+              errorElement.textContent = errorMessageRequired;
+              return false;
+          } else if (!pattern.test(input.value)) {
+              input.classList.add('field-error');
+              errorElement.textContent = errorMessagePattern;
+              return false;
+          } else {
+              input.classList.remove('field-error');
+              errorElement.textContent = '';
+              return true;
+          }
       }
-    }
 
-    function validateInputOnBlur(input, pattern, errorElement, errorMessageRequired, errorMessagePattern) {
-      input.addEventListener('blur', function () {
-        validateInput(input, pattern, errorElement, errorMessageRequired, errorMessagePattern);
-        updateSignupButtonState();
+      function validateInputOnBlur(input, pattern, errorElement, errorMessageRequired, errorMessagePattern) {
+          input.addEventListener('blur', function () {
+              const isValid = validateInput(input, pattern, errorElement, errorMessageRequired, errorMessagePattern);
+              if (input === email) {
+                  isEmailValid = isValid;
+              } else if (input === password) {
+                  isPasswordValid = isValid;
+              }
+              updateSignupButtonState();
+          });
+      }
+
+      validateInputOnBlur(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
+      validateInputOnBlur(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.");
+      validateInputOnBlur(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
+      validateInputOnBlur(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
+
+      agreement.addEventListener('change', function () {
+          if (!agreement.checked) {
+              agreement.classList.add('field-error');
+              agreementError.textContent = "가입을 원하시면 약관에 동의해주세요.";
+              isAgreementValid = false;
+          } else {
+              agreement.classList.remove('field-error');
+              agreementError.textContent = '';
+              isAgreementValid = true;
+          }
+          updateSignupButtonState();
       });
-    }
 
-    validateInputOnBlur(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
-    validateInputOnBlur(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.");
-    validateInputOnBlur(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
-    validateInputOnBlur(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
-    agreement.addEventListener('change', function () {
-      if (!agreement.checked) {
-        agreement.classList.add('field-error');
-        agreementError.textContent = "가입을 원하시면 약관에 동의해주세요.";
-      } else {
-        agreement.classList.remove('field-error');
-        agreementError.textContent = '';
-      }
-      updateSignupButtonState();
-    });
+      document.getElementById('checkIdButton').addEventListener('click', function () {
+          const loginIdValue = loginId.value;
 
-    document.getElementById('checkIdButton').addEventListener('click', function () {
-      const loginIdValue = loginId.value;
-
-      if (validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.")) {
-        fetch('/api/member/check-login-id', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ loginId: loginIdValue })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'OK') {
-            if (data.data.isDuplicated) {
-              idError.textContent = '이미 사용 중인 아이디입니다.';
-              loginId.classList.add('field-error');
-              isLoginIdValid = false;
-            } else {
-              idError.textContent = '사용 가능한 아이디입니다.';
-              loginId.classList.remove('field-error');
-              isLoginIdValid = true;
-            }
-          } else {
-            idError.textContent = '아이디 중복 확인 중 오류가 발생했습니다.';
+          if (validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.")) {
+              fetch('/api/member/login-id', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ loginId: loginIdValue })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status === 'OK') {
+                      if (data.data.isDuplicated) {
+                          idError.textContent = '이미 사용 중인 아이디입니다.';
+                          loginId.classList.add('field-error');
+                          isLoginIdValid = false;
+                      } else {
+                          idError.textContent = '사용 가능한 아이디입니다.';
+                          loginId.classList.remove('field-error');
+                          isLoginIdValid = true;
+                      }
+                  } else {
+                      idError.textContent = '아이디 중복 확인 중 오류가 발생했습니다.';
+                  }
+                  updateSignupButtonState();
+              })
+              .catch(error => {
+                  idError.textContent = '아이디 중복 확인 중 오류가 발생했습니다.';
+                  updateSignupButtonState();
+              });
           }
-          updateSignupButtonState();
-        })
-        .catch(error => {
-          idError.textContent = '아이디 중복 확인 중 오류가 발생했습니다.';
-          updateSignupButtonState();
-        });
-      }
-    });
+      });
 
-    document.getElementById('checkNicknameButton').addEventListener('click', function () {
-      const nicknameValue = nickname.value;
+      document.getElementById('checkNicknameButton').addEventListener('click', function () {
+          const nicknameValue = nickname.value;
 
-      if (validateInput(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.")) {
-        fetch('/api/member/check-nickname', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ nickname: nicknameValue })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'OK') {
-            if (data.data.isDuplicated) {
-              nicknameError.textContent = '이미 사용 중인 닉네임입니다.';
-              nickname.classList.add('field-error');
-              isNicknameValid = false;
-            } else {
-              nicknameError.textContent = '사용 가능한 닉네임입니다.';
-              nickname.classList.remove('field-error');
-              isNicknameValid = true;
-            }
-          } else {
-            nicknameError.textContent = '닉네임 중복 확인 중 오류가 발생했습니다.';
+          if (validateInput(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.")) {
+              fetch('/api/member/nickname', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ nickname: nicknameValue })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status === 'OK') {
+                      if (data.data.isDuplicated) {
+                          nicknameError.textContent = '이미 사용 중인 닉네임입니다.';
+                          nickname.classList.add('field-error');
+                          isNicknameValid = false;
+                      } else {
+                          nicknameError.textContent = '사용 가능한 닉네임입니다.';
+                          nickname.classList.remove('field-error');
+                          isNicknameValid = true;
+                      }
+                  } else {
+                      nicknameError.textContent = '닉네임 중복 확인 중 오류가 발생했습니다.';
+                  }
+                  updateSignupButtonState();
+              })
+              .catch(error => {
+                  nicknameError.textContent = '닉네임 중복 확인 중 오류가 발생했습니다.';
+                  updateSignupButtonState();
+              });
           }
-          updateSignupButtonState();
-        })
-        .catch(error => {
-          nicknameError.textContent = '닉네임 중복 확인 중 오류가 발생했습니다.';
-          updateSignupButtonState();
-        });
+      });
+
+      document.getElementById('verifyEmailButton').addEventListener('click', function () {
+          const emailValue = email.value;
+
+          if (validateInput(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.")) {
+              fetch('/api/member/email', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ email: emailValue })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status === 'OK') {
+                      if (data.data.isDuplicated) {
+                          emailError.textContent = '이미 가입된 이메일입니다.';
+                          email.classList.add('field-error');
+                          isEmailValid = false;
+                      } else {
+                          emailError.textContent = '사용 가능한 이메일입니다. 인증번호를 확인해주세요.';
+                          email.classList.remove('field-error');
+                          emailVerificationSection.style.display = 'block';
+                          isEmailValid = true;
+
+                          // Send auth code request
+                          fetch('/api/member/auth-code', {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({ email: emailValue })
+                          })
+                          .then(response => response.json())
+                          .then(data => {
+                              if (data.status === 'OK') {
+                                  emailVerificationError.textContent = '인증 번호가 전송되었습니다.';
+                              } else {
+                                  emailVerificationError.textContent = '인증 번호 전송 중 오류가 발생했습니다.';
+                              }
+                          })
+                          .catch(error => {
+                              emailVerificationError.textContent = '인증 번호 전송 중 오류가 발생했습니다.';
+                          });
+                      }
+                  } else {
+                      emailError.textContent = '이메일 확인 중 오류가 발생했습니다.';
+                  }
+                  updateSignupButtonState();
+              })
+              .catch(error => {
+                  emailError.textContent = '이메일 확인 중 오류가 발생했습니다.';
+                  updateSignupButtonState();
+              });
+          }
+      });
+
+      document.getElementById('verifyCodeButton').addEventListener('click', function () {
+          const verificationCode = emailVerificationCode.value;
+
+          // 인증 번호 검증
+          fetch('/api/member/auth-code', {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email: email.value, authCode: verificationCode })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'OK') {
+                  emailVerificationError.textContent = '이메일 인증이 완료되었습니다.';
+                  isEmailVerified = true;
+              } else {
+                  emailVerificationError.textContent = '인증 번호가 올바르지 않습니다.';
+                  isEmailVerified = false;
+              }
+              updateSignupButtonState();
+          })
+          .catch(error => {
+              emailVerificationError.textContent = '인증 번호 확인 중 오류가 발생했습니다.';
+              updateSignupButtonState();
+          });
+      });
+
+      function updateSignupButtonState() {
+          console.log('isLoginIdValid:', isLoginIdValid);
+          console.log('isNicknameValid:', isNicknameValid);
+          console.log('isPasswordValid:', isPasswordValid);
+          console.log('isEmailValid:', isEmailValid);
+          console.log('isEmailVerified:', isEmailVerified);
+          console.log('isAgreementValid:', isAgreementValid);
+
+          const isSignupButtonDisabled = !isLoginIdValid
+              || !isNicknameValid
+              || !isPasswordValid
+              || !isEmailValid
+              || !isEmailVerified
+              || !isAgreementValid;
+
+          document.querySelector('button[type="submit"]').disabled = isSignupButtonDisabled;
       }
-    });
 
-    document.getElementById('verifyEmailButton').addEventListener('click', function () {
-      emailVerificationSection.style.display = 'block';
-    });
+      form.addEventListener('submit', function (event) {
+          isPasswordValid = validateInput(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
+          isEmailValid = validateInput(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
 
-    function updateSignupButtonState() {
-      const isSignupButtonDisabled = !isLoginIdValid
-        || !isNicknameValid
-        || !nickname.value
-        || !password.value
-        || !email.value
-        || !agreement.checked;
+          if (!isAgreementValid) {
+              agreement.classList.add('field-error');
+              agreementError.textContent = "가입을 원하시면 약관에 동의해주세요.";
+          } else {
+              agreement.classList.remove('field-error');
+              agreementError.textContent = '';
+              isAgreementValid = true;
+          }
 
-      document.querySelector('button[type="submit"]').disabled = isSignupButtonDisabled;
-    }
+          updateSignupButtonState();
 
-    form.addEventListener('submit', function (event) {
-      const isLoginIdValid = validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
-      const isNicknameValid = validateInput(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.");
-      const isPasswordValid = validateInput(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
-      const isEmailValid = validateInput(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
-      const isAgreementValid = agreement.checked;
+          if (!isLoginIdValid || !isNicknameValid || !isPasswordValid || !isEmailValid || !isEmailVerified || !isAgreementValid) {
+              event.preventDefault();
+          }
+      });
 
-      if (!isAgreementValid) {
-        agreement.classList.add('field-error');
-        agreementError.textContent = "가입을 원하시면 약관에 동의해주세요.";
-      } else {
-        agreement.classList.remove('field-error');
-        agreementError.textContent = '';
-      }
-
+      // Initial call to update button state
       updateSignupButtonState();
-
-      if (!isLoginIdValid || !isNicknameValid || !isPasswordValid || !isEmailValid || !isAgreementValid) {
-        event.preventDefault();
-      }
-    });
   });
 </script>
 
