@@ -187,7 +187,7 @@
           const loginIdValue = loginId.value;
 
           if (validateInput(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.")) {
-              fetch('/api/member/login-id', {
+              fetch('/api/member/login-id/check', {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -222,7 +222,7 @@
           const nicknameValue = nickname.value;
 
           if (validateInput(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.")) {
-              fetch('/api/member/nickname', {
+              fetch('/api/member/nickname/check', {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -257,7 +257,7 @@
           const emailValue = email.value;
 
           if (validateInput(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.")) {
-              fetch('/api/member/email', {
+              fetch('/api/member/email/check', {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -278,7 +278,7 @@
                           isEmailValid = true;
 
                           // Send auth code request
-                          fetch('/api/member/auth-code', {
+                          fetch('/api/member/auth-code/send', {
                               method: 'POST',
                               headers: {
                                   'Content-Type': 'application/json'
@@ -313,8 +313,8 @@
           const verificationCode = emailVerificationCode.value;
 
           // 인증 번호 검증
-          fetch('/api/member/auth-code', {
-              method: 'PUT',
+          fetch('/api/member/auth-code/verify', {
+              method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },

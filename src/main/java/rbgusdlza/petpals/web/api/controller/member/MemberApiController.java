@@ -28,22 +28,22 @@ public class MemberApiController {
     private final MemberService memberService;
     private final EmailSender emailSender;
 
-    @PostMapping("/login-id")
+    @PostMapping("/login-id/check")
     public ApiResponse<LoginIdCheckResponse> checkLoginId(@Valid @RequestBody LoginIdForm form) {
         return ApiResponse.ok(memberService.isLoginIdDuplicate(form.toServiceForm()));
     }
 
-    @PostMapping("/nickname")
+    @PostMapping("/nickname/check")
     public ApiResponse<NicknameCheckResponse> checkNickname(@Valid @RequestBody NicknameForm form) {
         return ApiResponse.ok(memberService.isNicknameDuplicate(form.toServiceForm()));
     }
 
-    @PostMapping("/email")
+    @PostMapping("/email/check")
     public ApiResponse<EmailCheckResponse> checkEmail(@Valid @RequestBody EmailForm form) {
         return ApiResponse.ok(memberService.isEmailDuplicate(form.toServiceForm()));
     }
 
-    @PostMapping("/auth-code")
+    @PostMapping("/auth-code/send")
     public ApiResponse<Void> sendAuthCode(@Valid @RequestBody EmailForm form, HttpSession session) {
         String authCode = RandomAuthCodeGenerator.getAuthCode();
         emailSender.sendAuthCode(form.getEmail(), authCode);
@@ -52,7 +52,7 @@ public class MemberApiController {
         return ApiResponse.ok();
     }
 
-    @PutMapping("/auth-code")
+    @PostMapping("/auth-code/verify")
     public ApiResponse<Void> verifyAuthCode(@Valid @RequestBody EmailAuthCodeForm form, HttpSession session) {
         String sessionAuthCode = (String) session.getAttribute("authCode");
         if (sessionAuthCode == null || isInvalidAuthCode(form, sessionAuthCode)) {
