@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import rbgusdlza.petpals.web.error.PetPalsException;
 
-import static rbgusdlza.petpals.web.error.ErrorCode.*;
+import static rbgusdlza.petpals.web.error.ErrorCode.SENDING_EMAIL_ERROR;
 
 @Slf4j
 @RequiredArgsConstructor

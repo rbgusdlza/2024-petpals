@@ -8,7 +8,8 @@ import lombok.Setter;
 import rbgusdlza.petpals.global.util.PasswordEncryptor;
 import rbgusdlza.petpals.web.service.member.request.MemberLoginServiceRequest;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class MemberLoginRequest {
 

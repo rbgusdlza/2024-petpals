@@ -1,6 +1,5 @@
 package rbgusdlza.petpals.web.controller.member;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
