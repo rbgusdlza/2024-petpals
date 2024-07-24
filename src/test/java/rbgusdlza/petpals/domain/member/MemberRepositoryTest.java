@@ -66,4 +66,34 @@ class MemberRepositoryTest {
                 .extracting("loginId", "nickname", "email")
                 .containsExactly("userA", "park", "member@gmail.com");
     }
+
+    @DisplayName("로그인 아이디와 비밀번호로 사용자를 조회한다.")
+    @Test
+    void findByLoginIdAndEncryptedPassword() {
+        //given
+        Member member = Member.of("userA", "park", "1234", "member@gmail.com");
+        memberRepository.save(member);
+
+        //when
+        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword("userA", "1234");
+
+        //then
+        assertThat(findMember).isNotNull()
+                .extracting("loginId", "nickname", "email")
+                .containsExactly("userA", "park", "member@gmail.com");
+    }
+
+    @DisplayName("로그인 아이디와 비밀번호로 사용자를 조회할 때, 해당하는 사용자가 없으면 null을 반환한다.")
+    @Test
+    void findByLoginIdAndEncryptedPasswordWithoutMatchingUser() {
+        //given
+        Member member = Member.of("userA", "park", "1234", "member@gmail.com");
+        memberRepository.save(member);
+
+        //when
+        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword("user", "1234");
+
+        //then
+        assertThat(findMember).isNull();
+    }
 }
