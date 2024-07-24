@@ -15,6 +15,7 @@ import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.web.controller.member.request.MemberJoinRequest;
 import rbgusdlza.petpals.web.controller.member.request.MemberLoginRequest;
 import rbgusdlza.petpals.web.service.member.MemberService;
+import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -56,13 +57,13 @@ public class MemberController {
             return "member/login";
         }
 
-        Member loginMember = memberService.login(request.toServiceRequest());
-        if (loginMember == null) {
+        MemberResponse response = memberService.login(request.toServiceRequest());
+        if (response == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "member/login";
         }
 
-        session.setAttribute("id", loginMember.getId());
+        session.setAttribute("id", response.getId());
         return "redirect:/";
     }
 }
