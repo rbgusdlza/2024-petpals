@@ -29,12 +29,12 @@ class MemberServiceTest {
 
     @DisplayName("사용자를 등록한다.")
     @Test
-    void joinMember() {
+    void join() {
         //given
         MemberJoinServiceRequest request = MemberJoinServiceRequest.of("userA", "park", "1234", "member@gmail.com");
 
         //when
-        MemberResponse response = memberService.joinMember(request);
+        MemberResponse response = memberService.join(request);
 
         //then
         assertThat(response.getId()).isNotNull();
