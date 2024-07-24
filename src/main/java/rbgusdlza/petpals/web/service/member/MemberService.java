@@ -31,8 +31,12 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
-    public Member login(MemberLoginServiceRequest request) {
-        return memberRepository.findByLoginIdAndEncryptedPassword(request.getLoginId(), request.getEncryptedPassword());
+    public MemberResponse login(MemberLoginServiceRequest request) {
+        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword(request.getLoginId(), request.getEncryptedPassword());
+        if (findMember == null) {
+            return null;
+        }
+        return MemberResponse.of(findMember);
     }
 
     public LoginIdCheckResponse isLoginIdDuplicate(LoginIdServiceForm form) {
