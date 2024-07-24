@@ -17,7 +17,7 @@ public class MemberLoginServiceRequest {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public MemberLoginServiceRequest of(String loginId, String encryptedPassword) {
+    public static MemberLoginServiceRequest of(String loginId, String encryptedPassword) {
         return MemberLoginServiceRequest.builder()
                 .loginId(loginId)
                 .encryptedPassword(encryptedPassword)
