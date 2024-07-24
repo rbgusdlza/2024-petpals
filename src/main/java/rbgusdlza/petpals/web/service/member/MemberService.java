@@ -7,10 +7,7 @@ import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.domain.member.MemberRepository;
 import rbgusdlza.petpals.web.error.ErrorCode;
 import rbgusdlza.petpals.web.error.PetPalsException;
-import rbgusdlza.petpals.web.service.member.request.EmailServiceForm;
-import rbgusdlza.petpals.web.service.member.request.LoginIdServiceForm;
-import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
-import rbgusdlza.petpals.web.service.member.request.NicknameServiceForm;
+import rbgusdlza.petpals.web.service.member.request.*;
 import rbgusdlza.petpals.web.service.member.response.EmailCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.LoginIdCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.MemberResponse;
@@ -24,7 +21,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public MemberResponse joinMember(MemberJoinServiceRequest request) {
+    public MemberResponse join(MemberJoinServiceRequest request) {
         checkIfLoginIdDuplicate(request);
         checkIfNicknameDuplicate(request);
         checkIfEmailDuplicate(request);
@@ -32,6 +29,10 @@ public class MemberService {
         Member member = request.toEntity();
         memberRepository.save(member);
         return MemberResponse.of(member);
+    }
+
+    public Member login(MemberLoginServiceRequest request) {
+        return memberRepository.findByLoginIdAndEncryptedPassword(request.getLoginId(), request.getEncryptedPassword());
     }
 
     public LoginIdCheckResponse isLoginIdDuplicate(LoginIdServiceForm form) {
