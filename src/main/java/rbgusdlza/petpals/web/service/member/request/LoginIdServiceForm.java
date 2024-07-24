@@ -14,4 +14,10 @@ public class LoginIdServiceForm {
     private LoginIdServiceForm(String loginId) {
         this.loginId = loginId;
     }
+
+    public static LoginIdServiceForm of(String loginId) {
+        return LoginIdServiceForm.builder()
+                .loginId(loginId)
+                .build();
+    }
 }
