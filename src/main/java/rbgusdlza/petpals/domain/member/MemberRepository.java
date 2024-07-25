@@ -2,13 +2,16 @@ package rbgusdlza.petpals.domain.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Member findByLoginId(String loginId);
+    List<Member> findByLoginId(String loginId);
 
-    Member findByNickname(String nickname);
+    List<Member> findByNickname(String nickname);
 
-    Member findByEmail(String email);
+    List<Member> findByEmail(String email);
 
-    Member findByLoginIdAndEncryptedPassword(String loginId, String encryptedPassword);
+    Optional<Member> findByLoginIdAndEncryptedPassword(String loginId, String encryptedPassword);
 }
