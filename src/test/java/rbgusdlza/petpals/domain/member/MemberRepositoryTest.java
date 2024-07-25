@@ -93,4 +93,19 @@ class MemberRepositoryTest {
                 .containsExactly("userA", "park", "member@gmail.com");
     }
 
+    @DisplayName("로그인 아이디 또는 닉네임 또는 이메일로 일치하는 사용자의 수를 반환한다.")
+    @Test
+    void countByLoginIdOrNicknameOrEmail() {
+        //given
+        Member member1 = Member.of("userA", "park", "1234", "member1@gmail.com");
+        Member member2 = Member.of("userB", "lee", "2345", "member2@gmail.com");
+        Member member3 = Member.of("userC", "lee", "3456", "member3@gmail.com");
+        memberRepository.saveAll(List.of(member1, member2, member3));
+
+        //when
+        long count = memberRepository.countByLoginIdOrNicknameOrEmail("user", "lee", "member@gmail.com");
+
+        //then
+        assertThat(count).isEqualTo(2);
+    }
 }
