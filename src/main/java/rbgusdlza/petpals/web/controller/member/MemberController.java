@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.web.controller.member.request.MemberJoinRequest;
 import rbgusdlza.petpals.web.controller.member.request.MemberLoginRequest;
+import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.member.MemberService;
 import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 
@@ -57,14 +57,15 @@ public class MemberController {
             return "member/login";
         }
 
-        MemberResponse response = memberService.login(request.toServiceRequest());
-        if (response == null) {
+        try {
+            MemberResponse response = memberService.login(request.toServiceRequest());
+            session.setAttribute("id", response.getId());
+            return "redirect:/";
+        } catch (PetPalsException e) {
+            log.error("Login failed: {}", e.getMessage());
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "member/login";
         }
-
-        session.setAttribute("id", response.getId());
-        return "redirect:/";
     }
 }
 
