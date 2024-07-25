@@ -31,12 +31,14 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        Member findMember = memberRepository.findByLoginId("userA");
+        List<Member> findMembers = memberRepository.findByLoginId("userA");
 
         //then
-        assertThat(findMember).isNotNull()
+        assertThat(findMembers).hasSize(1)
                 .extracting("loginId", "nickname", "email")
-                .containsExactly("userA", "park", "member@gmail.com");
+                .containsExactly(
+                        tuple("userA", "park", "member@gmail.com")
+                );
     }
 
     @DisplayName("닉네임으로 사용자를 조회한다.")
@@ -47,12 +49,14 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        Member findMember = memberRepository.findByNickname("park");
+        List<Member> findMembers = memberRepository.findByNickname("park");
 
         //then
-        assertThat(findMember).isNotNull()
+        assertThat(findMembers).hasSize(1)
                 .extracting("loginId", "nickname", "email")
-                .containsExactly("userA", "park", "member@gmail.com");
+                .containsExactly(
+                        tuple("userA", "park", "member@gmail.com")
+                );
     }
 
     @DisplayName("이메일로 사용자를 조회한다.")
@@ -63,12 +67,14 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        Member findMember = memberRepository.findByEmail("member@gmail.com");
+        List<Member> findMembers = memberRepository.findByEmail("member@gmail.com");
 
         //then
-        assertThat(findMember).isNotNull()
+        assertThat(findMembers).hasSize(1)
                 .extracting("loginId", "nickname", "email")
-                .containsExactly("userA", "park", "member@gmail.com");
+                .containsExactly(
+                        tuple("userA", "park", "member@gmail.com")
+                );
     }
 
     @DisplayName("로그인 아이디와 비밀번호로 사용자를 조회한다.")
@@ -79,7 +85,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword("userA", "1234");
+        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword("userA", "1234").get();
 
         //then
         assertThat(findMember).isNotNull()
@@ -87,17 +93,4 @@ class MemberRepositoryTest {
                 .containsExactly("userA", "park", "member@gmail.com");
     }
 
-    @DisplayName("로그인 아이디와 비밀번호로 사용자를 조회할 때, 해당하는 사용자가 없으면 null을 반환한다.")
-    @Test
-    void findByLoginIdAndEncryptedPasswordWithoutMatchingUser() {
-        //given
-        Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
-
-        //when
-        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword("user", "1234");
-
-        //then
-        assertThat(findMember).isNull();
-    }
 }

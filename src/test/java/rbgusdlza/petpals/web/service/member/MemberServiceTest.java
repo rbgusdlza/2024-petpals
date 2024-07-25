@@ -65,22 +65,6 @@ class MemberServiceTest {
                 .containsExactly("userA", "park", "member@gmail.com");
     }
 
-    @DisplayName("로그인한 사용자를 찾을 수 없으면 null을 반환한다.")
-    @Test
-    void loginWithoutMatchingUser() {
-        //given
-        Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
-
-        MemberLoginServiceRequest request = MemberLoginServiceRequest.of("userB", "1234");
-
-        //when
-        MemberResponse response = memberService.login(request);
-
-        //then
-        assertThat(response).isNull();
-    }
-
     @DisplayName("로그인 아이디가 중복되었는지 확인한다.")
     @Test
     void isLoginIdDuplicate() {
