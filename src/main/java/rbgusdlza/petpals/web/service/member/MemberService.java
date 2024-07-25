@@ -25,10 +25,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponse join(MemberJoinServiceRequest request) {
-        checkIfLoginIdDuplicate(request);
-        checkIfNicknameDuplicate(request);
-        checkIfEmailDuplicate(request);
-
+        checkIfMemberIsValid(request);
         Member member = request.toEntity();
         memberRepository.save(member);
         return MemberResponse.of(member);
@@ -60,28 +57,19 @@ public class MemberService {
         return EmailCheckResponse.from(isDuplicated(findMembers));
     }
 
-    private void checkIfLoginIdDuplicate(MemberJoinServiceRequest request) {
+    private void checkIfMemberIsValid(MemberJoinServiceRequest request) {
         String loginId = request.getLoginId();
-        List<Member> findMembers = memberRepository.findByLoginId(loginId);
-        if (isDuplicated(findMembers)) {
-            throw new PetPalsException(DUPLICATE_LOGIN_ID);
-        }
-    }
-
-    private void checkIfNicknameDuplicate(MemberJoinServiceRequest request) {
         String nickname = request.getNickname();
-        List<Member> findMembers = memberRepository.findByNickname(nickname);
-        if (isDuplicated(findMembers)) {
-            throw new PetPalsException(DUPLICATE_NICKNAME);
+        String email = request.getEmail();
+
+        if (hasDuplicatesForMember(loginId, nickname, email)) {
+            throw new PetPalsException(MEMBER_JOIN_ERROR);
         }
     }
 
-    private void checkIfEmailDuplicate(MemberJoinServiceRequest request) {
-        String email = request.getEmail();
-        List<Member> findMembers = memberRepository.findByEmail(email);
-        if (isDuplicated(findMembers)) {
-            throw new PetPalsException(DUPLICATE_EMAIL);
-        }
+    private boolean hasDuplicatesForMember(String loginId, String nickname, String email) {
+        long numberOfDuplicateMembers = memberRepository.countByLoginIdOrNicknameOrEmail(loginId, nickname, email);
+        return numberOfDuplicateMembers > 0;
     }
 
     private boolean isDuplicated(List<Member> findMembers) {
