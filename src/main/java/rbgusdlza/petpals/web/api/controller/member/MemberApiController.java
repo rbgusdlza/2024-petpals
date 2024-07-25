@@ -50,8 +50,7 @@ public class MemberApiController {
     public ApiResponse<Void> sendAuthCode(@Valid @RequestBody EmailForm form, HttpSession session) {
         String authCode = RandomAuthCodeGenerator.getAuthCode();
         emailSender.sendAuthCode(form.getEmail(), authCode);
-        session.setAttribute("authCode", authCode);
-        session.setMaxInactiveInterval(AUTH_CODE_EXPIRATION_TIME);
+        saveAuthCodeInSession(session, authCode);
         return ApiResponse.ok();
     }
 
@@ -63,6 +62,11 @@ public class MemberApiController {
         }
         session.removeAttribute("authCode");
         return ApiResponse.ok();
+    }
+
+    private void saveAuthCodeInSession(HttpSession session, String authCode) {
+        session.setAttribute("authCode", authCode);
+        session.setMaxInactiveInterval(AUTH_CODE_EXPIRATION_TIME);
     }
 
     private boolean isInvalidAuthCode(EmailAuthCodeForm form, String sessionAuthCode) {
