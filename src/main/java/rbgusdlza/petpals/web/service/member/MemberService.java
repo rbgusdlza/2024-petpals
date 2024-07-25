@@ -5,13 +5,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.domain.member.MemberRepository;
-import rbgusdlza.petpals.web.error.ErrorCode;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.member.request.*;
 import rbgusdlza.petpals.web.service.member.response.EmailCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.LoginIdCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 import rbgusdlza.petpals.web.service.member.response.NicknameCheckResponse;
+
+import java.util.List;
+
+import static rbgusdlza.petpals.web.error.ErrorCode.*;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -32,56 +35,56 @@ public class MemberService {
     }
 
     public MemberResponse login(MemberLoginServiceRequest request) {
-        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword(request.getLoginId(), request.getEncryptedPassword());
-        if (findMember == null) {
-            return null;
-        }
+        String loginId = request.getLoginId();
+        String encryptedPassword = request.getEncryptedPassword();
+        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword(loginId, encryptedPassword)
+                .orElseThrow(() -> new PetPalsException(MEMBER_LOGIN_ERROR));
         return MemberResponse.of(findMember);
     }
 
     public LoginIdCheckResponse isLoginIdDuplicate(LoginIdServiceForm form) {
         String loginId = form.getLoginId();
-        Member findMember = memberRepository.findByLoginId(loginId);
-        return LoginIdCheckResponse.from(isDuplicated(findMember));
+        List<Member> findMembers = memberRepository.findByLoginId(loginId);
+        return LoginIdCheckResponse.from(isDuplicated(findMembers));
     }
 
     public NicknameCheckResponse isNicknameDuplicate(NicknameServiceForm form) {
         String nickname = form.getNickname();
-        Member findMember = memberRepository.findByNickname(nickname);
-        return NicknameCheckResponse.from(isDuplicated(findMember));
+        List<Member> findMembers = memberRepository.findByNickname(nickname);
+        return NicknameCheckResponse.from(isDuplicated(findMembers));
     }
 
     public EmailCheckResponse isEmailDuplicate(EmailServiceForm form) {
         String email = form.getEmail();
-        Member findMember = memberRepository.findByEmail(email);
-        return EmailCheckResponse.from(isDuplicated(findMember));
+        List<Member> findMembers = memberRepository.findByEmail(email);
+        return EmailCheckResponse.from(isDuplicated(findMembers));
     }
 
     private void checkIfLoginIdDuplicate(MemberJoinServiceRequest request) {
         String loginId = request.getLoginId();
-        Member findMember = memberRepository.findByLoginId(loginId);
-        if (isDuplicated(findMember)) {
-            throw new PetPalsException(ErrorCode.DUPLICATE_LOGIN_ID);
+        List<Member> findMembers = memberRepository.findByLoginId(loginId);
+        if (isDuplicated(findMembers)) {
+            throw new PetPalsException(DUPLICATE_LOGIN_ID);
         }
     }
 
     private void checkIfNicknameDuplicate(MemberJoinServiceRequest request) {
         String nickname = request.getNickname();
-        Member findMember = memberRepository.findByNickname(nickname);
-        if (isDuplicated(findMember)) {
-            throw new PetPalsException(ErrorCode.DUPLICATE_NICKNAME);
+        List<Member> findMembers = memberRepository.findByNickname(nickname);
+        if (isDuplicated(findMembers)) {
+            throw new PetPalsException(DUPLICATE_NICKNAME);
         }
     }
 
     private void checkIfEmailDuplicate(MemberJoinServiceRequest request) {
         String email = request.getEmail();
-        Member findMember = memberRepository.findByEmail(email);
-        if (isDuplicated(findMember)) {
-            throw new PetPalsException(ErrorCode.DUPLICATE_EMAIL);
+        List<Member> findMembers = memberRepository.findByEmail(email);
+        if (isDuplicated(findMembers)) {
+            throw new PetPalsException(DUPLICATE_EMAIL);
         }
     }
 
-    private boolean isDuplicated(Member findMember) {
-        return findMember != null;
+    private boolean isDuplicated(List<Member> findMembers) {
+        return !findMembers.isEmpty();
     }
 }
