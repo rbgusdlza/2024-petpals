@@ -165,10 +165,31 @@
           });
       }
 
+      function resetFieldValidation(input, isValidFlag) {
+          input.addEventListener('input', function () {
+              if (input === loginId) {
+                  isLoginIdValid = false;
+              } else if (input === nickname) {
+                  isNicknameValid = false;
+              } else if (input === email) {
+                  isEmailValid = false;
+                  emailVerificationSection.style.display = 'none';
+                  emailVerificationCode.value = '';
+                  emailVerificationError.textContent = '';
+                  isEmailVerified = false;
+              }
+              updateSignupButtonState();
+          });
+      }
+
       validateInputOnBlur(loginId, loginIdPattern, idError, "아이디는 필수입니다.", "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.");
       validateInputOnBlur(nickname, nicknamePattern, nicknameError, "닉네임은 필수입니다.", "닉네임은 2자에서 10자 사이여야 합니다.");
       validateInputOnBlur(password, passwordPattern, passwordError, "비밀번호는 필수입니다.", "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.");
       validateInputOnBlur(email, emailPattern, emailError, "이메일은 필수입니다.", "올바르지 않은 형식의 이메일입니다.");
+
+      resetFieldValidation(loginId, isLoginIdValid);
+      resetFieldValidation(nickname, isNicknameValid);
+      resetFieldValidation(email, isEmailValid);
 
       agreement.addEventListener('change', function () {
           if (!agreement.checked) {
