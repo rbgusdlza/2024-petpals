@@ -16,11 +16,11 @@ import static org.assertj.core.api.Assertions.*;
 class MemberRepositoryTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @AfterEach
     void tearDown() {
-        memberRepository.deleteAllInBatch();
+        memberJpaRepository.deleteAllInBatch();
     }
 
     @DisplayName("로그인 아이디로 사용자를 조회한다.")
@@ -28,10 +28,10 @@ class MemberRepositoryTest {
     void findByLoginId() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
+        memberJpaRepository.save(member);
 
         //when
-        List<Member> findMembers = memberRepository.findByLoginId("userA");
+        List<Member> findMembers = memberJpaRepository.findByLoginId("userA");
 
         //then
         assertThat(findMembers).hasSize(1)
@@ -46,10 +46,10 @@ class MemberRepositoryTest {
     void findByNickname() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
+        memberJpaRepository.save(member);
 
         //when
-        List<Member> findMembers = memberRepository.findByNickname("park");
+        List<Member> findMembers = memberJpaRepository.findByNickname("park");
 
         //then
         assertThat(findMembers).hasSize(1)
@@ -64,10 +64,10 @@ class MemberRepositoryTest {
     void findByEmail() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
+        memberJpaRepository.save(member);
 
         //when
-        List<Member> findMembers = memberRepository.findByEmail("member@gmail.com");
+        List<Member> findMembers = memberJpaRepository.findByEmail("member@gmail.com");
 
         //then
         assertThat(findMembers).hasSize(1)
@@ -82,10 +82,10 @@ class MemberRepositoryTest {
     void findByLoginIdAndEncryptedPassword() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
+        memberJpaRepository.save(member);
 
         //when
-        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword("userA", "1234").get();
+        Member findMember = memberJpaRepository.findByLoginIdAndEncryptedPassword("userA", "1234").get();
 
         //then
         assertThat(findMember).isNotNull()
@@ -100,10 +100,10 @@ class MemberRepositoryTest {
         Member member1 = Member.of("userA", "park", "1234", "member1@gmail.com");
         Member member2 = Member.of("userB", "lee", "2345", "member2@gmail.com");
         Member member3 = Member.of("userC", "lee", "3456", "member3@gmail.com");
-        memberRepository.saveAll(List.of(member1, member2, member3));
+        memberJpaRepository.saveAll(List.of(member1, member2, member3));
 
         //when
-        long count = memberRepository.countByLoginIdOrNicknameOrEmail("user", "lee", "member@gmail.com");
+        long count = memberJpaRepository.countByLoginIdOrNicknameOrEmail("user", "lee", "member@gmail.com");
 
         //then
         assertThat(count).isEqualTo(2);

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.member.Member;
-import rbgusdlza.petpals.domain.member.MemberRepository;
+import rbgusdlza.petpals.domain.member.MemberJpaRepository;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.member.request.*;
 import rbgusdlza.petpals.web.service.member.response.EmailCheckResponse;
@@ -21,39 +21,39 @@ import static rbgusdlza.petpals.web.error.ErrorCode.*;
 @Service
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     @Transactional
     public MemberResponse join(MemberJoinServiceRequest request) {
         checkIfMemberIsValid(request);
         Member member = request.toEntity();
-        memberRepository.save(member);
+        memberJpaRepository.save(member);
         return MemberResponse.of(member);
     }
 
     public MemberResponse login(MemberLoginServiceRequest request) {
         String loginId = request.getLoginId();
         String encryptedPassword = request.getEncryptedPassword();
-        Member findMember = memberRepository.findByLoginIdAndEncryptedPassword(loginId, encryptedPassword)
+        Member findMember = memberJpaRepository.findByLoginIdAndEncryptedPassword(loginId, encryptedPassword)
                 .orElseThrow(() -> new PetPalsException(MEMBER_LOGIN_ERROR));
         return MemberResponse.of(findMember);
     }
 
     public LoginIdCheckResponse isLoginIdDuplicate(LoginIdServiceForm form) {
         String loginId = form.getLoginId();
-        List<Member> findMembers = memberRepository.findByLoginId(loginId);
+        List<Member> findMembers = memberJpaRepository.findByLoginId(loginId);
         return LoginIdCheckResponse.from(isDuplicated(findMembers));
     }
 
     public NicknameCheckResponse isNicknameDuplicate(NicknameServiceForm form) {
         String nickname = form.getNickname();
-        List<Member> findMembers = memberRepository.findByNickname(nickname);
+        List<Member> findMembers = memberJpaRepository.findByNickname(nickname);
         return NicknameCheckResponse.from(isDuplicated(findMembers));
     }
 
     public EmailCheckResponse isEmailDuplicate(EmailServiceForm form) {
         String email = form.getEmail();
-        List<Member> findMembers = memberRepository.findByEmail(email);
+        List<Member> findMembers = memberJpaRepository.findByEmail(email);
         return EmailCheckResponse.from(isDuplicated(findMembers));
     }
 
@@ -68,7 +68,7 @@ public class MemberService {
     }
 
     private boolean hasDuplicatesForMember(String loginId, String nickname, String email) {
-        long numberOfDuplicateMembers = memberRepository.countByLoginIdOrNicknameOrEmail(loginId, nickname, email);
+        long numberOfDuplicateMembers = memberJpaRepository.countByLoginIdOrNicknameOrEmail(loginId, nickname, email);
         return numberOfDuplicateMembers > 0;
     }
 
