@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 import rbgusdlza.petpals.domain.BaseEntity;
 
 @Getter
@@ -19,18 +18,21 @@ public class Photo extends BaseEntity {
     private Long id;
 
     private Long postId;
-    private MultipartFile image;
+    private String fileName;
+    private String filePath;
 
     @Builder
-    private Photo(Long postId, MultipartFile image) {
+    private Photo(Long postId, String fileName, String filePath) {
         this.postId = postId;
-        this.image = image;
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 
-    public static Photo of(Long postId, MultipartFile image) {
+    public static Photo of(Long postId, String fileName, String filePath) {
         return Photo.builder()
                 .postId(postId)
-                .image(image)
+                .fileName(fileName)
+                .filePath(filePath)
                 .build();
     }
 }
