@@ -2,6 +2,7 @@ package rbgusdlza.petpals.domain.post;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rbgusdlza.petpals.domain.BaseEntity;
@@ -18,4 +19,21 @@ public class Post extends BaseEntity {
 
     private Long memberId;
     private String content;
+
+    @Builder
+    private Post(Long memberId, String content) {
+        this.memberId = memberId;
+        this.content = content;
+    }
+
+    public static Post of(Long memberId, String content) {
+        return Post.builder()
+                .memberId(memberId)
+                .content(content)
+                .build();
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

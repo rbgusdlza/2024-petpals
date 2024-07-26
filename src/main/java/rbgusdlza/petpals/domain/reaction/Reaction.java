@@ -2,6 +2,7 @@ package rbgusdlza.petpals.domain.reaction;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rbgusdlza.petpals.domain.BaseEntity;
@@ -23,4 +24,21 @@ public class Reaction extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ReactionType type;
+
+    @Builder
+    private Reaction(Long memberId, Long targetId, TargetType targetType, ReactionType type) {
+        this.memberId = memberId;
+        this.targetId = targetId;
+        this.targetType = targetType;
+        this.type = type;
+    }
+
+    public static Reaction of(Long memberId, Long targetId, TargetType targetType, ReactionType type) {
+        return Reaction.builder()
+                .memberId(memberId)
+                .targetId(targetId)
+                .targetType(targetType)
+                .type(type)
+                .build();
+    }
 }
