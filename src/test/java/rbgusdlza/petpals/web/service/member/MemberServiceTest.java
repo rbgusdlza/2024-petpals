@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.member.Member;
-import rbgusdlza.petpals.domain.member.MemberJpaRepository;
+import rbgusdlza.petpals.domain.member.MemberRepository;
 import rbgusdlza.petpals.web.service.member.request.LoginIdServiceForm;
 import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
 import rbgusdlza.petpals.web.service.member.request.MemberLoginServiceRequest;
@@ -21,14 +21,14 @@ import static org.assertj.core.api.Assertions.*;
 class MemberServiceTest {
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private MemberService memberService;
 
     @AfterEach
     void tearDown() {
-        memberJpaRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
     }
 
     @DisplayName("사용자를 등록한다.")
@@ -52,7 +52,7 @@ class MemberServiceTest {
     void login() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberJpaRepository.save(member);
+        memberRepository.save(member);
 
         MemberLoginServiceRequest request = MemberLoginServiceRequest.of("userA", "1234");
 
@@ -70,7 +70,7 @@ class MemberServiceTest {
     void isLoginIdDuplicate() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberJpaRepository.save(member);
+        memberRepository.save(member);
 
         LoginIdServiceForm form = LoginIdServiceForm.of("userA");
 
@@ -86,7 +86,7 @@ class MemberServiceTest {
     void isLoginIdDuplicate2() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberJpaRepository.save(member);
+        memberRepository.save(member);
 
         LoginIdServiceForm form = LoginIdServiceForm.of("userB");
 
