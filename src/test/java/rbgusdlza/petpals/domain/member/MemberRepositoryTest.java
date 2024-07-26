@@ -25,7 +25,7 @@ class MemberRepositoryTest {
 
     @DisplayName("로그인 아이디로 사용자를 조회한다.")
     @Test
-    void findByLoginId() {
+    void findAllByLoginId() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
         memberRepository.save(member);
@@ -43,7 +43,7 @@ class MemberRepositoryTest {
 
     @DisplayName("닉네임으로 사용자를 조회한다.")
     @Test
-    void findByNickname() {
+    void findAllByNickname() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
         memberRepository.save(member);
@@ -61,7 +61,7 @@ class MemberRepositoryTest {
 
     @DisplayName("이메일로 사용자를 조회한다.")
     @Test
-    void findByEmail() {
+    void findAllByEmail() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
         memberRepository.save(member);
