@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    List<Member> findByLoginId(String loginId);
+    List<Member> findAllByLoginId(String loginId);
 
-    List<Member> findByNickname(String nickname);
+    List<Member> findAllByNickname(String nickname);
 
-    List<Member> findByEmail(String email);
+    List<Member> findAllByEmail(String email);
 
     Optional<Member> findByLoginIdAndEncryptedPassword(String loginId, String encryptedPassword);
 

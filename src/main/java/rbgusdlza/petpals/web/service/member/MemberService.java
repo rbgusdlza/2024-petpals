@@ -41,19 +41,19 @@ public class MemberService {
 
     public LoginIdCheckResponse isLoginIdDuplicate(LoginIdServiceForm form) {
         String loginId = form.getLoginId();
-        List<Member> findMembers = memberRepository.findByLoginId(loginId);
+        List<Member> findMembers = memberRepository.findAllByLoginId(loginId);
         return LoginIdCheckResponse.from(isDuplicated(findMembers));
     }
 
     public NicknameCheckResponse isNicknameDuplicate(NicknameServiceForm form) {
         String nickname = form.getNickname();
-        List<Member> findMembers = memberRepository.findByNickname(nickname);
+        List<Member> findMembers = memberRepository.findAllByNickname(nickname);
         return NicknameCheckResponse.from(isDuplicated(findMembers));
     }
 
     public EmailCheckResponse isEmailDuplicate(EmailServiceForm form) {
         String email = form.getEmail();
-        List<Member> findMembers = memberRepository.findByEmail(email);
+        List<Member> findMembers = memberRepository.findAllByEmail(email);
         return EmailCheckResponse.from(isDuplicated(findMembers));
     }
 

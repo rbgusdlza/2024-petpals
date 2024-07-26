@@ -31,7 +31,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        List<Member> findMembers = memberRepository.findByLoginId("userA");
+        List<Member> findMembers = memberRepository.findAllByLoginId("userA");
 
         //then
         assertThat(findMembers).hasSize(1)
@@ -49,7 +49,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        List<Member> findMembers = memberRepository.findByNickname("park");
+        List<Member> findMembers = memberRepository.findAllByNickname("park");
 
         //then
         assertThat(findMembers).hasSize(1)
@@ -67,7 +67,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        List<Member> findMembers = memberRepository.findByEmail("member@gmail.com");
+        List<Member> findMembers = memberRepository.findAllByEmail("member@gmail.com");
 
         //then
         assertThat(findMembers).hasSize(1)
