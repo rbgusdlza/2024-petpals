@@ -13,7 +13,6 @@ import static rbgusdlza.petpals.web.error.ErrorCode.SENDING_EMAIL_ERROR;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class EmailSender {
 
     public static final String FROM_EMAIL = "rbgusdlza@gmail.com";
