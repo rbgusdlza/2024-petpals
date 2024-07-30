@@ -38,13 +38,10 @@ class MemberServiceTest {
         MemberJoinServiceRequest request = MemberJoinServiceRequest.of("userA", "park", "1234", "member@gmail.com");
 
         //when
-        MemberResponse response = memberService.join(request);
+        Long memberId = memberService.join(request);
 
         //then
-        assertThat(response.getId()).isNotNull();
-        assertThat(response.getLoginId()).isEqualTo("userA");
-        assertThat(response.getNickname()).isEqualTo("park");
-        assertThat(response.getEmail()).isEqualTo("member@gmail.com");
+        assertThat(memberId).isNotNull();
     }
 
     @DisplayName("로그인한 사용자를 반환한다.")

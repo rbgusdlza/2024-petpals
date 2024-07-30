@@ -25,11 +25,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public MemberResponse join(MemberJoinServiceRequest request) {
+    public Long join(MemberJoinServiceRequest request) {
         checkIfMemberIsValid(request);
         Member member = request.toEntity();
         memberRepository.save(member);
-        return MemberResponse.of(member);
+        return member.getId();
     }
 
     public MemberResponse login(MemberLoginServiceRequest request) {
