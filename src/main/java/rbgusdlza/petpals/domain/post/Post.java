@@ -18,17 +18,20 @@ public class Post extends BaseEntity {
     private Long id;
 
     private Long memberId;
+    private String title;
     private String content;
 
     @Builder
-    private Post(Long memberId, String content) {
+    private Post(Long memberId, String title, String content) {
         this.memberId = memberId;
+        this.title = title;
         this.content = content;
     }
 
-    public static Post of(Long memberId, String content) {
+    public static Post of(Long memberId, String title, String content) {
         return Post.builder()
                 .memberId(memberId)
+                .title(title)
                 .content(content)
                 .build();
     }
