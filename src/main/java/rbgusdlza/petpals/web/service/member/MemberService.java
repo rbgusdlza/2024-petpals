@@ -14,7 +14,8 @@ import rbgusdlza.petpals.web.service.member.response.NicknameCheckResponse;
 
 import java.util.List;
 
-import static rbgusdlza.petpals.web.error.ErrorCode.*;
+import static rbgusdlza.petpals.web.error.ErrorCode.MEMBER_JOIN_ERROR;
+import static rbgusdlza.petpals.web.error.ErrorCode.MEMBER_LOGIN_ERROR;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

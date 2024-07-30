@@ -1,7 +1,6 @@
 package rbgusdlza.petpals.web.error;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class PetPalsException extends RuntimeException {
