@@ -18,21 +18,18 @@ public class Photo extends BaseEntity {
     private Long id;
 
     private Long postId;
-    private String fileName;
-    private String filePath;
+    private String storeFileName;
 
     @Builder
-    private Photo(Long postId, String fileName, String filePath) {
+    private Photo(Long postId, String storeFileName) {
         this.postId = postId;
-        this.fileName = fileName;
-        this.filePath = filePath;
+        this.storeFileName = storeFileName;
     }
 
-    public static Photo of(Long postId, String fileName, String filePath) {
+    public static Photo of(Long postId, String storeFileName) {
         return Photo.builder()
                 .postId(postId)
-                .fileName(fileName)
-                .filePath(filePath)
+                .storeFileName(storeFileName)
                 .build();
     }
 }
