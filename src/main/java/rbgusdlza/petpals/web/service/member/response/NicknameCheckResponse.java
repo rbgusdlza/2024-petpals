@@ -13,7 +13,7 @@ public class NicknameCheckResponse {
         this.isDuplicated = isDuplicated;
     }
 
-    public static NicknameCheckResponse from(boolean isDuplicated) {
+    public static NicknameCheckResponse of(boolean isDuplicated) {
         return NicknameCheckResponse.builder()
                 .isDuplicated(isDuplicated)
                 .build();

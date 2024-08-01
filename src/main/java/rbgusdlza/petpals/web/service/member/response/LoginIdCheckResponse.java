@@ -13,7 +13,7 @@ public class LoginIdCheckResponse {
         this.isDuplicated = isDuplicated;
     }
 
-    public static LoginIdCheckResponse from(boolean isDuplicated) {
+    public static LoginIdCheckResponse of(boolean isDuplicated) {
         return LoginIdCheckResponse.builder()
                 .isDuplicated(isDuplicated)
                 .build();
