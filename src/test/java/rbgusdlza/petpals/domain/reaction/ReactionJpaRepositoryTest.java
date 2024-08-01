@@ -49,7 +49,7 @@ class ReactionJpaRepositoryTest {
         memberRepository.save(member);
         Long memberId = member.getId();
 
-        Post post = Post.of(memberId, "hello");
+        Post post = Post.of(memberId, "title", "content");
         postRepository.save(post);
         Long postId = post.getId();
 
@@ -81,7 +81,7 @@ class ReactionJpaRepositoryTest {
         memberRepository.save(member);
         Long memberId = member.getId();
 
-        Post post = Post.of(memberId, "hello");
+        Post post = Post.of(memberId, "title", "content");
         postRepository.save(post);
         Long postId = post.getId();
 
