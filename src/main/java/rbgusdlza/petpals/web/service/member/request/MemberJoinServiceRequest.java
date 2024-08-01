@@ -34,11 +34,6 @@ public class MemberJoinServiceRequest {
 
     public Member toEntity() {
         String encryptedPassword = PasswordEncryptor.encryptPasswordFrom(password);
-        return Member.builder()
-                .loginId(loginId)
-                .nickname(nickname)
-                .encryptedPassword(encryptedPassword)
-                .email(email)
-                .build();
+        return Member.of(loginId, nickname, encryptedPassword, email);
     }
 }
