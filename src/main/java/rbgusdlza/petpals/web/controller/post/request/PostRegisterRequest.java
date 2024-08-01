@@ -26,10 +26,6 @@ public class PostRegisterRequest {
     }
 
     public PostRegisterServiceRequest toServiceRequest(Long memberId) {
-        return PostRegisterServiceRequest.builder()
-                .memberId(memberId)
-                .title(title)
-                .content(content)
-                .build();
+        return PostRegisterServiceRequest.of(memberId, title, content);
     }
 }
