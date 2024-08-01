@@ -13,7 +13,7 @@ public class EmailCheckResponse {
         this.isDuplicated = isDuplicated;
     }
 
-    public static EmailCheckResponse from(boolean isDuplicated) {
+    public static EmailCheckResponse of(boolean isDuplicated) {
         return EmailCheckResponse.builder()
                 .isDuplicated(isDuplicated)
                 .build();
