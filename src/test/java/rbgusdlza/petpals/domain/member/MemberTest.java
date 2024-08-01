@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class MemberTest {
 
-    @DisplayName("사용자의 닉네임을 업데이트한다.")
+    @DisplayName("사용자의 닉네임을 수정한다.")
     @Test
     void updateNickname() {
         //given
@@ -20,7 +20,7 @@ class MemberTest {
         assertThat(member.getNickname()).isEqualTo("kim");
     }
 
-    @DisplayName("사용자의 비밀번호를 업데이트한다.")
+    @DisplayName("사용자의 비밀번호를 수정한다.")
     @Test
     void updatePassword() {
         //given
