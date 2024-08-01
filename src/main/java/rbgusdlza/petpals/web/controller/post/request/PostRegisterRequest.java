@@ -22,7 +22,8 @@ public class PostRegisterRequest {
     private String content;
 
     @Builder
-    private PostRegisterRequest(String title, String content) {
+    private PostRegisterRequest(Long memberId, String title, String content) {
+        this.memberId = memberId;
         this.title = title;
         this.content = content;
     }
