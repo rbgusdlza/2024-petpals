@@ -6,26 +6,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class PostRegisterRequest {
 
-    @NotNull
-    private Long memberId;
-
-    @NotBlank
+    @NotBlank(message = "제목은 필수입니다.")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
     @Builder
-    private PostRegisterRequest(Long memberId, String title, String content) {
-        this.memberId = memberId;
+    private PostRegisterRequest(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
+    public PostRegisterServiceRequest toServiceRequest(Long memberId) {
+        return PostRegisterServiceRequest.builder()
+                .memberId(memberId)
+                .title(title)
+                .content(content)
+                .build();
+    }
 }
