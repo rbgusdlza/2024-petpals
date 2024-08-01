@@ -20,6 +20,14 @@ public class PostRegisterServiceRequest {
         this.content = content;
     }
 
+    public static PostRegisterServiceRequest of(Long memberId, String title, String content) {
+        return PostRegisterServiceRequest.builder()
+                .memberId(memberId)
+                .title(title)
+                .content(content)
+                .build();
+    }
+
     public Post toEntity() {
         return Post.of(memberId, title, content);
     }
