@@ -32,14 +32,36 @@
             font-size: 0.875em;
         }
 
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
         .form-title {
             font-size: 2em;
             text-align: center;
+        }
+
+        .signup-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.875em;
         }
     </style>
 </head>
 
 <body>
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+</nav>
+
 <div class="container">
     <div class="input-form-background row justify-content-center">
         <div class="input-form col-md-12 mx-auto">
@@ -67,6 +89,9 @@
 
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">로그인</button>
+
+                <!-- 회원가입 링크 추가 -->
+                <a href="#" th:href="@{/member/join}" class="signup-link">회원가입</a>
             </form>
         </div>
     </div>
