@@ -1,2 +1,13 @@
-package rbgusdlza.petpals.web.service.photo;public class PhotoService {
+package rbgusdlza.petpals.web.service.photo;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Service
+public class PhotoService {
+
+
 }
