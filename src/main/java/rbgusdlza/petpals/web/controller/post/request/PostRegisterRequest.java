@@ -1,6 +1,7 @@
 package rbgusdlza.petpals.web.controller.post.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostRegisterRequest {
+
+    @NotNull
+    private Long memberId;
 
     @NotBlank
     private String title;
