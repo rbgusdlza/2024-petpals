@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETPALS</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #d3d3d3;
+        }
+
+        .input-form {
+            max-width: 1000px; /* 폼 너비 확장 */
+            margin: 80px auto;
+            padding: 60px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .field-error {
+            border-color: #bd2130 !important;
+            color: #dc3545 !important;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px; /* 제목과 폼 내용 간의 여백 추가 */
+        }
+
+        textarea {
+            resize: none; /* 사용자가 textarea 크기를 조절할 수 없게 함 */
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+</nav>
+
+<div class="container">
+    <div class="input-form-background row justify-content-center">
+        <div class="input-form col-md-12 mx-auto">
+            <h1 class="form-title">게시물 등록</h1>
+            <form th:action="@{/post/register}" th:object="${postRegisterRequest}" method="post" novalidate>
+                <div class="form-group mb-3">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" class="form-control" th:field="*{title}" placeholder="제목을 입력하세요" />
+                    <small class="text-danger error-message" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">제목 오류</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="content">내용</label>
+                    <textarea id="content" name="content" class="form-control" th:field="*{content}" rows="8" placeholder="내용을 입력하세요"></textarea>
+                    <small class="text-danger error-message" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">내용 오류</small>
+                </div>
+
+                <div class="mb-3">
+                    <small class="text-danger error-message" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">글로벌 오류</small>
+                </div>
+
+                <hr class="mb-4">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">등록</button>
+            </form>
+        </div>
+    </div>
+    <footer class="my-3 text-center text-small">
+        <p class="mb-1">&copy; 2024 PETPALS</p>
+    </footer>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
