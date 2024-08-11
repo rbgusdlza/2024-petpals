@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
 import rbgusdlza.petpals.web.error.PetPalsException;
 
 import static rbgusdlza.petpals.web.error.ErrorCode.SENDING_EMAIL_ERROR;
@@ -22,8 +21,8 @@ public class EmailSender {
 
     public void sendAuthCode(String toEmail, String authCode) {
         try {
-            String content = getContentBy(authCode);
-            MimeMessage message = getMessageOf(toEmail, content);
+            String content = createEmailContentBy(authCode);
+            MimeMessage message = createMessageFrom(toEmail, content);
             javaMailSender.send(message);
 
         } catch (MessagingException e) {
@@ -32,7 +31,7 @@ public class EmailSender {
         }
     }
 
-    private MimeMessage getMessageOf(String email, String content) throws MessagingException {
+    private MimeMessage createMessageFrom(String email, String content) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message);
         messageHelper.setFrom(FROM_EMAIL);
@@ -42,7 +41,7 @@ public class EmailSender {
         return message;
     }
 
-    private String getContentBy(String autoCode) {
+    private String createEmailContentBy(String autoCode) {
         return "인증번호는 " + autoCode + "입니다.";
     }
 }
