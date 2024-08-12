@@ -27,7 +27,7 @@ public class MemberService {
     @Transactional
     public Long join(MemberJoinServiceRequest request) {
         checkIfMemberIsValid(request);
-        Member member = request.toEntity();
+        Member member = request.toMember();
         memberRepository.save(member);
         return member.getId();
     }

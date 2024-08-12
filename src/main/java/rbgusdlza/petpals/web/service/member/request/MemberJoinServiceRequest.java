@@ -32,7 +32,7 @@ public class MemberJoinServiceRequest {
                 .build();
     }
 
-    public Member toEntity() {
+    public Member toMember() {
         String encryptedPassword = PasswordEncryptor.encryptPasswordFrom(password);
         return Member.of(loginId, nickname, encryptedPassword, email);
     }
