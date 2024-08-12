@@ -21,8 +21,8 @@ public class EmailSender {
 
     public void sendAuthCode(String toEmail, String authCode) {
         try {
-            String content = createEmailContentBy(authCode);
-            MimeMessage message = createMessageFrom(toEmail, content);
+            String content = generateEmailContentBy(authCode);
+            MimeMessage message = generateMessageFrom(toEmail, content);
             javaMailSender.send(message);
 
         } catch (MessagingException e) {
@@ -31,7 +31,7 @@ public class EmailSender {
         }
     }
 
-    private MimeMessage createMessageFrom(String email, String content) throws MessagingException {
+    private MimeMessage generateMessageFrom(String email, String content) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message);
         messageHelper.setFrom(FROM_EMAIL);
@@ -41,7 +41,7 @@ public class EmailSender {
         return message;
     }
 
-    private String createEmailContentBy(String autoCode) {
+    private String generateEmailContentBy(String autoCode) {
         return "인증번호는 " + autoCode + "입니다.";
     }
 }
