@@ -28,7 +28,7 @@ public class PostRegisterServiceRequest {
                 .build();
     }
 
-    public Post toEntity() {
+    public Post toPost() {
         return Post.of(memberId, title, content);
     }
 }

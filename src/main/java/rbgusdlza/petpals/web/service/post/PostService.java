@@ -18,7 +18,7 @@ public class PostService {
 
     @Transactional
     public Long register(PostRegisterServiceRequest request) {
-        Post post = request.toEntity();
+        Post post = request.toPost();
         postRepository.save(post);
         return post.getId();
     }
