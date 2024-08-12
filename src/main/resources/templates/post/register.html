@@ -51,6 +51,61 @@
         textarea {
             resize: none;
         }
+
+        .image-upload-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border: 2px dashed #007bff;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .image-upload-container input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-upload-container .placeholder {
+            display: block;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            position: relative;
+        }
+
+        .remove-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #007bff;
+            cursor: pointer;
+            display: none;
+        }
+
+        .btn[disabled] {
+            cursor: default;
+            opacity: 0.65;
+        }
     </style>
 </head>
 <body>
@@ -63,17 +118,27 @@
     <div class="input-form-background row justify-content-center">
         <div class="input-form col-md-12 mx-auto">
             <h1 class="form-title">게시물 등록</h1>
-            <form th:action="@{/post/register}" th:object="${postRegisterRequest}" method="post" novalidate>
+            <form id="postForm" th:action="@{/post/register}" th:object="${postRegisterRequest}" method="post" enctype="multipart/form-data" novalidate>
                 <div class="form-group mb-3">
                     <label for="title">제목</label>
-                    <input type="text" id="title" name="title" class="form-control" th:field="*{title}" placeholder="제목을 입력하세요" />
-                    <small class="text-danger error-message" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">제목 오류</small>
+                    <input type="text" id="title" name="title" class="form-control" th:field="*{title}" placeholder="제목을 입력하세요" maxlength="20" />
+                    <small id="titleError" class="text-danger error-message" style="display:none;"></small>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="content">내용</label>
-                    <textarea id="content" name="content" class="form-control" th:field="*{content}" rows="8" placeholder="내용을 입력하세요"></textarea>
-                    <small class="text-danger error-message" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">내용 오류</small>
+                    <textarea id="content" name="content" class="form-control" th:field="*{content}" rows="8" placeholder="내용을 입력하세요" maxlength="500"></textarea>
+                    <small id="contentError" class="text-danger error-message" style="display:none;"></small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="imageFile">이미지 첨부</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="imageFile" name="imageFile" class="form-control" th:field="*{imageFile}" accept=".png, .jpg, .jpeg" />
+                        <img id="imagePreview" class="image-preview" src="" alt="이미지 미리보기" />
+                        <div id="filePlaceholder" class="placeholder">+ 이미지</div>
+                        <button id="removeButton" class="remove-button" type="button" style="display: none;">&times;</button>
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -81,7 +146,7 @@
                 </div>
 
                 <hr class="mb-4">
-                <button type="submit" class="btn btn-primary btn-lg btn-block">등록</button>
+                <button id="submitButton" type="submit" class="btn btn-primary btn-lg btn-block" disabled>등록</button>
             </form>
         </div>
     </div>
@@ -90,5 +155,87 @@
     </footer>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fileInput = document.querySelector('#imageFile');
+        const imagePreview = document.querySelector('#imagePreview');
+        const placeholder = document.querySelector('#filePlaceholder');
+        const removeButton = document.querySelector('#removeButton');
+        const submitButton = document.querySelector('#submitButton');
+        const titleInput = document.querySelector('#title');
+        const contentTextarea = document.querySelector('#content');
+        const titleError = document.querySelector('#titleError');
+        const contentError = document.querySelector('#contentError');
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validate title length
+            if (titleInput.value.trim() === '' || titleInput.value.length > 20) {
+                titleError.textContent = titleInput.value.length > 20 ? '제목은 20자 이내로 입력해주세요.' : '';
+                titleError.style.display = 'block';
+                isValid = false;
+            } else {
+                titleError.style.display = 'none';
+            }
+
+            // Validate content length
+            if (contentTextarea.value.trim() === '' || contentTextarea.value.length > 500) {
+                contentError.textContent = contentTextarea.value.length > 500 ? '내용은 500자 이하로 입력해주세요.' : '';
+                contentError.style.display = 'block';
+                isValid = false;
+            } else {
+                contentError.style.display = 'none';
+            }
+
+            // Check if an image is selected
+            const fileSelected = fileInput.files.length > 0;
+            if (!fileSelected) {
+                isValid = false;
+            }
+
+            submitButton.disabled = !isValid;
+        }
+
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    removeButton.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                placeholder.style.display = 'block';
+                removeButton.style.display = 'none';
+            }
+            validateForm();
+        });
+
+        removeButton.addEventListener('click', function() {
+            fileInput.value = '';
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            placeholder.style.display = 'block';
+            this.style.display = 'none';
+            validateForm();
+        });
+
+        // Validate form on input change
+        titleInput.addEventListener('input', validateForm);
+        contentTextarea.addEventListener('input', validateForm);
+        fileInput.addEventListener('input', validateForm);
+
+        // Initial validation
+        validateForm();
+    });
+</script>
 </body>
 </html>
