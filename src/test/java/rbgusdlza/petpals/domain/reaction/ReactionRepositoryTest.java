@@ -23,10 +23,10 @@ import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class ReactionJpaRepositoryTest {
+class ReactionRepositoryTest {
 
     @Autowired
-    private ReactionJpaRepository reactionJpaRepository;
+    private ReactionRepository reactionRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -38,7 +38,7 @@ class ReactionJpaRepositoryTest {
     void tearDown() {
         memberRepository.deleteAllInBatch();
         postRepository.deleteAllInBatch();
-        reactionJpaRepository.deleteAllInBatch();
+        reactionRepository.deleteAllInBatch();
     }
 
     @DisplayName("사용자 아이디, 타겟 타입, 타겟 아이디, 반응 타입으로 해당하는 모든 반응을 조회한다.")
@@ -57,10 +57,10 @@ class ReactionJpaRepositoryTest {
         Reaction reaction2 = Reaction.of(memberId, postId, POST, LIKE);
         Reaction reaction3 = Reaction.of(memberId, postId, COMMENT, LIKE);
         Reaction reaction4 = Reaction.of(memberId, postId, POST, DISLIKE);
-        reactionJpaRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
+        reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
 
         //when
-        List<Reaction> reactions = reactionJpaRepository.findAllByMemberIdAndTargetIdAndTargetTypeAndType(
+        List<Reaction> reactions = reactionRepository.findAllByMemberIdAndTargetIdAndTargetTypeAndType(
                 memberId, postId, POST, LIKE
         );
 
@@ -89,10 +89,10 @@ class ReactionJpaRepositoryTest {
         Reaction reaction2 = Reaction.of(memberId, postId, COMMENT, LIKE);
         Reaction reaction3 = Reaction.of(memberId, postId, COMMENT, DISLIKE);
         Reaction reaction4 = Reaction.of(memberId, postId, POST, DISLIKE);
-        reactionJpaRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
+        reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
 
         //when
-        long count = reactionJpaRepository.countByTargetIdAndTargetTypeAndTypeAndEntityStatus(
+        long count = reactionRepository.countByTargetIdAndTargetTypeAndTypeAndEntityStatus(
                 postId, POST, LIKE, ACTIVE
         );
 

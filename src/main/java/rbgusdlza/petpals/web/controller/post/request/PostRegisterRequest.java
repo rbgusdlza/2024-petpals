@@ -1,11 +1,12 @@
 package rbgusdlza.petpals.web.controller.post.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 
 @Getter
@@ -13,19 +14,22 @@ import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 @NoArgsConstructor
 public class PostRegisterRequest {
 
-    @NotBlank(message = "제목은 필수입니다.")
+    @NotBlank
     private String title;
 
-    @NotBlank(message = "내용은 필수입니다.")
+    @NotBlank
     private String content;
 
+    private MultipartFile imageFile;
+
     @Builder
-    private PostRegisterRequest(String title, String content) {
+    private PostRegisterRequest(String title, String content, MultipartFile imageFile) {
         this.title = title;
         this.content = content;
+        this.imageFile = imageFile;
     }
 
     public PostRegisterServiceRequest toServiceRequest(Long memberId) {
-        return PostRegisterServiceRequest.of(memberId, title, content);
+        return PostRegisterServiceRequest.of(memberId, title, content, imageFile);
     }
 }

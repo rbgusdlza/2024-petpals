@@ -5,7 +5,7 @@ import rbgusdlza.petpals.domain.EntityStatus;
 
 import java.util.List;
 
-public interface ReactionJpaRepository extends JpaRepository<Reaction, Long> {
+public interface ReactionRepository extends JpaRepository<Reaction, Long> {
 
     List<Reaction> findAllByMemberIdAndTargetIdAndTargetTypeAndType(Long memberId, Long targetId, TargetType targetType, ReactionType type);
 
