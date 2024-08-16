@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import rbgusdlza.petpals.web.controller.post.request.PostRegisterRequest;
 import rbgusdlza.petpals.web.service.post.PostService;
+import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +39,8 @@ public class PostController {
         }
 
         Long memberId = getMemberIdFrom(session);
-        postService.register(request.toServiceRequest(memberId));
+        PostRegisterServiceRequest postRequest = request.toServiceRequest(memberId);
+        postService.register(postRequest);
         return "redirect:/";
     }
 
