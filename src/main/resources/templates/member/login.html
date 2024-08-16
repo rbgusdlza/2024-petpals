@@ -2,11 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>PETPALS: 로그인</title>
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             min-height: 100vh;
@@ -66,32 +66,36 @@
     <div class="input-form-background row justify-content-center">
         <div class="input-form col-md-12 mx-auto">
             <h4 class="mb-3 form-title">PETPALS</h4>
-            <form id="loginForm" action="#" th:action="@{/member/login}" method="post" th:object="${memberLoginRequest}" novalidate>
+            <form action="#" id="loginForm" method="post" novalidate th:action="@{/member/login}"
+                  th:object="${memberLoginRequest}">
                 <div class="mb-3">
                     <label for="id">아이디</label>
-                    <input type="text" class="form-control" id="id" name="loginId" placeholder=""
+                    <input class="form-control" id="id" name="loginId" placeholder="" th:classappend="${#fields.hasErrors('loginId')} ? 'field-error' : ''"
                            th:value="*{loginId}"
-                           th:classappend="${#fields.hasErrors('loginId')} ? 'field-error' : ''">
-                    <small class="text-danger error-message" th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}">아이디 오류</small>
+                           type="text">
+                    <small class="text-danger error-message" th:errors="*{loginId}"
+                           th:if="${#fields.hasErrors('loginId')}">아이디 오류</small>
                 </div>
 
                 <div class="mb-3">
                     <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder=""
+                    <input class="form-control" id="password" name="password" placeholder="" th:classappend="${#fields.hasErrors('password')} ? 'field-error' : ''"
                            th:value="*{password}"
-                           th:classappend="${#fields.hasErrors('password')} ? 'field-error' : ''">
-                    <small class="text-danger error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 오류</small>
+                           type="password">
+                    <small class="text-danger error-message" th:errors="*{password}"
+                           th:if="${#fields.hasErrors('password')}">비밀번호 오류</small>
                 </div>
 
                 <div class="mb-3">
-                    <small class="text-danger error-message" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">글로벌 오류</small>
+                    <small class="text-danger error-message" th:errors="*{global}" th:if="${#fields.hasGlobalErrors()}">글로벌
+                        오류</small>
                 </div>
 
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">로그인</button>
 
                 <!-- 회원가입 링크 추가 -->
-                <a href="#" th:href="@{/member/join}" class="signup-link">회원가입</a>
+                <a class="signup-link" href="#" th:href="@{/member/join}">회원가입</a>
             </form>
         </div>
     </div>

@@ -2,11 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>PETPALS</title>
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             min-height: 100vh;
@@ -118,41 +118,41 @@
     <div class="input-form-background row justify-content-center">
         <div class="input-form col-md-12 mx-auto">
             <h1 class="form-title">게시물 등록</h1>
-            <form id="postForm" th:action="@{/post/register}" th:object="${postRegisterRequest}" method="post"
-                  enctype="multipart/form-data" novalidate>
+            <form enctype="multipart/form-data" id="postForm" method="post" novalidate
+                  th:action="@{/post/register}" th:object="${postRegisterRequest}">
                 <div class="form-group mb-3">
                     <label for="title">제목</label>
-                    <input type="text" id="title" name="title" class="form-control" th:field="*{title}"
-                           placeholder="제목을 입력하세요" maxlength="20"/>
-                    <small id="titleError" class="text-danger error-message" style="display:none;"></small>
+                    <input class="form-control" id="title" maxlength="20" name="title" placeholder="제목을 입력하세요"
+                           th:field="*{title}" type="text"/>
+                    <small class="text-danger error-message" id="titleError" style="display:none;"></small>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="content">내용</label>
-                    <textarea id="content" name="content" class="form-control" th:field="*{content}" rows="8"
-                              placeholder="내용을 입력하세요" maxlength="500"></textarea>
-                    <small id="contentError" class="text-danger error-message" style="display:none;"></small>
+                    <textarea class="form-control" id="content" maxlength="500" name="content" placeholder="내용을 입력하세요"
+                              rows="8" th:field="*{content}"></textarea>
+                    <small class="text-danger error-message" id="contentError" style="display:none;"></small>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="imageFile">이미지 첨부</label>
                     <div class="image-upload-container">
-                        <input type="file" id="imageFile" name="imageFile" class="form-control" th:field="*{imageFile}"
-                               accept=".png, .jpg, .jpeg"/>
-                        <img id="imagePreview" class="image-preview" src="" alt="이미지 미리보기"/>
-                        <div id="filePlaceholder" class="placeholder">+ 이미지</div>
-                        <button id="removeButton" class="remove-button" type="button" style="display: none;">&times;
+                        <input accept=".png, .jpg, .jpeg" class="form-control" id="imageFile" name="imageFile" th:field="*{imageFile}"
+                               type="file"/>
+                        <img alt="이미지 미리보기" class="image-preview" id="imagePreview" src=""/>
+                        <div class="placeholder" id="filePlaceholder">+ 이미지</div>
+                        <button class="remove-button" id="removeButton" style="display: none;" type="button">&times;
                         </button>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <small class="text-danger error-message" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">글로벌
+                    <small class="text-danger error-message" th:errors="*{global}" th:if="${#fields.hasGlobalErrors()}">글로벌
                         오류</small>
                 </div>
 
                 <hr class="mb-4">
-                <button id="submitButton" type="submit" class="btn btn-primary btn-lg btn-block" disabled>등록</button>
+                <button class="btn btn-primary btn-lg btn-block" disabled id="submitButton" type="submit">등록</button>
             </form>
         </div>
     </div>
