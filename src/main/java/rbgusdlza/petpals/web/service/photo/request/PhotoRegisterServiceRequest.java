@@ -9,15 +9,18 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class PhotoRegisterServiceRequest {
 
+    private Long postId;
     private MultipartFile imageFile;
 
     @Builder
-    private PhotoRegisterServiceRequest(MultipartFile imageFile) {
+    private PhotoRegisterServiceRequest(Long postId, MultipartFile imageFile) {
+        this.postId = postId;
         this.imageFile = imageFile;
     }
 
-    public static PhotoRegisterServiceRequest of(MultipartFile imageFile) {
+    public static PhotoRegisterServiceRequest of(Long postId, MultipartFile imageFile) {
         return PhotoRegisterServiceRequest.builder()
+                .postId(postId)
                 .imageFile(imageFile)
                 .build();
     }
