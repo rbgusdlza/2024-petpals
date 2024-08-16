@@ -21,12 +21,14 @@ public class Photo extends BaseEntity {
     private String photoName;
 
     @Builder
-    private Photo(String photoName) {
+    private Photo(Long postId, String photoName) {
+        this.postId = postId;
         this.photoName = photoName;
     }
 
-    public static Photo of(String photoName) {
+    public static Photo of(Long postId, String photoName) {
         return Photo.builder()
+                .postId(postId)
                 .photoName(photoName)
                 .build();
     }
