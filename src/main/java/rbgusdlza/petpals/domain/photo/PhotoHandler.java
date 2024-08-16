@@ -1,6 +1,5 @@
 package rbgusdlza.petpals.domain.photo;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,12 +9,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-@RequiredArgsConstructor
 public class PhotoHandler {
 
     private static final String FILE_EXTENSION_SEPARATOR = ".";
-
-    private final PhotoRepository photoRepository;
 
     @Value("${file.directory}")
     private String fileDirectory;
@@ -38,8 +34,8 @@ public class PhotoHandler {
 
     private String generateStoreFileNameFrom(String originalFileName) {
         String fileExtension = extractFileExtension(originalFileName);
-        String randomFileName = generateUniqueFileName();
-        return randomFileName + FILE_EXTENSION_SEPARATOR + fileExtension;
+        String uniqueFileName = generateUniqueFileName();
+        return uniqueFileName + FILE_EXTENSION_SEPARATOR + fileExtension;
     }
 
     private String extractFileExtension(String originalFileName) {
