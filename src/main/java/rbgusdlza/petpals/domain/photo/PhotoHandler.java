@@ -2,24 +2,21 @@ package rbgusdlza.petpals.domain.photo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
+@Component
 public class PhotoHandler {
-
-    private static final String FILE_EXTENSION_SEPARATOR = ".";
 
     @Value("${file.directory}")
     private String fileDirectory;
 
-    public void saveImageFile(MultipartFile imageFile) {
+    public void saveImageFile(MultipartFile imageFile, String storeFileName) {
         try {
-            String originalFileName = imageFile.getOriginalFilename();
-            String storeFileName = generateStoreFileNameFrom(originalFileName);
             String fullPath = getFullPathFrom(storeFileName);
             File storeImageFile = generateImageFileAt(fullPath);
             imageFile.transferTo(storeImageFile);
@@ -30,21 +27,6 @@ public class PhotoHandler {
 
     private File generateImageFileAt(String fullPath) {
         return new File(fullPath);
-    }
-
-    private String generateStoreFileNameFrom(String originalFileName) {
-        String fileExtension = extractFileExtension(originalFileName);
-        String uniqueFileName = generateUniqueFileName();
-        return uniqueFileName + FILE_EXTENSION_SEPARATOR + fileExtension;
-    }
-
-    private String extractFileExtension(String originalFileName) {
-        int fileExtensionStartIndex = originalFileName.lastIndexOf(FILE_EXTENSION_SEPARATOR);
-        return originalFileName.substring(fileExtensionStartIndex + 1);
-    }
-
-    private String generateUniqueFileName() {
-        return UUID.randomUUID().toString();
     }
 
     private String getFullPathFrom(String fileName) {
