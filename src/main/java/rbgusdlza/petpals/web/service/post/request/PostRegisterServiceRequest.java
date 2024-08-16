@@ -37,7 +37,7 @@ public class PostRegisterServiceRequest {
         return Post.of(memberId, title, content);
     }
 
-    public PhotoRegisterServiceRequest toPhotoRegisterServiceRequest() {
-        return PhotoRegisterServiceRequest.of(imageFile);
+    public PhotoRegisterServiceRequest toPhotoRegisterServiceRequest(Long postId) {
+        return PhotoRegisterServiceRequest.of(postId, imageFile);
     }
 }
