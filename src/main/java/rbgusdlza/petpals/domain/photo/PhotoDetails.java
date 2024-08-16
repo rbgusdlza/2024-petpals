@@ -18,20 +18,17 @@ public class PhotoDetails {
 
     private Long photoId;
     private String storeFileName;
-    private String filePath;
 
     @Builder
-    private PhotoDetails(Long photoId, String storeFileName, String filePath) {
+    private PhotoDetails(Long photoId, String storeFileName) {
         this.photoId = photoId;
         this.storeFileName = storeFileName;
-        this.filePath = filePath;
     }
 
-    public PhotoDetails of(Long photoId, String storeFileName, String filePath) {
+    public static PhotoDetails of(Long photoId, String storeFileName) {
         return PhotoDetails.builder()
                 .photoId(photoId)
                 .storeFileName(storeFileName)
-                .filePath(filePath)
                 .build();
     }
 }
