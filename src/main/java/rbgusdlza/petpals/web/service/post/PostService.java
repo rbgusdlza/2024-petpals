@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
+import rbgusdlza.petpals.web.service.photo.PhotoService;
+import rbgusdlza.petpals.web.service.photo.request.PhotoRegisterServiceRequest;
 import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 
 @Slf4j
@@ -15,11 +17,16 @@ import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PhotoService photoService;
 
     @Transactional
-    public Long register(PostRegisterServiceRequest request) {
-        Post post = request.toPost();
+    public Long register(PostRegisterServiceRequest postRequest) {
+        Post post = postRequest.toPost();
         postRepository.save(post);
-        return post.getId();
+
+        Long postId = post.getId();
+        PhotoRegisterServiceRequest photoRequest = postRequest.toPhotoRegisterServiceRequest(postId);
+        photoService.register(photoRequest);
+        return postId;
     }
 }
