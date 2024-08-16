@@ -21,8 +21,7 @@ public class PhotoService {
     @Transactional
     public Long register(PhotoRegisterServiceRequest request) {
         MultipartFile imageFile = request.getImageFile();
-        String originalFileName = imageFile.getOriginalFilename();
-        String storeFileName = FileNameGenerator.generateStoreFileNameFrom(originalFileName);
+        String storeFileName = getStoreFileName(imageFile);
         photoHandler.saveImageFile(imageFile, storeFileName);
 
         Long postId = request.getPostId();
@@ -33,5 +32,10 @@ public class PhotoService {
         PhotoDetails photoDetails = photoProcessor.createPhotoDetails(photoId, storeFileName);
         photoDetailsRepository.save(photoDetails);
         return photoId;
+    }
+
+    private String getStoreFileName(MultipartFile imageFile) {
+        String originalFileName = imageFile.getOriginalFilename();
+        return FileNameGenerator.generateStoreFileNameFrom(originalFileName);
     }
 }
