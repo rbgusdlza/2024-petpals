@@ -14,7 +14,7 @@ import rbgusdlza.petpals.web.service.member.request.MemberLoginServiceRequest;
 import rbgusdlza.petpals.web.service.member.response.LoginIdCheckResponse;
 import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest
