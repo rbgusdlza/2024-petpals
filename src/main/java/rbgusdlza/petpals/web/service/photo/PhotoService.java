@@ -26,11 +26,11 @@ public class PhotoService {
         photoHandler.saveImageFile(imageFile, storeFileName);
 
         Long postId = request.getPostId();
-        Photo photo = photoProcessor.getPhoto(postId, imageFile);
+        Photo photo = photoProcessor.createPhoto(postId, imageFile);
         photoRepository.save(photo);
 
         Long photoId = photo.getId();
-        PhotoDetails photoDetails = photoProcessor.getPhotoDetails(photoId, storeFileName);
+        PhotoDetails photoDetails = photoProcessor.createPhotoDetails(photoId, storeFileName);
         photoDetailsRepository.save(photoDetails);
         return photoId;
     }
