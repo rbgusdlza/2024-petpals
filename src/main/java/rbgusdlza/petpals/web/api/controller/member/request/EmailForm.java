@@ -20,6 +20,12 @@ public class EmailForm {
         this.email = email;
     }
 
+    public static EmailForm of(String email) {
+        return EmailForm.builder()
+                .email(email)
+                .build();
+    }
+
     public EmailServiceForm toServiceForm() {
         return EmailServiceForm.builder()
                 .email(email)
