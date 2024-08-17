@@ -173,6 +173,8 @@
         const titleError = document.querySelector('#titleError');
         const contentError = document.querySelector('#contentError');
 
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
         function validateForm() {
             let isValid = true;
 
@@ -194,9 +196,15 @@
                 contentError.style.display = 'none';
             }
 
-            // Check if an image is selected
+            // Check if an image is selected and if its size is under the limit
             const fileSelected = fileInput.files.length > 0;
-            if (!fileSelected) {
+            if (fileSelected) {
+                const file = fileInput.files[0];
+                if (file.size > MAX_FILE_SIZE) {
+                    alert('이미지 파일 크기는 5MB 이하로 제한됩니다.');
+                    isValid = false;
+                }
+            } else {
                 isValid = false;
             }
 
@@ -205,7 +213,7 @@
 
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
-            if (file) {
+            if (file && file.size <= MAX_FILE_SIZE) {
                 const reader = new FileReader();
 
                 reader.onload = function(event) {
@@ -217,10 +225,14 @@
 
                 reader.readAsDataURL(file);
             } else {
+                if (file && file.size > MAX_FILE_SIZE) {
+                    alert('이미지 파일 크기는 5MB 이하로 제한됩니다.');
+                }
                 imagePreview.src = '';
                 imagePreview.style.display = 'none';
                 placeholder.style.display = 'block';
                 removeButton.style.display = 'none';
+                fileInput.value = ''; // Reset the file input
             }
             validateForm();
         });
@@ -243,5 +255,6 @@
         validateForm();
     });
 </script>
+
 </body>
 </html>
