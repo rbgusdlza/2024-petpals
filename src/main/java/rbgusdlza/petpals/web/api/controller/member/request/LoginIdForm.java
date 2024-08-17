@@ -20,6 +20,12 @@ public class LoginIdForm {
         this.loginId = loginId;
     }
 
+    public static LoginIdForm of(String loginId) {
+        return LoginIdForm.builder()
+                .loginId(loginId)
+                .build();
+    }
+
     public LoginIdServiceForm toServiceForm() {
         return LoginIdServiceForm.builder()
                 .loginId(loginId)

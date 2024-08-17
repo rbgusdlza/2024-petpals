@@ -20,6 +20,12 @@ public class NicknameForm {
         this.nickname = nickname;
     }
 
+    public static NicknameForm of(String nickname) {
+        return NicknameForm.builder()
+                .nickname(nickname)
+                .build();
+    }
+
     public NicknameServiceForm toServiceForm() {
         return NicknameServiceForm.builder()
                 .nickname(nickname)
