@@ -77,18 +77,20 @@ class ReactionRepositoryTest {
     @Test
     void countByTargetIdAndTargetTypeAndTypeAndEntityStatus() {
         //given
-        Member member = Member.of("userA", "park", "1234", "member@gmail.com");
-        memberRepository.save(member);
-        Long memberId = member.getId();
+        Member member1 = Member.of("userA", "park", "1234", "member1@gmail.com");
+        Member member2 = Member.of("userB", "kim", "2345", "member2@gmail.com");
+        memberRepository.saveAll(List.of(member1, member2));
+        Long member1Id = member1.getId();
+        Long member2Id = member2.getId();
 
-        Post post = Post.of(memberId, "title", "content");
+        Post post = Post.of(member1Id, "title", "content");
         postRepository.save(post);
         Long postId = post.getId();
 
-        Reaction reaction1 = Reaction.of(memberId, postId, POST, LIKE);
-        Reaction reaction2 = Reaction.of(memberId, postId, COMMENT, LIKE);
-        Reaction reaction3 = Reaction.of(memberId, postId, COMMENT, DISLIKE);
-        Reaction reaction4 = Reaction.of(memberId, postId, POST, DISLIKE);
+        Reaction reaction1 = Reaction.of(member1Id, postId, POST, LIKE);
+        Reaction reaction2 = Reaction.of(member1Id, postId, COMMENT, LIKE);
+        Reaction reaction3 = Reaction.of(member2Id, postId, COMMENT, DISLIKE);
+        Reaction reaction4 = Reaction.of(member2Id, postId, POST, DISLIKE);
         reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
 
         //when
