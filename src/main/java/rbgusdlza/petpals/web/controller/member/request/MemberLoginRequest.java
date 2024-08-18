@@ -25,6 +25,13 @@ public class MemberLoginRequest {
         this.password = password;
     }
 
+    public static MemberLoginRequest of(String loginId, String password) {
+        return MemberLoginRequest.builder()
+                .loginId(loginId)
+                .password(password)
+                .build();
+    }
+
     public MemberLoginServiceRequest toServiceRequest() {
         String encryptedPassword = PasswordEncryptor.encryptPasswordFrom(password);
         return MemberLoginServiceRequest.builder()
