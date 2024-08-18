@@ -37,6 +37,16 @@ public class MemberJoinRequest {
         this.agreement = agreement;
     }
 
+    public static MemberJoinRequest of(String loginId, String nickname, String password, String email, boolean agreement) {
+        return MemberJoinRequest.builder()
+                .loginId(loginId)
+                .nickname(nickname)
+                .password(password)
+                .email(email)
+                .agreement(agreement)
+                .build();
+    }
+
     public MemberJoinServiceRequest toServiceRequest() {
         return MemberJoinServiceRequest.builder()
                 .loginId(loginId)
