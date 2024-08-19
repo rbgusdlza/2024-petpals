@@ -73,7 +73,7 @@ class ReactionRepositoryTest {
                 );
     }
 
-    @DisplayName("타겟 아이디, 타겟 타입, 반응 타입, 제거 여부로 모든 반응의 개수를 반환한다.")
+    @DisplayName("타겟 아이디, 타겟 타입, 반응 타입으로 모든 반응의 개수를 반환한다.")
     @Test
     void countByTargetIdAndTargetTypeAndTypeAndEntityStatus() {
         //given
@@ -94,9 +94,7 @@ class ReactionRepositoryTest {
         reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
 
         //when
-        long count = reactionRepository.countByTargetIdAndTargetTypeAndTypeAndEntityStatus(
-                postId, POST, LIKE, ACTIVE
-        );
+        long count = reactionRepository.countByTargetIdAndTargetTypeAndType(postId, POST, LIKE);
 
         //then
         assertThat(count).isEqualTo(1);

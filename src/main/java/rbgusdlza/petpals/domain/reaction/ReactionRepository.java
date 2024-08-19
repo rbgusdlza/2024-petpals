@@ -9,6 +9,6 @@ public interface ReactionRepository extends JpaRepository<Reaction, Long> {
 
     List<Reaction> findAllByMemberIdAndTargetIdAndTargetTypeAndType(Long memberId, Long targetId, TargetType targetType, ReactionType type);
 
-    long countByTargetIdAndTargetTypeAndTypeAndEntityStatus(Long targetId, TargetType targetType, ReactionType type, EntityStatus entityStatus);
+    long countByTargetIdAndTargetTypeAndType(Long targetId, TargetType targetType, ReactionType type);
 
 }
