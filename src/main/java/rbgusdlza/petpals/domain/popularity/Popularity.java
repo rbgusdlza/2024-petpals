@@ -18,15 +18,15 @@ public class Popularity extends BaseEntity {
     private Long id;
 
     private Long postId;
-    private int score;
+    private double score;
 
     @Builder
-    private Popularity(Long postId, int score) {
+    private Popularity(Long postId, double score) {
         this.postId = postId;
         this.score = score;
     }
 
-    public static Popularity of(Long postId, int score) {
+    public static Popularity of(Long postId, double score) {
         return Popularity.builder()
                 .postId(postId)
                 .score(score)
