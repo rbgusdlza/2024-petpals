@@ -25,11 +25,11 @@ public class PhotoHandler {
         }
     }
 
-    private File generateImageFileAt(String fullPath) {
-        return new File(fullPath);
+    public String getFullPathFrom(String fileName) {
+        return fileDirectory + fileName;
     }
 
-    private String getFullPathFrom(String fileName) {
-        return fileDirectory + fileName;
+    private File generateImageFileAt(String fullPath) {
+        return new File(fullPath);
     }
 }
