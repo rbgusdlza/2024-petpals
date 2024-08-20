@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.web.service.photo.PhotoService;
-import rbgusdlza.petpals.web.service.photo.request.PhotoRegisterServiceRequest;
+import rbgusdlza.petpals.web.service.popularity.PopularityService;
 import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 
 @Slf4j
@@ -18,15 +18,16 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PhotoService photoService;
+    private final PopularityService popularityService;
 
     @Transactional
-    public Long register(PostRegisterServiceRequest postRequest) {
-        Post post = postRequest.toPost();
+    public Long register(PostRegisterServiceRequest request) {
+        Post post = request.toPost();
         postRepository.save(post);
 
         Long postId = post.getId();
-        PhotoRegisterServiceRequest photoRequest = postRequest.toPhotoRegisterServiceRequest(postId);
-        photoService.register(photoRequest);
+        photoService.register(postId, request.getImageFile());
+        popularityService.createFrom(postId);
         return postId;
     }
 }
