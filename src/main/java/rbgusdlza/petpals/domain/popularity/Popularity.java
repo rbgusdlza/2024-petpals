@@ -5,14 +5,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLRestriction;
-import rbgusdlza.petpals.domain.BaseEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLRestriction("entity_status = 'ACTIVE'")
 @Entity
-public class Popularity extends BaseEntity {
+public class Popularity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
