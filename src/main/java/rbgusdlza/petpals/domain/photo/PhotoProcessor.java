@@ -11,7 +11,7 @@ public class PhotoProcessor {
         return Photo.of(postId, originalFileName);
     }
 
-    public PhotoDetails createPhotoDetails(Long photoId, String uniqueFileName) {
-        return PhotoDetails.of(photoId, uniqueFileName);
+    public PhotoDetails createPhotoDetails(Long photoId, String storeFileName) {
+        return PhotoDetails.of(photoId, storeFileName);
     }
 }
