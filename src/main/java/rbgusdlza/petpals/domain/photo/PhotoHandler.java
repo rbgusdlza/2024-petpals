@@ -25,7 +25,7 @@ public class PhotoHandler {
         }
     }
 
-    public String getFullPathFrom(String fileName) {
+    private String getFullPathFrom(String fileName) {
         return fileDirectory + fileName;
     }
 
