@@ -18,7 +18,7 @@ public class PhotoHandler {
     public void saveImageFile(MultipartFile imageFile, String storeFileName) {
         try {
             String fullPath = getFullPathFrom(storeFileName);
-            File storeImageFile = generateImageFileAt(fullPath);
+            File storeImageFile = createImageFileAt(fullPath);
             imageFile.transferTo(storeImageFile);
         } catch (IOException e) {
             log.error("파일 입출력 오류 발생");
@@ -29,7 +29,7 @@ public class PhotoHandler {
         return fileDirectory + fileName;
     }
 
-    private File generateImageFileAt(String fullPath) {
+    private File createImageFileAt(String fullPath) {
         return new File(fullPath);
     }
 }
