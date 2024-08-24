@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import rbgusdlza.petpals.web.error.PetPalsException;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "rbgusdlza.petpals.web.api.controller")
 public class ApiControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
