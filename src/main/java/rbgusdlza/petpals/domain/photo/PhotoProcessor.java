@@ -1,13 +1,11 @@
 package rbgusdlza.petpals.domain.photo;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class PhotoProcessor {
 
-    public Photo createPhoto(Long postId, MultipartFile imageFile) {
-        String originalFileName = imageFile.getOriginalFilename();
+    public Photo createPhotoFrom(Long postId, String originalFileName) {
         return Photo.of(postId, originalFileName);
     }
 
