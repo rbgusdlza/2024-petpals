@@ -17,6 +17,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByLoginIdAndEncryptedPassword(String loginId, String encryptedPassword);
 
-    @Query("SELECT COUNT(m) FROM Member m WHERE m.loginId = :loginId OR m.nickname = :nickname OR m.email = :email")
-    long countByLoginIdOrNicknameOrEmail(@Param("loginId") String loginId, @Param("nickname") String nickname, @Param("email") String email);
+    long countByLoginIdOrNicknameOrEmail(String loginId, String nickname, String email);
 }
