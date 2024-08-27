@@ -16,7 +16,7 @@ public class PopularityService {
     private final PopularityRepository popularityRepository;
 
     @Transactional
-    public Long createFrom(Long postId) {
+    public Long create(Long postId) {
         Popularity popularity = Popularity.of(postId, 0.0);
         popularityRepository.save(popularity);
         return popularity.getId();

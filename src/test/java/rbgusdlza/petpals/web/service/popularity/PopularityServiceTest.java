@@ -32,7 +32,7 @@ class PopularityServiceTest {
         Long postId = 1L;
 
         //when
-        Long popularityId = popularityService.createPopularity(postId);
+        Long popularityId = popularityService.create(postId);
 
         //then
         assertThat(popularityId).isNotNull();
