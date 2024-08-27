@@ -1,11 +1,13 @@
 package rbgusdlza.petpals.web.service.post;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,6 +18,14 @@ class PostServiceTest {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAllInBatch();
+    }
 
     @DisplayName("게시물을 등록한다.")
     @Test
