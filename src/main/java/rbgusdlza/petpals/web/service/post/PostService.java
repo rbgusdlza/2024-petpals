@@ -65,13 +65,13 @@ public class PostService {
         Long targetId = request.getTargetId();
         int limit = request.getLimit();
 
-        List<Post> findPosts = postRepository.findByIdLessThanOrderByIdDesc(targetId, limit);
-        return findPosts.stream()
-                .map(findPost -> {
-                    Long postId = findPost.getId();
+        List<Post> posts = postRepository.findByIdLessThanOrderByIdDesc(targetId, limit);
+        return posts.stream()
+                .map(post -> {
+                    Long postId = post.getId();
                     PhotoWithDetails photoWithDetails = photoService.getPhotoWithDetails(postId);
                     long likeCount = likeService.countLike(postId, POST);
-                    return PostResponse.of(findPost, photoWithDetails, likeCount);
+                    return PostResponse.of(post, photoWithDetails, likeCount);
                 })
                 .toList();
     }
