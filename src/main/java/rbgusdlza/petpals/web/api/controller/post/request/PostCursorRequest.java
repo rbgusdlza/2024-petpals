@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.web.controller.post.request;
+package rbgusdlza.petpals.web.api.controller.post.request;
 
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;

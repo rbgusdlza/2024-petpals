@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.web.controller.post.response;
+package rbgusdlza.petpals.web.api.controller.post.response;
 
 import lombok.Builder;
 import lombok.Getter;
