@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>PETPALS</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #d3d3d3;
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .post-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .post-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+</nav>
+
+<body>
+<div class="container">
+    <div id="post-list" class="row">
+        <div th:each="post, iterStat : ${response}" class="post-container col-md-4"
+             th:data-id="${post.id}">
+            <a th:href="@{/post/list/{postId}(postId=${post.id})}" class="post-title" th:text="${post.title}">Post Title</a>
+            <a th:href="@{/post/list/{postId}(postId=${post.id})}">
+                <img class="post-image" th:src="@{/images/{fileName}(fileName=${post.storeFileName})}" alt="Post Image"/>
+            </a>
+            <p th:text="${post.content}">Post Content</p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="my-3 text-center text-small">
+    <p class="mb-1">&copy; 2024 PETPALS</p>
+</footer>
+
+<script>
+    let cursor = getLastPostId(); // Get the ID of the last post from the initial HTML
+    const limit = 5; // Number of posts to fetch per request
+    let isLoading = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (cursor !== -1 && !isLoading) {
+            loadPosts(); // cursor가 유효하고 로딩 중이 아니면 게시물 로딩
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+        if (isLoading) return; // 이미 로딩 중이면 더 이상 로딩하지 않음
+
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            loadMorePosts(); // 로딩할 수 있으면 로딩
+        }
+    });
+
+    function getLastPostId() {
+        const lastPostElement = document.querySelector('#post-list .post-container:last-child');
+        return lastPostElement ? parseInt(lastPostElement.getAttribute('data-id')) : -1;
+    }
+
+    function loadPosts() {
+        isLoading = true;
+
+        fetch('/api/post/list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cursor: cursor, limit: limit })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.data.posts.length === 0) {
+                cursor = -1; // 더 이상 게시물이 없으면 cursor를 -1로 설정
+            } else {
+                displayPosts(data.data.posts);
+                cursor = data.data.cursor; // 다음 요청을 위한 cursor 업데이트
+            }
+        })
+        .catch(error => console.error('Error loading posts:', error))
+        .finally(() => {
+            isLoading = false; // 로딩이 끝나면 isLoading 플래그 해제
+        });
+    }
+
+    function loadMorePosts() {
+        if (cursor === -1 || isLoading) return; // 더 이상 로딩할 게시물이 없거나 로딩 중인 경우 종료
+
+        isLoading = true;
+
+        fetch('/api/post/list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cursor: cursor, limit: limit })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.data.posts.length === 0) {
+                cursor = -1; // 더 이상 게시물이 없으면 cursor를 -1로 설정
+            } else {
+                displayPosts(data.data.posts);
+                cursor = data.data.cursor; // 다음 요청을 위한 cursor 업데이트
+            }
+        })
+        .catch(error => console.error('Error loading more posts:', error))
+        .finally(() => {
+            isLoading = false; // 로딩이 끝나면 isLoading 플래그 해제
+        });
+    }
+
+    function displayPosts(posts) {
+        const postList = document.getElementById('post-list');
+        posts.forEach(post => {
+            const postContainer = document.createElement('div');
+            postContainer.classList.add('post-container', 'col-md-4');
+            postContainer.setAttribute('data-id', post.id);
+            postContainer.innerHTML = `
+                <a href="/post/list/${post.id}" class="post-title">${post.title}</a>
+                <a href="/post/list/${post.id}">
+                    <img class="post-image" src="/images/${post.storeFileName}" alt="Post Image"/>
+                </a>
+                <p>${post.content}</p>
+            `;
+            postList.appendChild(postContainer);
+        });
+    }
+</script>
+
+</body>
+</html>
