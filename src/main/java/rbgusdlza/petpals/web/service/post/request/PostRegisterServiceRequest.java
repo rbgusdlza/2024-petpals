@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import rbgusdlza.petpals.domain.post.Post;
-import rbgusdlza.petpals.web.service.photo.request.PhotoRegisterServiceRequest;
 
 @Getter
 @NoArgsConstructor
@@ -35,9 +34,5 @@ public class PostRegisterServiceRequest {
 
     public Post toPost() {
         return Post.of(memberId, title, content);
-    }
-
-    public PhotoRegisterServiceRequest toPhotoRegisterServiceRequest(Long postId) {
-        return PhotoRegisterServiceRequest.of(postId, imageFile);
     }
 }
