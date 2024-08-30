@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>PETPALS</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #d3d3d3;
+        }
+
+        .post-container {
+            max-width: 768px;
+            margin: 40px auto;
+            padding: 24px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .post-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .post-content {
+            font-size: 1.25em;
+            margin-bottom: 20px;
+        }
+
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .like-count {
+            font-size: 1.25em;
+            color: #007bff;
+        }
+
+        .back-link {
+            font-size: 1em;
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+</nav>
+
+<div class="container">
+    <div class="post-container">
+        <h2 class="post-title" th:text="${response.title}">게시물 제목</h2>
+        <div class="post-content" th:text="${response.content}">게시물 내용</div>
+        <img class="post-image" th:src="|/images/${response.storeFileName}|" alt="게시물 이미지">
+
+        <div class="post-footer">
+            <span class="like-count">좋아요: <span th:text="${response.likeCount}">0</span></span>
+            <a class="back-link" href="#" th:href="@{/post/list}">목록으로 돌아가기</a>
+        </div>
+    </div>
+    <footer class="my-3 text-center text-small">
+        <p class="mb-1">&copy; 2024 PETPALS</p>
+    </footer>
+</div>
+</body>
+</html>
