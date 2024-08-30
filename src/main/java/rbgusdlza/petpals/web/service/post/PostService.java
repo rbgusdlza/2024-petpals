@@ -16,7 +16,6 @@ import rbgusdlza.petpals.web.service.post.response.PostResponse;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
 
 import java.util.List;
-import java.util.Optional;
 
 import static rbgusdlza.petpals.domain.reaction.TargetType.*;
 import static rbgusdlza.petpals.web.error.ErrorCode.*;
@@ -61,7 +60,7 @@ public class PostService {
                 }).toList();
     }
 
-    public List<PostResponse> find(PostCursorServiceRequest request) {
+    public List<PostResponse> findAfter(PostCursorServiceRequest request) {
         Long targetId = request.getTargetId();
         int limit = request.getLimit();
 
@@ -75,5 +74,4 @@ public class PostService {
                 })
                 .toList();
     }
-
 }
