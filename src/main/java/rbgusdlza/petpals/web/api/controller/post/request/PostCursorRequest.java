@@ -1,5 +1,6 @@
 package rbgusdlza.petpals.web.api.controller.post.request;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import rbgusdlza.petpals.web.service.post.request.PostCursorServiceRequest;
 @NoArgsConstructor
 public class PostCursorRequest {
 
+    @NotNull
     private Long cursor;
 
     @Positive
