@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class PostTest {
 
     @DisplayName("게시물의 제목을 수정한다.")
