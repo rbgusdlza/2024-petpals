@@ -12,6 +12,7 @@ import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -41,9 +42,9 @@ class ReactionRepositoryTest {
         reactionRepository.deleteAllInBatch();
     }
 
-    @DisplayName("사용자 아이디, 타겟 타입, 타겟 아이디, 반응 타입으로 해당하는 모든 반응을 조회한다.")
+    @DisplayName("사용자 아이디, 타겟 타입, 타겟 아이디, 반응 타입으로 해당하는 반응을 조회한다.")
     @Test
-    void findAllByMemberIdAndTargetIdAndTargetTypeAndType() {
+    void findByMemberIdAndTargetIdAndTargetTypeAndType() {
         //given
         Member member = Member.of("userA", "park", "1234", "member@gmail.com");
         memberRepository.save(member);
@@ -54,23 +55,19 @@ class ReactionRepositoryTest {
         Long postId = post.getId();
 
         Reaction reaction1 = Reaction.of(memberId, postId, POST, LIKE);
-        Reaction reaction2 = Reaction.of(memberId, postId, POST, LIKE);
-        Reaction reaction3 = Reaction.of(memberId, postId, COMMENT, LIKE);
-        Reaction reaction4 = Reaction.of(memberId, postId, POST, DISLIKE);
-        reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3, reaction4));
+        Reaction reaction2 = Reaction.of(memberId, postId, COMMENT, LIKE);
+        Reaction reaction3 = Reaction.of(memberId, postId, POST, DISLIKE);
+        reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3));
 
         //when
-        List<Reaction> reactions = reactionRepository.findAllByMemberIdAndTargetIdAndTargetTypeAndType(
+        Reaction findReaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
                 memberId, postId, POST, LIKE
-        );
+        ).get();
 
         //then
-        assertThat(reactions).hasSize(2)
+        assertThat(findReaction).isNotNull()
                 .extracting("memberId", "targetId", "targetType", "type")
-                .containsExactly(
-                        tuple(memberId, postId, POST, LIKE),
-                        tuple(memberId, postId, POST, LIKE)
-                );
+                .containsExactly(memberId, postId, POST, LIKE);
     }
 
     @DisplayName("타겟 아이디, 타겟 타입, 반응 타입으로 모든 반응의 개수를 반환한다.")
