@@ -7,13 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import rbgusdlza.petpals.web.controller.post.request.PostRegisterRequest;
 import rbgusdlza.petpals.web.service.post.PostService;
-import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
+import rbgusdlza.petpals.web.service.post.response.PostResponse;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,15 +32,32 @@ public class PostController {
     public String register(@Valid @ModelAttribute PostRegisterRequest request,
                            BindingResult bindingResult,
                            HttpSession session) {
+
         if (bindingResult.hasErrors()) {
             log.info("bindingResult : {}", bindingResult);
             return "post/register";
         }
 
         Long memberId = getMemberIdFrom(session);
-        PostRegisterServiceRequest postRequest = request.toServiceRequest(memberId);
-        postService.register(postRequest);
+        postService.register(request.toServiceRequest(memberId));
         return "redirect:/";
+    }
+
+    @GetMapping("/list")
+    public String list(@RequestParam(defaultValue = "5") int limit,
+                       Model model) {
+        
+        List<PostResponse> posts = postService.findRecentPosts(limit);
+        model.addAttribute("response", posts);
+        return "post/list";
+    }
+
+    @GetMapping("/list/{postId}")
+    public String show(@PathVariable Long postId,
+                       Model model) {
+        PostResponse response = postService.findBy(postId);
+        model.addAttribute("response", response);
+        return "post/view";
     }
 
     private Long getMemberIdFrom(HttpSession session) {
