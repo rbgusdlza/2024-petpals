@@ -58,7 +58,7 @@ class PostRepositoryTest {
         postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
 
         //when
-        List<Post> findPosts = postRepository.findByIdLessThanOrderByIdDesc(3L, 3);
+        List<Post> findPosts = postRepository.findByIdLessThanOrderByIdDesc(post3.getId(), 3);
 
         //then
         assertThat(findPosts).hasSize(2)
@@ -81,7 +81,7 @@ class PostRepositoryTest {
         postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
 
         //when
-        List<Post> findPosts = postRepository.findByIdLessThanOrderByIdDesc(1L, 3);
+        List<Post> findPosts = postRepository.findByIdLessThanOrderByIdDesc(post1.getId(), 3);
 
         //then
         assertThat(findPosts).isEmpty();
