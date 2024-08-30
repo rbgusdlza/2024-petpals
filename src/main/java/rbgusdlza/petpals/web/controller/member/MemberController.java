@@ -62,7 +62,6 @@ public class MemberController {
             session.setAttribute("id", response.getId());
             return "redirect:/";
         } catch (PetPalsException e) {
-            log.error("Login failed: {}", e.getMessage());
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "member/login";
         }
