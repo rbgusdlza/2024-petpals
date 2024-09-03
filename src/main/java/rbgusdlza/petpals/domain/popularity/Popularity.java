@@ -31,4 +31,8 @@ public class Popularity {
                 .score(score)
                 .build();
     }
+
+    public void updateScore(double score) {
+        this.score = score;
+    }
 }
