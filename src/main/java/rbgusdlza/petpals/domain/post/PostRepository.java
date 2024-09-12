@@ -12,6 +12,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByIdDesc(@Param("limit") int limit);
 
     @Query(value = "SELECT * FROM Post p WHERE p.post_id < :postId ORDER BY p.post_id DESC LIMIT :limit", nativeQuery = true)
-    List<Post> findByIdLessThanOrderByIdDesc(@Param("postId") Long postId, @Param("limit") int limit);
+    List<Post> findAllByIdLessThanOrderByIdDesc(@Param("postId") Long postId, @Param("limit") int limit);
 
 }
