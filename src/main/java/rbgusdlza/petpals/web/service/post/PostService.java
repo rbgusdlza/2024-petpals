@@ -10,7 +10,6 @@ import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.photo.PhotoService;
 import rbgusdlza.petpals.web.service.popularity.PopularityService;
-import rbgusdlza.petpals.web.service.popularity.response.PopularityResponse;
 import rbgusdlza.petpals.web.service.post.request.PostCursorServiceRequest;
 import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 import rbgusdlza.petpals.web.service.post.response.PostResponse;
