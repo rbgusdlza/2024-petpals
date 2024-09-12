@@ -9,8 +9,6 @@ import rbgusdlza.petpals.domain.popularity.PopularityRepository;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
 
-import java.util.Optional;
-
 import static rbgusdlza.petpals.domain.reaction.TargetType.*;
 import static rbgusdlza.petpals.web.error.ErrorCode.POPULARITY_NOT_FOUND;
 
