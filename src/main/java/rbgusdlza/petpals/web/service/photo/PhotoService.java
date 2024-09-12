@@ -42,11 +42,11 @@ public class PhotoService {
 
     private Photo findPhotoBy(Long postId) {
         return photoRepository.findByPostId(postId)
-                .orElseThrow(() -> new PetPalsException(FINDING_PHOTO_ERROR));
+                .orElseThrow(() -> new PetPalsException(PHOTO_NOT_FOUND));
     }
 
     private PhotoDetails findPhotoDetailsBy(Long photoId) {
         return photoDetailsRepository.findByPhotoId(photoId)
-                .orElseThrow(() -> new PetPalsException(FINDING_PHOTO_ERROR));
+                .orElseThrow(() -> new PetPalsException(PHOTO_NOT_FOUND));
     }
 }

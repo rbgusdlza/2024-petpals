@@ -44,7 +44,7 @@ public class PostService {
 
     public PostResponse findBy(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PetPalsException(FINDING_POST_ERROR));
+                .orElseThrow(() -> new PetPalsException(POST_NOT_FOUND));
         PhotoWithDetails photoWithDetails = photoService.getPhotoWithDetails(postId);
         long likeCount = likeService.countLike(postId, POST);
         return PostResponse.of(post, photoWithDetails, likeCount);
