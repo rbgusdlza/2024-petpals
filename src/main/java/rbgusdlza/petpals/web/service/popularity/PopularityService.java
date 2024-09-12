@@ -7,7 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.popularity.Popularity;
 import rbgusdlza.petpals.domain.popularity.PopularityRepository;
 import rbgusdlza.petpals.web.error.PetPalsException;
+import rbgusdlza.petpals.web.service.popularity.response.PopularityResponse;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static rbgusdlza.petpals.domain.reaction.TargetType.*;
 import static rbgusdlza.petpals.web.error.ErrorCode.POPULARITY_NOT_FOUND;
@@ -35,5 +39,11 @@ public class PopularityService {
         long likeCount = likeService.countLike(postId, POST);
         popularity.updateScore(likeCount);
         return popularity.getId();
+    }
+
+    public List<PopularityResponse> find(int limit) {
+        return popularityRepository.findAllByOrderByScoreDesc(limit).stream()
+                .map(PopularityResponse::of)
+                .toList();
     }
 }
