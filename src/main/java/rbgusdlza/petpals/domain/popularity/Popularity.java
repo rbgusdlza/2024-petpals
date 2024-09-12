@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Popularity {
 
+    private static final double LIKE_COUNT_WEIGHT = 0.1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "popularity_id")
@@ -25,14 +27,14 @@ public class Popularity {
         this.score = score;
     }
 
+    public void updateScore(long likeCount) {
+        this.score = likeCount * LIKE_COUNT_WEIGHT;
+    }
+
     public static Popularity of(Long postId, double score) {
         return Popularity.builder()
                 .postId(postId)
                 .score(score)
                 .build();
-    }
-
-    public void updateScore(double score) {
-        this.score = score;
     }
 }
