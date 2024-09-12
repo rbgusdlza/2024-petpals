@@ -10,15 +10,17 @@ import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.photo.PhotoService;
 import rbgusdlza.petpals.web.service.popularity.PopularityService;
+import rbgusdlza.petpals.web.service.popularity.response.PopularityResponse;
 import rbgusdlza.petpals.web.service.post.request.PostCursorServiceRequest;
 import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 import rbgusdlza.petpals.web.service.post.response.PostResponse;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static rbgusdlza.petpals.domain.reaction.TargetType.*;
-import static rbgusdlza.petpals.web.error.ErrorCode.*;
+import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
+import static rbgusdlza.petpals.web.error.ErrorCode.POST_NOT_FOUND;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -52,26 +54,19 @@ public class PostService {
 
     public List<PostResponse> findRecentPosts(int limit) {
         return postRepository.findAllByOrderByIdDesc(limit).stream()
-                .map(post -> {
-                    Long postId = post.getId();
-                    PhotoWithDetails photoWithDetails = photoService.getPhotoWithDetails(postId);
-                    long likeCount = likeService.countLike(postId, POST);
-                    return PostResponse.of(post, photoWithDetails, likeCount);
-                }).toList();
+                .map(post -> findBy(post.getId()))
+                .toList();
     }
 
     public List<PostResponse> findAfter(PostCursorServiceRequest request) {
-        Long targetId = request.getTargetId();
-        int limit = request.getLimit();
+        return postRepository.findAllByIdLessThanOrderByIdDesc(request.getTargetId(), request.getLimit()).stream()
+                .map(post -> findBy(post.getId()))
+                .toList();
+    }
 
-        List<Post> posts = postRepository.findByIdLessThanOrderByIdDesc(targetId, limit);
-        return posts.stream()
-                .map(post -> {
-                    Long postId = post.getId();
-                    PhotoWithDetails photoWithDetails = photoService.getPhotoWithDetails(postId);
-                    long likeCount = likeService.countLike(postId, POST);
-                    return PostResponse.of(post, photoWithDetails, likeCount);
-                })
+    public List<PostResponse> findPopularPosts(int limit) {
+        return popularityService.find(limit).stream()
+                .map(popularityResponse -> findBy(popularityResponse.getPostId()))
                 .toList();
     }
 }
