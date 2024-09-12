@@ -16,7 +16,6 @@ import rbgusdlza.petpals.web.service.post.request.PostRegisterServiceRequest;
 import rbgusdlza.petpals.web.service.post.response.PostResponse;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
