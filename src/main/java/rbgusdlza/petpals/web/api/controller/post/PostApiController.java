@@ -19,6 +19,16 @@ public class PostApiController {
 
     private final PostService postService;
 
+    @GetMapping("/latest")
+    public ApiResponse<List<PostResponse>> showLatest(@RequestParam int limit) {
+        return ApiResponse.ok(postService.findRecentPosts(limit));
+    }
+
+    @GetMapping("/popular")
+    public ApiResponse<List<PostResponse>> showPopular(@RequestParam int limit) {
+        return ApiResponse.ok(postService.findPopularPosts(limit));
+    }
+
     @PostMapping("/list")
     public ApiResponse<SliceResult> list(@RequestBody PostCursorRequest request) {
         List<PostResponse> posts = postService.findAfter(request.toServiceRequest());
