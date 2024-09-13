@@ -3,10 +3,7 @@ package rbgusdlza.petpals.web.api.controller.reaction;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rbgusdlza.petpals.web.api.ApiResponse;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
 
@@ -27,7 +24,7 @@ public class LikeApiController {
         return ApiResponse.ok(likeService.like(memberId, postId, POST));
     }
 
-    @PostMapping("/{postId}/count-like")
+    @GetMapping("/{postId}/count-like")
     public ApiResponse<Long> countLike(@PathVariable Long postId) {
         return ApiResponse.ok(likeService.countLike(postId, POST));
     }
