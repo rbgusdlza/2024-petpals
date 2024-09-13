@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Petpals</title>
+    <title>PETPALS</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -13,23 +13,58 @@
             background-color: #d3d3d3;
         }
 
-        .input-form {
+        .container {
             max-width: 1000px;
-            margin: 80px auto;
-            padding: 60px;
+            margin: 20px auto;
+        }
+
+        .section-title {
+            font-size: 2em; /* 줄여진 부분 */
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-item {
+            padding: 10px;
             background: #fff;
             border-radius: 10px;
-            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            text-align: center;
+            display: inline-block;
+            width: 30%;
         }
 
-        .field-error {
-            border-color: #bd2130 !important;
-            color: #dc3545 !important;
+        .post-title {
+            font-size: 1.25em;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+            display: block;
         }
 
-        .error-message {
-            color: #dc3545;
-            font-size: 0.875em;
+        .post-title:hover {
+            text-decoration: underline;
+        }
+
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .view-all-link {
+            font-size: 0.8em; /* 줄여진 부분 */
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .view-all-link:hover {
+            text-decoration: underline;
         }
 
         .navbar-brand {
@@ -41,27 +76,93 @@
         .navbar {
             margin-bottom: 20px;
         }
-
-        .form-title {
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 
+<body>
 <!-- Navbar -->
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
 </nav>
 
-<body>
+<div class="container">
+    <!-- 최신 글 섹션 -->
+    <section>
+        <div class="section-title">
+            <h2>최신글</h2>
+            <a href="/post/list" class="view-all-link">전체 글 보기</a>
+        </div>
+        <div id="latest-posts">
+            <!-- 최신 글이 여기 표시됩니다 -->
+        </div>
+    </section>
 
-
-</body>
+    <!-- 인기 글 섹션 -->
+    <section>
+        <div class="section-title">
+            <h2>인기글</h2>
+        </div>
+        <div id="popular-posts">
+            <!-- 인기 글이 여기 표시됩니다 -->
+        </div>
+    </section>
+</div>
 
 <!-- Footer -->
 <footer class="my-3 text-center text-small">
     <p class="mb-1">&copy; 2024 PETPALS</p>
 </footer>
+
+<script>
+    // 최신 글을 API로부터 가져와서 렌더링
+    function fetchLatestPosts() {
+        fetch('/api/post/latest?limit=3')
+            .then(response => response.json())
+            .then(data => {
+                const latestPostsContainer = document.getElementById('latest-posts');
+                latestPostsContainer.innerHTML = ''; // 기존 내용을 지움
+                const posts = data.data || []; // ApiResponse의 data 안에 실제 목록이 있을 가능성
+                posts.forEach(post => {
+                    const postElement = `
+                        <div class="post-item">
+                            <a href="/post/list/${post.id}">
+                                <img src="/images/${post.storeFileName}" alt="Post Image" class="post-image">
+                            </a>
+                            <a href="/post/list/${post.id}" class="post-title">${post.title}</a>
+                        </div>`;
+                    latestPostsContainer.insertAdjacentHTML('beforeend', postElement);
+                });
+            })
+            .catch(error => console.error('Error fetching latest posts:', error));
+    }
+
+    // 인기 글을 API로부터 가져와서 렌더링
+    function fetchPopularPosts() {
+        fetch('/api/post/popular?limit=3')
+            .then(response => response.json())
+            .then(data => {
+                const popularPostsContainer = document.getElementById('popular-posts');
+                popularPostsContainer.innerHTML = ''; // 기존 내용을 지움
+                const posts = data.data || []; // ApiResponse의 data 안에 실제 목록이 있을 가능성
+                posts.forEach(post => {
+                    const postElement = `
+                        <div class="post-item">
+                            <a href="/post/list/${post.id}">
+                                <img src="/images/${post.storeFileName}" alt="Post Image" class="post-image">
+                            </a>
+                            <a href="/post/list/${post.id}" class="post-title">${post.title}</a>
+                        </div>`;
+                    popularPostsContainer.insertAdjacentHTML('beforeend', postElement);
+                });
+            })
+            .catch(error => console.error('Error fetching popular posts:', error));
+    }
+
+    // 페이지 로딩 시 API 호출
+    window.onload = function() {
+        fetchLatestPosts();
+        fetchPopularPosts();
+    };
+</script>
+</body>
 </html>
