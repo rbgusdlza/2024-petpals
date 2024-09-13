@@ -54,7 +54,7 @@ class PopularityServiceTest {
         assertThat(popularityId).isNotNull();
     }
 
-    @DisplayName("인기도를 업데이트한다.")
+    @DisplayName("인기도의 점수를 업데이트한다.")
     @Test
     void update() {
         //given
