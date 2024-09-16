@@ -107,13 +107,31 @@
 <script>
     function getPostIdFromUrl() {
         const pathParts = window.location.pathname.split('/');
-        return pathParts[pathParts.length - 1]; // URL의 마지막 부분이 postId라고 가정
+        const postId = pathParts[pathParts.length - 1]; // URL의 마지막 부분이 postId
+
+        if (isNaN(postId)) {
+            const pathWithoutQuery = window.location.pathname;
+            const pathParts = pathWithoutQuery.split('/');
+            return pathParts[pathParts.length - 2]; // URL의 마지막 두 번째 부분이 postId
+        }
+
+        return postId;
+    }
+
+    function getQueryStringParameter(name) {
+        const queryParams = new URLSearchParams(window.location.search);
+        return queryParams.get(name);
     }
 
     function handleLike() {
         const postId = getPostIdFromUrl(); // URL에서 postId 추출
+        const isPopular = getQueryStringParameter('isPopular') === 'true';
 
-        fetch(`/api/post/${postId}/like`, {
+        const url = isPopular
+            ? `/api/post/popular/${postId}/like`
+            : `/api/post/${postId}/like`;
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -132,8 +150,13 @@
 
     function updateLikeCount() {
         const postId = getPostIdFromUrl(); // URL에서 postId 추출
+        const isPopular = getQueryStringParameter('isPopular') === 'true';
 
-        fetch(`/api/post/${postId}/count-like`, {
+        const url = isPopular
+            ? `/api/post/popular/${postId}/count-like`
+            : `/api/post/${postId}/count-like`;
+
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
