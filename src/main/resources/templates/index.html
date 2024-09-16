@@ -138,7 +138,7 @@
 
     // 인기 글을 API로부터 가져와서 렌더링
     function fetchPopularPosts() {
-        fetch('/api/post/popular?limit=3')
+        fetch('/api/post/popular?limit=3&isPopular=true')
             .then(response => response.json())
             .then(data => {
                 const popularPostsContainer = document.getElementById('popular-posts');
@@ -147,10 +147,10 @@
                 posts.forEach(post => {
                     const postElement = `
                         <div class="post-item">
-                            <a href="/post/list/${post.id}">
+                            <a href="/post/list/${post.id}?isPopular=true">
                                 <img src="/images/${post.storeFileName}" alt="Post Image" class="post-image">
                             </a>
-                            <a href="/post/list/${post.id}" class="post-title">${post.title}</a>
+                            <a href="/post/list/${post.id}?isPopular=true" class="post-title">${post.title}</a>
                         </div>`;
                     popularPostsContainer.insertAdjacentHTML('beforeend', postElement);
                 });
