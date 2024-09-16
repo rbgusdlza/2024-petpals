@@ -2,6 +2,7 @@ package rbgusdlza.petpals.web.service.popularity;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.popularity.Popularity;
@@ -31,13 +32,13 @@ public class PopularityService {
         return popularity.getId();
     }
 
+    @RabbitListener(queues = "like.queue")
     @Transactional
-    public Long update(Long postId) {
+    public void update(Long postId) {
         Popularity popularity = popularityRepository.findByPostId(postId)
                 .orElseThrow(() -> new PetPalsException(POPULARITY_NOT_FOUND));
         long likeCount = likeService.countLike(postId, POST);
         popularity.updateScore(likeCount);
-        return popularity.getId();
     }
 
     public List<PopularityResponse> find(int limit) {
