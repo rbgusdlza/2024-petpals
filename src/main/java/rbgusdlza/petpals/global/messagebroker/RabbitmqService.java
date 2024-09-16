@@ -1,4 +1,4 @@
-package rbgusdlza.petpals.global.message;
+package rbgusdlza.petpals.global.messagebroker;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
