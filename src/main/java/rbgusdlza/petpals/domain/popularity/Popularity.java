@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(indexes = @Index(name = "idx_score", columnList = "score"))
 public class Popularity {
 
     private static final double LIKE_COUNT_WEIGHT = 0.1;
