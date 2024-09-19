@@ -1,5 +1,6 @@
 package rbgusdlza.petpals.global.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -14,6 +15,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class RabbitmqConfig {
 
@@ -45,6 +47,19 @@ public class RabbitmqConfig {
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter());
+        rabbitTemplate.setMandatory(true);
+        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+            if (!ack) {
+                // 메시지 전송 실패 시 로그에 기록
+                log.error("Message failed to send: {}, Correlation Data: {}", cause, correlationData);
+            }
+        });
+
+        rabbitTemplate.setReturnsCallback(returned ->
+                // 메시지가 라우팅되지 못한 경우 로그에 기록
+                log.warn("Message returned: {}, Exchange: {}, Routing Key: {}",
+                        returned.getMessage(), returned.getExchange(), returned.getRoutingKey())
+        );
         return rabbitTemplate;
     }
 
