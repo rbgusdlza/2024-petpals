@@ -34,7 +34,7 @@ public class PhotoService {
         return photoId;
     }
 
-    public PhotoWithDetails getPhotoWithDetails(Long postId) {
+    public PhotoWithDetails findPhotoWithDetailsBy(Long postId) {
         Photo photo = findPhotoBy(postId);
         PhotoDetails photoDetails = findPhotoDetailsBy(photo.getId());
         return PhotoWithDetails.of(photo, photoDetails);
