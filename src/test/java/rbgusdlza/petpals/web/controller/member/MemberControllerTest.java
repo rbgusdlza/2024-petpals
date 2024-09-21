@@ -18,7 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static rbgusdlza.petpals.web.error.ErrorCode.*;
+import static rbgusdlza.petpals.web.error.ErrorCode.MEMBER_LOGIN_ERROR;
 
 @WebMvcTest(controllers = MemberController.class)
 class MemberControllerTest {
@@ -29,11 +29,12 @@ class MemberControllerTest {
     @MockBean
     private MemberService memberService;
 
-    @DisplayName("사용자에게 회원 가입 페이지를 보여준다")
+    @DisplayName("사용자에게 회원 가입 페이지를 보여준다.")
     @Test
     void joinPage() throws Exception {
         mockMvc.perform(
-                        get("/member/join"))
+                        get("/member/join")
+                )
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/join"))
                 .andExpect(model().attributeExists("memberJoinRequest"));
@@ -50,7 +51,8 @@ class MemberControllerTest {
         //when //then
         mockMvc.perform(
                         post("/member/join")
-                                .flashAttr("memberJoinRequest", request))
+                                .flashAttr("memberJoinRequest", request)
+                )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }
@@ -65,8 +67,9 @@ class MemberControllerTest {
 
         //when //then
         mockMvc.perform(
-                    post("/member/join")
-                            .flashAttr("memberJoinRequest", request))
+                        post("/member/join")
+                                .flashAttr("memberJoinRequest", request)
+                )
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/join"))
                 .andExpect(model().attributeHasFieldErrors("memberJoinRequest", "loginId", "email"));
@@ -76,7 +79,8 @@ class MemberControllerTest {
     @Test
     void loginPage() throws Exception {
         mockMvc.perform(
-                    get("/member/login"))
+                        get("/member/login")
+                )
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/login"))
                 .andExpect(model().attributeExists("memberLoginRequest"));
@@ -93,13 +97,14 @@ class MemberControllerTest {
 
         //when //then
         mockMvc.perform(
-                    post("/member/login")
-                        .flashAttr("memberLoginRequest", request))
+                        post("/member/login")
+                                .flashAttr("memberLoginRequest", request)
+                )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }
 
-    @DisplayName("로그인 실패 시, 다시 로그인 페이지를 보여준다")
+    @DisplayName("로그인 실패 시, 다시 로그인 페이지를 보여준다.")
     @Test
     void loginWithFail() throws Exception {
         //given
@@ -110,9 +115,20 @@ class MemberControllerTest {
 
         //when //then
         mockMvc.perform(
-                    post("/member/login")
-                        .flashAttr("memberLoginRequest", request))
+                        post("/member/login")
+                                .flashAttr("memberLoginRequest", request)
+                )
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/login"));
+    }
+
+    @DisplayName("사용자를 로그아웃 처리한다.")
+    @Test
+    void logout() throws Exception {
+        mockMvc.perform(
+                        post("/member/logout")
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
     }
 }
