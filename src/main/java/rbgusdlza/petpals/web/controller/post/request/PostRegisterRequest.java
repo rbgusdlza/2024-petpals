@@ -28,6 +28,14 @@ public class PostRegisterRequest {
         this.imageFile = imageFile;
     }
 
+    public static PostRegisterRequest of(String title, String content, MultipartFile imageFile) {
+        return PostRegisterRequest.builder()
+                .title(title)
+                .content(content)
+                .imageFile(imageFile)
+                .build();
+    }
+
     public PostRegisterServiceRequest toServiceRequest(Long memberId) {
         return PostRegisterServiceRequest.of(memberId, title, content, imageFile);
     }

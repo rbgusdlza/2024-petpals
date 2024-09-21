@@ -46,7 +46,6 @@ public class PostController {
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "5") int limit,
                        Model model) {
-        
         List<PostResponse> posts = postService.findRecentPosts(limit);
         model.addAttribute("response", posts);
         return "post/list";
