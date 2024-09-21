@@ -12,11 +12,8 @@ import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static rbgusdlza.petpals.domain.EntityStatus.ACTIVE;
 import static rbgusdlza.petpals.domain.reaction.ReactionType.DISLIKE;
 import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 import static rbgusdlza.petpals.domain.reaction.TargetType.COMMENT;
