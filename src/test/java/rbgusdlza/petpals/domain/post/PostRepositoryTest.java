@@ -23,7 +23,7 @@ class PostRepositoryTest {
         postRepository.deleteAllInBatch();
     }
 
-    @DisplayName("Id 기준으로 내림차순된 게시물을 limit만큼 조회한다.")
+    @DisplayName("게시물 아이디 기준으로 내림차순된 게시물을 주어진 수만큼 조회한다.")
     @Test
     void findAllByOrderByIdDesc() {
         //given
@@ -46,7 +46,7 @@ class PostRepositoryTest {
                 );
     }
 
-    @DisplayName("주어진 Id보다 작은 Id 기준으로 내림차순된 게시물을 최대 limit만큼 조회한다.")
+    @DisplayName("주어진 아이디보다 작은 아이디 기준으로 내림차순된 게시물을 최대 주어진 수만큼 조회한다.")
     @Test
     void findByIdLessThanOrderByIdDesc() {
         //given
@@ -69,7 +69,7 @@ class PostRepositoryTest {
                 );
     }
 
-    @DisplayName("주어진 Id보다 작은 Id 기준으로 내림차순된 게시물을 limit만큼 조회할 때, 해당하는 게시물이 없으면 빈 리스트를 반환한다.")
+    @DisplayName("주어진 아이디보다 작은 아아디 기준으로 내림차순된 게시물을 주어진 수만큼 조회할 때, 해당하는 게시물이 없으면 빈 리스트를 반환한다.")
     @Test
     void findByIdLessThanOrderByIdDesc2() {
         //given
