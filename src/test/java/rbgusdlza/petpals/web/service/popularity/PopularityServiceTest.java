@@ -1,6 +1,5 @@
 package rbgusdlza.petpals.web.service.popularity;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +21,6 @@ import static rbgusdlza.petpals.domain.reaction.TargetType.*;
 @ActiveProfiles("test")
 @SpringBootTest
 class PopularityServiceTest {
-
-    @Autowired
-    private EntityManager entityManager;
 
     @Autowired
     private PopularityService popularityService;
@@ -76,7 +72,7 @@ class PopularityServiceTest {
                 .isEqualTo(0.1);
     }
 
-    @DisplayName("점수가 높은 순서대로 limit만큼 인기도를 조회한다.")
+    @DisplayName("점수가 높은 순서대로 주어진 수만큼 인기도를 조회한다.")
     @Test
     void find() {
         //given
