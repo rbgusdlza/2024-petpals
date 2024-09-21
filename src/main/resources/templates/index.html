@@ -19,7 +19,7 @@
         }
 
         .section-title {
-            font-size: 2em; /* 줄여진 부분 */
+            font-size: 2em;
             margin-bottom: 20px;
             font-weight: bold;
             display: flex;
@@ -58,7 +58,7 @@
         }
 
         .view-all-link {
-            font-size: 0.8em; /* 줄여진 부분 */
+            font-size: 0.8em;
             color: #007bff;
             text-decoration: none;
         }
@@ -76,16 +76,36 @@
         .navbar {
             margin-bottom: 20px;
         }
+
+        .register-btn {
+            position: absolute;
+            top: 80px; /* navbar 아래에 위치 */
+            right: 20px; /* 오른쪽에 붙이기 */
+        }
     </style>
 </head>
 
 <body>
+
 <!-- Navbar -->
 <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+        <div>
+            <!-- 로그인 상태이면 로그아웃 버튼 표시 -->
+            <form th:if="${session.id != null}" action="/member/logout" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-primary">로그아웃</button>
+            </form>
+            <!-- 로그아웃 상태이면 로그인 버튼 표시 -->
+            <a href="/member/login" class="btn btn-primary" th:unless="${session.id != null}">로그인</a>
+        </div>
+    </div>
 </nav>
 
+<a href="/post/register" class="btn btn-primary register-btn">게시물 등록</a>
+
 <div class="container">
+
     <!-- 최신 글 섹션 -->
     <section>
         <div class="section-title">
