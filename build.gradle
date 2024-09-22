@@ -49,6 +49,9 @@ dependencies {
 	//rabbitmq
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
+	//aws
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.2.0'
+
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
