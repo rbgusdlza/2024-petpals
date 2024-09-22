@@ -2,9 +2,7 @@ package rbgusdlza.petpals.web.service.post;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.photo.Photo;
 import rbgusdlza.petpals.domain.photo.PhotoDetails;
 import rbgusdlza.petpals.domain.photo.PhotoDetailsRepository;
@@ -15,6 +13,7 @@ import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.popularity.PopularityService;
 import rbgusdlza.petpals.web.service.post.request.PostCursorServiceRequest;
@@ -30,9 +29,7 @@ import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 import static rbgusdlza.petpals.web.error.ErrorCode.*;
 
 
-@ActiveProfiles("test")
-@SpringBootTest
-class PostServiceTest {
+class PostServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private PostService postService;

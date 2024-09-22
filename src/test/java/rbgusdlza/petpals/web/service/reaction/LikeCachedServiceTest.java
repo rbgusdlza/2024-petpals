@@ -5,13 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
+import rbgusdlza.petpals.IntegrationTestSupport;
 
 import java.util.List;
 
@@ -21,18 +18,13 @@ import static org.mockito.Mockito.when;
 import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class LikeCachedServiceTest {
+class LikeCachedServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private ReactionRepository reactionRepository;
 
     @Autowired
     private LikeCachedService likeCachedService;
-
-    @MockBean
-    private CacheManager cacheManager;
 
     @Mock
     private Cache cache;

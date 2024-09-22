@@ -4,20 +4,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.photo.*;
 import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
+import rbgusdlza.petpals.IntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class PhotoServiceTest {
+class PhotoServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private PhotoService photoService;
@@ -30,9 +26,6 @@ class PhotoServiceTest {
 
     @Autowired
     private PostRepository postRepository;
-
-    @MockBean
-    private PhotoHandler photoHandler;
 
     @AfterEach
     void tearDown() {

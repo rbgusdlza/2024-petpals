@@ -4,10 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.domain.member.MemberRepository;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.web.service.member.request.LoginIdServiceForm;
 import rbgusdlza.petpals.web.service.member.request.MemberJoinServiceRequest;
 import rbgusdlza.petpals.web.service.member.request.MemberLoginServiceRequest;
@@ -16,9 +15,7 @@ import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class MemberServiceTest {
+class MemberServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberRepository memberRepository;

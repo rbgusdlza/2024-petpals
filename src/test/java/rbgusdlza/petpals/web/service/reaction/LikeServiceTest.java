@@ -4,10 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
+import rbgusdlza.petpals.IntegrationTestSupport;
 
 import java.util.List;
 
@@ -15,9 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 import static rbgusdlza.petpals.domain.reaction.ReactionType.*;
 import static rbgusdlza.petpals.domain.reaction.TargetType.*;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class LikeServiceTest {
+class LikeServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private LikeService likeService;
