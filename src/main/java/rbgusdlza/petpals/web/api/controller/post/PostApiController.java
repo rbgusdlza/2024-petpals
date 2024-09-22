@@ -1,5 +1,6 @@
 package rbgusdlza.petpals.web.api.controller.post;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,21 @@ public class PostApiController {
     public ApiResponse<SliceResult> list(@RequestBody PostCursorRequest request) {
         List<PostResponse> posts = postService.findAfter(request.toServiceRequest());
         return ApiResponse.ok(SliceResult.of(posts, request.getLimit()));
+    }
+
+    @GetMapping("/{postId}/auth-check")
+    public ApiResponse<Boolean> checkAuth(@PathVariable Long postId,
+                                   HttpSession session) {
+        Long memberId = getMemberIdFrom(session);
+        return ApiResponse.ok(postService.isPostCreatedByMember(postId, memberId));
+    }
+
+    @DeleteMapping("/{postId}")
+    public ApiResponse<Long> remove(@PathVariable Long postId) {
+        return ApiResponse.ok(postService.remove(postId));
+    }
+
+    private Long getMemberIdFrom(HttpSession session) {
+        return (Long) session.getAttribute("id");
     }
 }
