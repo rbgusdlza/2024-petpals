@@ -34,6 +34,15 @@ public class PhotoService {
         return photoId;
     }
 
+    @Transactional
+    public Long remove(Long postId) {
+        Photo photo = findPhotoBy(postId);
+        photo.delete();
+        PhotoDetails photoDetails = findPhotoDetailsBy(postId);
+        photoDetails.delete();
+        return photo.getId();
+    }
+
     public PhotoWithDetails findPhotoWithDetailsBy(Long postId) {
         Photo photo = findPhotoBy(postId);
         PhotoDetails photoDetails = findPhotoDetailsBy(photo.getId());
@@ -47,6 +56,6 @@ public class PhotoService {
 
     private PhotoDetails findPhotoDetailsBy(Long photoId) {
         return photoDetailsRepository.findByPhotoId(photoId)
-                .orElseThrow(() -> new PetPalsException(PHOTO_NOT_FOUND));
+                .orElseThrow(() -> new PetPalsException(PHOTO_DETAILS_NOT_FOUND));
     }
 }
