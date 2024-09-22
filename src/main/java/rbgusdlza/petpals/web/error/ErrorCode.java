@@ -16,6 +16,7 @@ public enum ErrorCode {
     POST_NOT_FOUND("매칭되는 게시물 없음"),
     PHOTO_NOT_FOUND("매칭되는 사진 없음"),
     PHOTO_DETAILS_NOT_FOUND("매칭되는 사진 정보 없음"),
+    LIKE_NOT_FOUND("매칭되는 좋아요 없음"),
     POPULARITY_NOT_FOUND("매칭되는 인기도 없음"),
     ;
 
