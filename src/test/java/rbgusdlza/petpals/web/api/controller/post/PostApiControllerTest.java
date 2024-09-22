@@ -11,8 +11,7 @@ import rbgusdlza.petpals.web.api.controller.post.request.PostCursorRequest;
 import rbgusdlza.petpals.web.service.post.PostService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,6 +65,32 @@ class PostApiControllerTest {
                         post("/api/post/list")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
+
+    @DisplayName("현재 사용자가 게시물 삭제 권한이 있는지 확인한다.")
+    @Test
+    void checkAuth() throws Exception {
+        mockMvc.perform(
+                        get("/api/post/{postId}/auth-check", 1L)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
+
+    @DisplayName("게시물을 삭제한다.")
+    @Test
+    void remove() throws Exception {
+        mockMvc.perform(
+                        delete("/api/post/{postId}", 1L)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())

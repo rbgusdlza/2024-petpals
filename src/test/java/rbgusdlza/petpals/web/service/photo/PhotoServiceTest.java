@@ -9,6 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.photo.*;
+import rbgusdlza.petpals.domain.post.Post;
+import rbgusdlza.petpals.domain.post.PostRepository;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
@@ -26,6 +28,9 @@ class PhotoServiceTest {
     @Autowired
     private PhotoDetailsRepository photoDetailsRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     @MockBean
     private PhotoHandler photoHandler;
 
@@ -33,6 +38,7 @@ class PhotoServiceTest {
     void tearDown() {
         photoRepository.deleteAllInBatch();
         photoDetailsRepository.deleteAllInBatch();
+        postRepository.deleteAllInBatch();
     }
 
     @DisplayName("사진을 등록한다.")
@@ -74,6 +80,28 @@ class PhotoServiceTest {
         assertThat(findPhotoDetails).isNotNull()
                 .extracting("photoId", "storeFileName")
                 .containsExactly(photoId, "photo.png");
+    }
+
+    @DisplayName("게시물 아이디로 사진을 삭제한다.")
+    @Test
+    void remove() {
+        //given
+        Post post = Post.of(1L, "title", "content");
+        postRepository.save(post);
+        Long postId = post.getId();
+
+        Photo photo = Photo.of(postId, "photo");
+        photoRepository.save(photo);
+        Long photoId = photo.getId();
+
+        PhotoDetails photoDetails = PhotoDetails.of(photoId, "photo.png");
+        photoDetailsRepository.save(photoDetails);
+
+        //when
+        Long removedPhotoId = photoService.remove(postId);
+
+        //then
+        assertThat(photoRepository.findByPostId(removedPhotoId)).isEmpty();
     }
 
     private MockMultipartFile getFile(String originalFileName) {

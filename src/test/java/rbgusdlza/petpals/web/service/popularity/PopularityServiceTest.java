@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import rbgusdlza.petpals.domain.popularity.Popularity;
 import rbgusdlza.petpals.domain.popularity.PopularityRepository;
+import rbgusdlza.petpals.domain.post.Post;
+import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
 import rbgusdlza.petpals.web.service.popularity.response.PopularityResponse;
@@ -31,10 +33,14 @@ class PopularityServiceTest {
     @Autowired
     private ReactionRepository reactionRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     @AfterEach
     void tearDown() {
         popularityRepository.deleteAllInBatch();
         reactionRepository.deleteAllInBatch();
+        popularityRepository.deleteAllInBatch();
     }
 
     @DisplayName("인기도를 생성한다.")
@@ -91,5 +97,23 @@ class PopularityServiceTest {
                         tuple(3L, 5.0),
                         tuple(2L, 2.0)
                 );
+    }
+
+    @DisplayName("게시물 아이디로 인기도를 삭제한다.")
+    @Test
+    void remove() {
+        //given
+        Post post = Post.of(1L, "title", "content");
+        postRepository.save(post);
+        Long postId = post.getId();
+
+        Popularity popularity = Popularity.of(postId, 0.5);
+        popularityRepository.save(popularity);
+
+        //when
+        Long removedPopularityId = popularityService.remove(postId);
+
+        //then
+        assertThat(popularityRepository.findByPostId(removedPopularityId)).isEmpty();
     }
 }
