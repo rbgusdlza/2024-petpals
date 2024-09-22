@@ -59,7 +59,7 @@
             font-size: 1em;
         }
 
-        .like-button {
+        .like-button, .delete-button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -97,6 +97,7 @@
             <span class="like-count">좋아요: <span id="like-count" th:text="${response.likeCount}">0</span></span>
             <button class="like-button" onclick="handleLike()">좋아요</button>
             <a class="back-link" href="#" th:href="@{/post/list}">목록으로 돌아가기</a>
+            <button id="delete-button" class="delete-button" style="display: none;" onclick="handleDelete()">삭제</button>
         </div>
     </div>
     <footer class="my-3 text-center text-small">
@@ -107,15 +108,7 @@
 <script>
     function getPostIdFromUrl() {
         const pathParts = window.location.pathname.split('/');
-        const postId = pathParts[pathParts.length - 1]; // URL의 마지막 부분이 postId
-
-        if (isNaN(postId)) {
-            const pathWithoutQuery = window.location.pathname;
-            const pathParts = pathWithoutQuery.split('/');
-            return pathParts[pathParts.length - 2]; // URL의 마지막 두 번째 부분이 postId
-        }
-
-        return postId;
+        return pathParts[pathParts.length - 1]; // URL의 마지막 부분이 postId
     }
 
     function getQueryStringParameter(name) {
@@ -124,12 +117,9 @@
     }
 
     function handleLike() {
-        const postId = getPostIdFromUrl(); // URL에서 postId 추출
+        const postId = getPostIdFromUrl();
         const isPopular = getQueryStringParameter('isPopular') === 'true';
-
-        const url = isPopular
-            ? `/api/post/popular/${postId}/like`
-            : `/api/post/${postId}/like`;
+        const url = isPopular ? `/api/post/popular/${postId}/like` : `/api/post/${postId}/like`;
 
         fetch(url, {
             method: 'POST',
@@ -140,7 +130,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.code === 200) {
-                updateLikeCount(); // 성공적으로 좋아요가 추가되면 좋아요 개수를 업데이트
+                updateLikeCount();
             } else {
                 console.error('Error liking the post:', data.message);
             }
@@ -149,28 +139,53 @@
     }
 
     function updateLikeCount() {
-        const postId = getPostIdFromUrl(); // URL에서 postId 추출
+        const postId = getPostIdFromUrl();
         const isPopular = getQueryStringParameter('isPopular') === 'true';
+        const url = isPopular ? `/api/post/popular/${postId}/count-like` : `/api/post/${postId}/count-like`;
 
-        const url = isPopular
-            ? `/api/post/popular/${postId}/count-like`
-            : `/api/post/${postId}/count-like`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        fetch(url)
         .then(response => response.json())
         .then(data => {
             if (data.code === 200) {
-                document.getElementById('like-count').textContent = data.data; // 좋아요 개수를 화면에 업데이트
+                document.getElementById('like-count').textContent = data.data;
             } else {
                 console.error('Error fetching like count:', data.message);
             }
         })
         .catch(error => console.error('Error fetching like count:', error));
+    }
+
+    // 페이지 로드 시 인증 체크 API 요청
+    document.addEventListener('DOMContentLoaded', () => {
+        const postId = getPostIdFromUrl();
+        fetch(`/api/post/${postId}/auth-check`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 200 && data.data) {
+                document.getElementById('delete-button').style.display = 'inline-block';
+            }
+        })
+        .catch(error => console.error('Error checking auth:', error));
+    });
+
+    // 삭제 요청 핸들러
+    function handleDelete() {
+        const postId = getPostIdFromUrl();
+        fetch(`/api/post/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('게시물이 삭제되었습니다.');
+                window.location.href = '/post/list';
+            } else {
+                console.error('Error deleting post:', response.statusText);
+            }
+        })
+        .catch(error => console.error('Error deleting post:', error));
     }
 </script>
 </body>
