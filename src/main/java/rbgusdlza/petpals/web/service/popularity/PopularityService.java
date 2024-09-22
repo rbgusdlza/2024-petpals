@@ -46,4 +46,12 @@ public class PopularityService {
                 .map(PopularityResponse::of)
                 .toList();
     }
+
+    @Transactional
+    public Long remove(Long postId) {
+        Popularity popularity = popularityRepository.findByPostId(postId)
+                .orElseThrow(() -> new PetPalsException(POPULARITY_NOT_FOUND));
+        popularity.delete();
+        return popularity.getId();
+    }
 }
