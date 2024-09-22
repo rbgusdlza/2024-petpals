@@ -4,8 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.domain.member.MemberRepository;
 import rbgusdlza.petpals.domain.post.Post;
@@ -19,9 +18,7 @@ import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 import static rbgusdlza.petpals.domain.reaction.TargetType.COMMENT;
 import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class ReactionRepositoryTest {
+class ReactionRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private ReactionRepository reactionRepository;
