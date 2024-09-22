@@ -1,14 +1,9 @@
 package rbgusdlza.petpals.web.api.controller.post;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import rbgusdlza.petpals.ControllerTestSupport;
 import rbgusdlza.petpals.web.api.controller.post.request.PostCursorRequest;
-import rbgusdlza.petpals.web.service.post.PostService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -16,17 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = PostApiController.class)
-class PostApiControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private PostService postService;
+class PostApiControllerTest extends ControllerTestSupport {
 
     @DisplayName("최근 게시물을 주어진 수만큼 조회한다.")
     @Test

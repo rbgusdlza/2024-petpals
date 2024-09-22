@@ -2,18 +2,13 @@ package rbgusdlza.petpals.web.controller.post;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
+import rbgusdlza.petpals.ControllerTestSupport;
 import rbgusdlza.petpals.domain.photo.Photo;
 import rbgusdlza.petpals.domain.photo.PhotoDetails;
 import rbgusdlza.petpals.domain.photo.PhotoWithDetails;
 import rbgusdlza.petpals.domain.post.Post;
-import rbgusdlza.petpals.global.config.WebConfig;
 import rbgusdlza.petpals.web.controller.post.request.PostRegisterRequest;
-import rbgusdlza.petpals.web.service.post.PostService;
 import rbgusdlza.petpals.web.service.post.response.PostResponse;
 
 import static org.mockito.BDDMockito.given;
@@ -21,17 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = PostController.class)
-class PostControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private PostService postService;
-
-    @MockBean
-    private WebConfig webConfig;
+class PostControllerTest extends ControllerTestSupport {
 
     @DisplayName("게시물을 등록하는 페이지를 보여준다.")
     @Test

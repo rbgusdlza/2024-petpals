@@ -1,18 +1,12 @@
 package rbgusdlza.petpals.web.api.controller.member;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import rbgusdlza.petpals.global.event.EmailSender;
+import rbgusdlza.petpals.ControllerTestSupport;
 import rbgusdlza.petpals.web.api.controller.member.request.EmailAuthCodeForm;
 import rbgusdlza.petpals.web.api.controller.member.request.EmailForm;
 import rbgusdlza.petpals.web.api.controller.member.request.LoginIdForm;
 import rbgusdlza.petpals.web.api.controller.member.request.NicknameForm;
-import rbgusdlza.petpals.web.service.member.MemberService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,20 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = MemberApiController.class)
-class MemberApiControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private MemberService memberService;
-
-    @MockBean
-    private EmailSender emailSender;
+class MemberApiControllerTest extends ControllerTestSupport {
 
     @DisplayName("로그인 아이디가 중복되었는지 확인한다.")
     @Test

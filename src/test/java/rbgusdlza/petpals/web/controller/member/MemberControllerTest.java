@@ -2,15 +2,11 @@ package rbgusdlza.petpals.web.controller.member;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import rbgusdlza.petpals.ControllerTestSupport;
 import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.web.controller.member.request.MemberJoinRequest;
 import rbgusdlza.petpals.web.controller.member.request.MemberLoginRequest;
 import rbgusdlza.petpals.web.error.PetPalsException;
-import rbgusdlza.petpals.web.service.member.MemberService;
 import rbgusdlza.petpals.web.service.member.response.MemberResponse;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -20,14 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static rbgusdlza.petpals.web.error.ErrorCode.MEMBER_LOGIN_ERROR;
 
-@WebMvcTest(controllers = MemberController.class)
-class MemberControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private MemberService memberService;
+class MemberControllerTest extends ControllerTestSupport {
 
     @DisplayName("사용자에게 회원 가입 페이지를 보여준다.")
     @Test
