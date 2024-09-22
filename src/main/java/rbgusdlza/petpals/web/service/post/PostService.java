@@ -16,6 +16,7 @@ import rbgusdlza.petpals.web.service.post.response.PostResponse;
 import rbgusdlza.petpals.web.service.reaction.LikeService;
 
 import java.util.List;
+import java.util.Objects;
 
 import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 import static rbgusdlza.petpals.web.error.ErrorCode.POST_NOT_FOUND;
@@ -43,8 +44,7 @@ public class PostService {
     }
 
     public PostResponse findBy(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PetPalsException(POST_NOT_FOUND));
+        Post post = getPost(postId);
         PhotoWithDetails photoWithDetails = photoService.findPhotoWithDetailsBy(postId);
         long likeCount = likeService.countLike(postId, POST);
         return PostResponse.of(post, photoWithDetails, likeCount);
@@ -66,5 +66,24 @@ public class PostService {
         return popularityService.find(limit).stream()
                 .map(popularityResponse -> findBy(popularityResponse.getPostId()))
                 .toList();
+    }
+
+    public boolean isPostCreatedByMember(Long postId, Long memberId) {
+        Post post = getPost(postId);
+        return Objects.equals(post.getMemberId(), memberId);
+    }
+
+    @Transactional
+    public Long remove(Long postId) {
+        popularityService.remove(postId);
+        photoService.remove(postId);
+        Post post = getPost(postId);
+        post.delete();
+        return post.getId();
+    }
+
+    private Post getPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PetPalsException(POST_NOT_FOUND));
     }
 }
