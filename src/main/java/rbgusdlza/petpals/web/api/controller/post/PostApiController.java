@@ -38,7 +38,7 @@ public class PostApiController {
 
     @GetMapping("/{postId}/auth-check")
     public ApiResponse<Boolean> checkAuth(@PathVariable Long postId,
-                                   HttpSession session) {
+                                          HttpSession session) {
         Long memberId = getMemberIdFrom(session);
         return ApiResponse.ok(postService.isPostCreatedByMember(postId, memberId));
     }

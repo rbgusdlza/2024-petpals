@@ -38,7 +38,7 @@ public class PhotoService {
     public Long remove(Long postId) {
         Photo photo = findPhotoBy(postId);
         photo.delete();
-        PhotoDetails photoDetails = findPhotoDetailsBy(postId);
+        PhotoDetails photoDetails = findPhotoDetailsBy(photo.getId());
         photoDetails.delete();
         return photo.getId();
     }
