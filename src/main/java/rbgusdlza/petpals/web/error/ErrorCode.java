@@ -18,6 +18,7 @@ public enum ErrorCode {
     PHOTO_DETAILS_NOT_FOUND("매칭되는 사진 정보 없음"),
     LIKE_NOT_FOUND("매칭되는 좋아요 없음"),
     POPULARITY_NOT_FOUND("매칭되는 인기도 없음"),
+    IMAGE_IS_EMPTY("업로드된 이미지 파일 없음")
     ;
 
     private final String description;
