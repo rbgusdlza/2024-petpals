@@ -21,17 +21,14 @@ public class PhotoService {
 
     @Transactional
     public Long register(Long postId, MultipartFile imageFile) {
-        String originalFileName = imageFile.getOriginalFilename();
-        String storeFileName = FileNameGenerator.generateStoreFileNameFrom(originalFileName);
-        photoHandler.saveImageFile(imageFile, storeFileName);
-
-        Photo photo = Photo.of(postId, originalFileName);
-        photoRepository.save(photo);
-
-        Long photoId = photo.getId();
-        PhotoDetails photoDetails = PhotoDetails.of(photoId, storeFileName);
-        photoDetailsRepository.save(photoDetails);
-        return photoId;
+        try {
+            String originalFileName = imageFile.getOriginalFilename();
+            String storeFileName = FileNameGenerator.generateStoreFileNameFrom(originalFileName);
+            photoHandler.saveImageFile(imageFile, storeFileName);
+            return createPhotoFrom(postId, originalFileName, storeFileName);
+        } catch (IllegalArgumentException e) {
+            throw new PetPalsException(IMAGE_IS_EMPTY);
+        }
     }
 
     @Transactional
@@ -47,6 +44,16 @@ public class PhotoService {
         Photo photo = findPhotoBy(postId);
         PhotoDetails photoDetails = findPhotoDetailsBy(photo.getId());
         return PhotoWithDetails.of(photo, photoDetails);
+    }
+
+    private Long createPhotoFrom(Long postId, String originalFileName, String storeFileName) {
+        Photo photo = Photo.of(postId, originalFileName);
+        photoRepository.save(photo);
+
+        Long photoId = photo.getId();
+        PhotoDetails photoDetails = PhotoDetails.of(photoId, storeFileName);
+        photoDetailsRepository.save(photoDetails);
+        return photoId;
     }
 
     private Photo findPhotoBy(Long postId) {
