@@ -146,7 +146,7 @@
                     const postElement = `
                         <div class="post-item">
                             <a href="/post/list/${post.id}">
-                                <img src="/images/${post.storeFileName}" alt="Post Image" class="post-image">
+                                <img src="https://petpals-bucket.s3.ap-northeast-2.amazonaws.com/${post.storeFileName}" alt="Post Image" class="post-image">
                             </a>
                             <a href="/post/list/${post.id}" class="post-title">${post.title}</a>
                         </div>`;
@@ -168,7 +168,7 @@
                     const postElement = `
                         <div class="post-item">
                             <a href="/post/list/${post.id}?isPopular=true">
-                                <img src="/images/${post.storeFileName}" alt="Post Image" class="post-image">
+                                <img src="https://petpals-bucket.s3.ap-northeast-2.amazonaws.com/${post.storeFileName}" alt="Post Image" class="post-image">
                             </a>
                             <a href="/post/list/${post.id}?isPopular=true" class="post-title">${post.title}</a>
                         </div>`;

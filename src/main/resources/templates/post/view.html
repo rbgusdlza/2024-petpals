@@ -91,7 +91,7 @@
     <div class="post-container">
         <h2 class="post-title" th:text="${response.title}">게시물 제목</h2>
         <div class="post-content" th:text="${response.content}">게시물 내용</div>
-        <img class="post-image" th:src="|/images/${response.storeFileName}|" alt="게시물 이미지">
+        <img class="post-image" th:src="'https://petpals-bucket.s3.ap-northeast-2.amazonaws.com/' + ${response.storeFileName}" alt="게시물 이미지">
 
         <div class="post-footer">
             <span class="like-count">좋아요: <span id="like-count" th:text="${response.likeCount}">0</span></span>
