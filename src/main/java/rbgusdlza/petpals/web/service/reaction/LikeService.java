@@ -8,7 +8,7 @@ import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
 import rbgusdlza.petpals.domain.reaction.TargetType;
 
-import static rbgusdlza.petpals.domain.reaction.ReactionType.*;
+import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 
 @Slf4j
 @Transactional(readOnly = true)
