@@ -5,12 +5,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
+import rbgusdlza.petpals.domain.BaseEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@SQLRestriction("entity_status = 'ACTIVE'")
 @Table(indexes = @Index(name = "idx_score", columnList = "score"))
-public class Popularity {
+public class Popularity extends BaseEntity {
 
     private static final double LIKE_COUNT_WEIGHT = 0.1;
 
