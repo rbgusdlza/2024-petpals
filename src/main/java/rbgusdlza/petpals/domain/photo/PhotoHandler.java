@@ -26,7 +26,7 @@ public class PhotoHandler {
             checkIfImageFileIsEmpty(imageFile);
             uploadFileTo(imageFile, storeFileName);
         } catch (IOException e) {
-            log.error("파일 입출력 오류 발생", e);
+            log.error("파일 입출력 오류 발생");
         }
     }
 
