@@ -111,7 +111,17 @@
 <body>
 <!-- Navbar -->
 <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
+        <div>
+            <!-- 로그인 상태이면 로그아웃 버튼 표시 -->
+            <form th:if="${session.id != null}" action="/member/logout" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-primary">로그아웃</button>
+            </form>
+            <!-- 로그아웃 상태이면 로그인 버튼 표시 -->
+            <a href="/member/login" class="btn btn-primary" th:unless="${session.id != null}">로그인</a>
+        </div>
+    </div>
 </nav>
 
 <div class="container">
