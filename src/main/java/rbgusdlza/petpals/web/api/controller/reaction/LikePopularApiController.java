@@ -26,6 +26,9 @@ public class LikePopularApiController {
     public ApiResponse<Long> like(@PathVariable Long postId,
                                   HttpSession session) {
         messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
+        if (doesUserLogin(session)) {
+            return ApiResponse.fail("로그인 상태에서만 좋아요가 가능합니다.");
+        }
         Long memberId = getMemberIdFrom(session);
         return ApiResponse.ok(likeCachedService.like(memberId, postId, POST));
     }
@@ -37,5 +40,9 @@ public class LikePopularApiController {
 
     private Long getMemberIdFrom(HttpSession session) {
         return (Long) session.getAttribute("id");
+    }
+
+    private boolean doesUserLogin(HttpSession session) {
+        return session == null || session.getAttribute("id") == null;
     }
 }
