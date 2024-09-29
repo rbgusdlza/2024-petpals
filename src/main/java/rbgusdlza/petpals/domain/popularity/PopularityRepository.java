@@ -11,7 +11,7 @@ public interface PopularityRepository extends JpaRepository<Popularity, Long> {
 
     Optional<Popularity> findByPostId(Long postId);
 
-    @Query(value = "SELECT * FROM Popularity p WHERE p.entity_status = 'ACTIVE' ORDER BY p.score DESC LIMIT :limit", nativeQuery = true)
+    @Query(value = "SELECT * FROM popularity p WHERE p.entity_status = 'ACTIVE' ORDER BY p.score DESC LIMIT :limit", nativeQuery = true)
     List<Popularity> findAllByOrderByScoreDesc(@Param("limit") int limit);
 
 }
