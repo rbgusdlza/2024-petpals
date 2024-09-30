@@ -25,10 +25,10 @@ public class LikePopularApiController {
     @PostMapping("/{postId}/like")
     public ApiResponse<Long> like(@PathVariable Long postId,
                                   HttpSession session) {
-        messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
         if (doesUserLogin(session)) {
             return ApiResponse.fail("로그인 상태에서만 좋아요가 가능합니다.");
         }
+        messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
         Long memberId = getMemberIdFrom(session);
         return ApiResponse.ok(likeCachedService.like(memberId, postId, POST));
     }
