@@ -28,9 +28,10 @@ public class LikeApiController {
         if (doesUserLogin(session)) {
             return ApiResponse.fail("로그인 상태에서만 좋아요가 가능합니다.");
         }
-        messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
         Long memberId = getMemberIdFrom(session);
-        return ApiResponse.ok(likeService.like(memberId, postId, POST));
+        Long likeId = likeService.like(memberId, postId, POST);
+        messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
+        return ApiResponse.ok(likeId);
     }
 
     @GetMapping("/{postId}/count-like")
