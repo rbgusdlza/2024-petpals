@@ -27,9 +27,6 @@ public class Reaction extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReactionType type;
 
-    @Version
-    private Long version;
-
     @Builder
     private Reaction(Long memberId, Long targetId, TargetType targetType, ReactionType type) {
         this.memberId = memberId;

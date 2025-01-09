@@ -22,11 +22,6 @@ public class LikeService {
     private final ReactionRepository reactionRepository;
 
     @Transactional
-    @Retryable(
-            retryFor = {ObjectOptimisticLockingFailureException.class},
-            maxAttempts = 100,
-            backoff = @Backoff(100)
-    )
     public Long like(Long memberId, Long targetId, TargetType targetType) {
         Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
                 memberId,
