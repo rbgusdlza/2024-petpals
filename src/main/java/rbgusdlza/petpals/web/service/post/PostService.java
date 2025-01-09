@@ -38,8 +38,8 @@ public class PostService {
         postRepository.save(post);
 
         Long postId = post.getId();
-        photoService.register(postId, request.getImageFile());
         popularityService.create(postId);
+        photoService.register(postId, request.getImageFile());
         return postId;
     }
 

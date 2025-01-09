@@ -2,6 +2,9 @@ package rbgusdlza.petpals.web.service.reaction;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.reaction.Reaction;
@@ -19,6 +22,11 @@ public class LikeService {
     private final ReactionRepository reactionRepository;
 
     @Transactional
+    @Retryable(
+            retryFor = {ObjectOptimisticLockingFailureException.class},
+            maxAttempts = 100,
+            backoff = @Backoff(100)
+    )
     public Long like(Long memberId, Long targetId, TargetType targetType) {
         Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
                 memberId,
