@@ -27,7 +27,7 @@ public class LikeCachedService {
 
     @Transactional
     public Long like(Long memberId, Long targetId, TargetType targetType) {
-        Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
+        Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndTypeWithLock(
                 memberId,
                 targetId,
                 targetType,
