@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import rbgusdlza.petpals.IntegrationTestSupport;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PhotoDetailsRepositoryTest extends IntegrationTestSupport {
 

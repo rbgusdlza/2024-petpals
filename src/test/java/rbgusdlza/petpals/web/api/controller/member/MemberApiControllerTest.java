@@ -24,9 +24,9 @@ class MemberApiControllerTest extends ControllerTestSupport {
 
         //when //then
         mockMvc.perform(
-                    post("/api/member/login-id/check")
-                            .content(objectMapper.writeValueAsString(form))
-                            .contentType(APPLICATION_JSON)
+                        post("/api/member/login-id/check")
+                                .content(objectMapper.writeValueAsString(form))
+                                .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())

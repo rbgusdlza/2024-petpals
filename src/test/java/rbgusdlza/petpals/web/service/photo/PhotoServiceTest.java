@@ -5,12 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.domain.photo.*;
 import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
-import rbgusdlza.petpals.IntegrationTestSupport;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 
 class PhotoServiceTest extends IntegrationTestSupport {

@@ -2,7 +2,6 @@ package rbgusdlza.petpals.web.api.controller.reaction;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpSession;
 import rbgusdlza.petpals.ControllerTestSupport;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
