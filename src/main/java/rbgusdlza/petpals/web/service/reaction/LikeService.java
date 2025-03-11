@@ -2,14 +2,13 @@ package rbgusdlza.petpals.web.service.reaction;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
 import rbgusdlza.petpals.domain.reaction.TargetType;
+
+import java.util.List;
 
 import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 
@@ -22,7 +21,7 @@ public class LikeService {
     private final ReactionRepository reactionRepository;
 
     @Transactional
-    public Long like(Long memberId, Long targetId, TargetType targetType) {
+    public Boolean like(Long memberId, Long targetId, TargetType targetType) {
         Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndTypeWithLock(
                 memberId,
                 targetId,
@@ -38,10 +37,14 @@ public class LikeService {
                         )
                 )
         );
-        return reaction.getId();
+        return reaction.getId() != null;
     }
 
     public long countLike(Long targetId, TargetType targetType) {
         return reactionRepository.countByTargetIdAndTargetTypeAndType(targetId, targetType, LIKE);
+    }
+
+    public List<Long> findLikedMemberIds(Long targetId, TargetType targetType) {
+        return reactionRepository.findMemberIdsByTargetIdAndTargetTypeAndType(targetId, targetType, LIKE);
     }
 }
