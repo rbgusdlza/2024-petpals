@@ -115,11 +115,11 @@
         <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
         <div>
             <!-- 로그인 상태이면 로그아웃 버튼 표시 -->
-            <form th:if="${session.id != null}" action="/member/logout" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-primary">로그아웃</button>
+            <form action="/member/logout" method="post" style="display:inline;" th:if="${session.id != null}">
+                <button class="btn btn-primary" type="submit">로그아웃</button>
             </form>
             <!-- 로그아웃 상태이면 로그인 버튼 표시 -->
-            <a href="/member/login" class="btn btn-primary" th:unless="${session.id != null}">로그인</a>
+            <a class="btn btn-primary" href="/member/login" th:unless="${session.id != null}">로그인</a>
         </div>
     </div>
 </nav>
@@ -147,7 +147,8 @@
                 <div class="form-group mb-3">
                     <label for="imageFile">이미지 첨부</label>
                     <div class="image-upload-container">
-                        <input accept=".png, .jpg, .jpeg" class="form-control" id="imageFile" name="imageFile" th:field="*{imageFile}"
+                        <input accept=".png, .jpg, .jpeg" class="form-control" id="imageFile" name="imageFile"
+                               th:field="*{imageFile}"
                                type="file"/>
                         <img alt="이미지 미리보기" class="image-preview" id="imagePreview" src=""/>
                         <div class="placeholder" id="filePlaceholder">+ 이미지</div>

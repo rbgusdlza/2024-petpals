@@ -93,16 +93,16 @@
         <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
         <div>
             <!-- 로그인 상태이면 로그아웃 버튼 표시 -->
-            <form th:if="${session.id != null}" action="/member/logout" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-primary">로그아웃</button>
+            <form action="/member/logout" method="post" style="display:inline;" th:if="${session.id != null}">
+                <button class="btn btn-primary" type="submit">로그아웃</button>
             </form>
             <!-- 로그아웃 상태이면 로그인 버튼 표시 -->
-            <a href="/member/login" class="btn btn-primary" th:unless="${session.id != null}">로그인</a>
+            <a class="btn btn-primary" href="/member/login" th:unless="${session.id != null}">로그인</a>
         </div>
     </div>
 </nav>
 
-<a href="/post/register" class="btn btn-primary register-btn">게시물 등록</a>
+<a class="btn btn-primary register-btn" href="/post/register">게시물 등록</a>
 
 <div class="container">
 
@@ -110,7 +110,7 @@
     <section>
         <div class="section-title">
             <h2>최신글</h2>
-            <a href="/post/list" class="view-all-link">전체 글 보기</a>
+            <a class="view-all-link" href="/post/list">전체 글 보기</a>
         </div>
         <div id="latest-posts">
             <!-- 최신 글이 여기 표시됩니다 -->

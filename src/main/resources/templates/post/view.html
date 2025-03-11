@@ -88,11 +88,11 @@
         <a class="navbar-brand" href="/" th:href="@{/}">Petpals</a>
         <div>
             <!-- 로그인 상태이면 로그아웃 버튼 표시 -->
-            <form th:if="${session.id != null}" action="/member/logout" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-primary">로그아웃</button>
+            <form action="/member/logout" method="post" style="display:inline;" th:if="${session.id != null}">
+                <button class="btn btn-primary" type="submit">로그아웃</button>
             </form>
             <!-- 로그아웃 상태이면 로그인 버튼 표시 -->
-            <a href="/member/login" class="btn btn-primary" th:unless="${session.id != null}">로그인</a>
+            <a class="btn btn-primary" href="/member/login" th:unless="${session.id != null}">로그인</a>
         </div>
     </div>
 </nav>
@@ -101,13 +101,15 @@
     <div class="post-container">
         <h2 class="post-title" th:text="${response.title}">게시물 제목</h2>
         <div class="post-content" th:text="${response.content}">게시물 내용</div>
-        <img class="post-image" th:src="'https://petpals-bucket.s3.ap-northeast-2.amazonaws.com/' + ${response.storeFileName}" alt="게시물 이미지">
+        <img alt="게시물 이미지"
+             class="post-image"
+             th:src="'https://petpals-bucket.s3.ap-northeast-2.amazonaws.com/' + ${response.storeFileName}">
 
         <div class="post-footer">
             <span class="like-count">좋아요: <span id="like-count" th:text="${response.likeCount}">0</span></span>
             <button class="like-button" onclick="handleLike()">좋아요</button>
             <a class="back-link" href="#" th:href="@{/post/list}">목록으로 돌아가기</a>
-            <button id="delete-button" class="delete-button" style="display: none;" onclick="handleDelete()">삭제</button>
+            <button class="delete-button" id="delete-button" onclick="handleDelete()" style="display: none;">삭제</button>
         </div>
     </div>
     <footer class="my-3 text-center text-small">
