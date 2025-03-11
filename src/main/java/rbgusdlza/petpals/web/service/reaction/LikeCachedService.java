@@ -2,70 +2,57 @@ package rbgusdlza.petpals.web.service.reaction;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import rbgusdlza.petpals.domain.reaction.Reaction;
-import rbgusdlza.petpals.domain.reaction.ReactionRepository;
 import rbgusdlza.petpals.domain.reaction.TargetType;
-
-import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
+import rbgusdlza.petpals.global.messagebroker.MessageService;
+import rbgusdlza.petpals.global.messagebroker.request.LikeCacheUpdateMessage;
 
 @Slf4j
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class LikeCachedService {
 
-    private static final String LIKE_CACHE_NAME = "countLike";
-    private static final String CACHE_MANAGER_NAME = "popularityCacheManager";
+    private static final String LIKE_EXCHANGE_NAME = "like.exchange";
+    private static final String LIKE_ROUTING_KEY = "like.routing";
 
-    private final ReactionRepository reactionRepository;
-    private final CacheManager popularityCacheManager;
+    private final LikeService likeService;
+    private final RedisTemplate<String, Long> redisTemplate;
+    private final MessageService messageService;
 
-    @Transactional
-    public Long like(Long memberId, Long targetId, TargetType targetType) {
-        Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndTypeWithLock(
-                memberId,
-                targetId,
-                targetType,
-                LIKE
-        ).orElseGet(() ->
-                reactionRepository.save(
-                        Reaction.of(
-                                memberId,
-                                targetId,
-                                targetType,
-                                LIKE
-                        )
-                )
-        );
-        updateLikeCache(targetId, targetType);
-        return reaction.getId();
-    }
-
-    @Cacheable(cacheNames = LIKE_CACHE_NAME, key = "'type:' + #targetType.name() + ':id:' + #targetId + ':like:count'",
-            cacheManager = CACHE_MANAGER_NAME)
-    public long countLike(Long targetId, TargetType targetType) {
-        return reactionRepository.countByTargetIdAndTargetTypeAndType(targetId, targetType, LIKE);
-    }
-
-    private void updateLikeCache(Long targetId, TargetType targetType) {
-        long likeCount = countLike(targetId, targetType);
-        Cache cache = popularityCacheManager.getCache(LIKE_CACHE_NAME);
-        if (isExist(cache)) {
-            String cacheKey = createCacheKey(targetId, targetType);
-            cache.put(cacheKey, likeCount);
+    public Boolean like(Long memberId, Long targetId, TargetType targetType) {
+        String key = createCacheKey(targetId, targetType);
+        Boolean isMember = redisTemplate.opsForSet().isMember(key, memberId);
+        if (Boolean.TRUE.equals(isMember)) {
+            return false;
         }
+        return updateLikeCacheFromDB(memberId, targetId, targetType, key);
     }
 
-    private boolean isExist(Cache cache) {
-        return cache != null;
+    public long countLike(Long targetId, TargetType targetType) {
+        long likeCount = likeService.countLike(targetId, targetType);
+        if (likeCount > 0) {
+            updateLikeCacheFrom(targetId, targetType, createCacheKey(targetId, targetType));
+        }
+        return likeCount;
+    }
+
+    private Boolean updateLikeCacheFromDB(Long memberId, Long targetId, TargetType targetType, String key) {
+        boolean isLiked = likeService.like(memberId, targetId, targetType);
+        if (isLiked) {
+            redisTemplate.opsForSet().add(key, memberId);
+            return true;
+        }
+        updateLikeCacheFrom(targetId, targetType, key);
+        return false;
+    }
+
+    private void updateLikeCacheFrom(Long targetId, TargetType targetType, String key) {
+        LikeCacheUpdateMessage message = LikeCacheUpdateMessage.of(targetId, targetType, key);
+        messageService.sendMessage(LIKE_EXCHANGE_NAME, LIKE_ROUTING_KEY, message);
     }
 
     private String createCacheKey(Long targetId, TargetType targetType) {
-        return "type:" + targetType.name() + ":id:" + targetId + ":like:count";
+        return "type:" + targetType.name() + ":id:" + targetId + ":like";
     }
 }
