@@ -16,21 +16,21 @@ import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 @RestController
 public class LikePopularApiController {
 
-    private static final String EXCHANGE_NAME = "like.exchange";
-    private static final String ROUTING_KEY = "like.routing";
+    private static final String EXCHANGE_NAME = "popularity.exchange";
+    private static final String ROUTING_KEY = "popularity.routing";
 
     private final MessageService messageService;
     private final LikeCachedService likeCachedService;
 
     @PostMapping("/{postId}/like")
-    public ApiResponse<Long> like(@PathVariable Long postId,
-                                  HttpSession session) {
+    public ApiResponse<Boolean> like(@PathVariable Long postId,
+                                     HttpSession session) {
         if (doesUserLogin(session)) {
             return ApiResponse.fail("로그인 상태에서만 좋아요가 가능합니다.");
         }
+        Boolean isLiked = likeCachedService.like(getMemberIdFrom(session), postId, POST);
         messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
-        Long memberId = getMemberIdFrom(session);
-        return ApiResponse.ok(likeCachedService.like(memberId, postId, POST));
+        return ApiResponse.ok(isLiked);
     }
 
     @GetMapping("/{postId}/count-like")

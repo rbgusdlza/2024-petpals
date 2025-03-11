@@ -23,15 +23,15 @@ public class LikeApiController {
     private final LikeService likeService;
 
     @PostMapping("/{postId}/like")
-    public ApiResponse<Long> like(@PathVariable Long postId,
-                                  HttpSession session) {
+    public ApiResponse<Boolean> like(@PathVariable Long postId,
+                                     HttpSession session) {
         if (doesUserLogin(session)) {
             return ApiResponse.fail("로그인 상태에서만 좋아요가 가능합니다.");
         }
         Long memberId = getMemberIdFrom(session);
-        Long likeId = likeService.like(memberId, postId, POST);
+        Boolean isLiked = likeService.like(memberId, postId, POST);
         messageService.sendMessage(EXCHANGE_NAME, ROUTING_KEY, postId);
-        return ApiResponse.ok(likeId);
+        return ApiResponse.ok(isLiked);
     }
 
     @GetMapping("/{postId}/count-like")
