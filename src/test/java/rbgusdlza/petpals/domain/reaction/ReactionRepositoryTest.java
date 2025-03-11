@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.domain.member.Member;
 import rbgusdlza.petpals.domain.member.MemberRepository;
@@ -18,6 +19,7 @@ import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 import static rbgusdlza.petpals.domain.reaction.TargetType.COMMENT;
 import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 
+@Transactional
 class ReactionRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
@@ -54,7 +56,7 @@ class ReactionRepositoryTest extends IntegrationTestSupport {
         reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3));
 
         //when
-        Reaction findReaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
+        Reaction findReaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndTypeWithLock(
                 memberId, postId, POST, LIKE
         ).get();
 
