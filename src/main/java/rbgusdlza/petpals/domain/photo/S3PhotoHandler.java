@@ -16,10 +16,10 @@ import java.io.InputStream;
 @Component
 public class S3PhotoHandler implements PhotoHandler {
 
+    private final S3Operations s3Operations;
+
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucketName;
-
-    private final S3Operations s3Operations;
 
     @Override
     public void saveImageFile(MultipartFile imageFile, String storeFileName) {
