@@ -4,20 +4,21 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.domain.popularity.Popularity;
 import rbgusdlza.petpals.domain.popularity.PopularityRepository;
 import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
-import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.web.service.popularity.response.PopularityResponse;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static rbgusdlza.petpals.domain.reaction.ReactionType.*;
-import static rbgusdlza.petpals.domain.reaction.TargetType.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
+import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 
 class PopularityServiceTest extends IntegrationTestSupport {
 

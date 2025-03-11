@@ -1,8 +1,11 @@
 package rbgusdlza.petpals.web.service.post;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.domain.photo.Photo;
 import rbgusdlza.petpals.domain.photo.PhotoDetails;
 import rbgusdlza.petpals.domain.photo.PhotoDetailsRepository;
@@ -13,7 +16,6 @@ import rbgusdlza.petpals.domain.post.Post;
 import rbgusdlza.petpals.domain.post.PostRepository;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
-import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.web.error.PetPalsException;
 import rbgusdlza.petpals.web.service.popularity.PopularityService;
 import rbgusdlza.petpals.web.service.post.request.PostCursorServiceRequest;
@@ -24,9 +26,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static rbgusdlza.petpals.domain.reaction.ReactionType.*;
+import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
 import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
-import static rbgusdlza.petpals.web.error.ErrorCode.*;
+import static rbgusdlza.petpals.web.error.ErrorCode.POST_NOT_FOUND;
 
 
 class PostServiceTest extends IntegrationTestSupport {
