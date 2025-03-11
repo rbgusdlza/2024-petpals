@@ -29,7 +29,7 @@ public class RedisCacheConfig {
                                 new Jackson2JsonRedisSerializer<Object>(Object.class)
                         )
                 )
-                .entryTtl(Duration.ofMinutes(1L));
+                .entryTtl(Duration.ofMinutes(10L));
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
