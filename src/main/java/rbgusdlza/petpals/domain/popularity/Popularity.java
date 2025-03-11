@@ -31,14 +31,14 @@ public class Popularity extends BaseEntity {
         this.score = score;
     }
 
-    public void updateScore(long likeCount) {
-        this.score = likeCount * LIKE_COUNT_WEIGHT;
-    }
-
     public static Popularity of(Long postId, double score) {
         return Popularity.builder()
                 .postId(postId)
                 .score(score)
                 .build();
+    }
+
+    public void updateScore(long likeCount) {
+        this.score = likeCount * LIKE_COUNT_WEIGHT;
     }
 }
