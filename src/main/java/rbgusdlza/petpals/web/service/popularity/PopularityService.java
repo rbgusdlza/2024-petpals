@@ -13,7 +13,7 @@ import rbgusdlza.petpals.web.service.reaction.LikeService;
 
 import java.util.List;
 
-import static rbgusdlza.petpals.domain.reaction.TargetType.*;
+import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 import static rbgusdlza.petpals.web.error.ErrorCode.POPULARITY_NOT_FOUND;
 
 @Slf4j
@@ -32,7 +32,7 @@ public class PopularityService {
         return popularity.getId();
     }
 
-    @RabbitListener(queues = "like.queue")
+    @RabbitListener(queues = "popularity.queue")
     @Transactional
     public void update(Long postId) {
         Popularity popularity = popularityRepository.findByPostId(postId)
