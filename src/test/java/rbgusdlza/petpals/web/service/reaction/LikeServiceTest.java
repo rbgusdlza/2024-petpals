@@ -4,15 +4,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import rbgusdlza.petpals.IntegrationTestSupport;
 import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
-import rbgusdlza.petpals.IntegrationTestSupport;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static rbgusdlza.petpals.domain.reaction.ReactionType.*;
-import static rbgusdlza.petpals.domain.reaction.TargetType.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
+import static rbgusdlza.petpals.domain.reaction.TargetType.POST;
 
 class LikeServiceTest extends IntegrationTestSupport {
 
@@ -31,7 +31,7 @@ class LikeServiceTest extends IntegrationTestSupport {
     @Test
     void like() {
         //given //when
-        Long likeId = likeService.like(1L, 1L, POST);
+        Boolean likeId = likeService.like(1L, 1L, POST);
 
         //then
         assertThat(likeId).isNotNull();
