@@ -12,6 +12,15 @@ import rbgusdlza.petpals.domain.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLRestriction("entity_status = 'ACTIVE'")
 @Entity
+@Table(
+        name = "reaction",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_reaction_member_target_type",
+                        columnNames = {"memberId", "targetId", "targetType", "type"}
+                )
+        }
+)
 public class Reaction extends BaseEntity {
 
     @Id
