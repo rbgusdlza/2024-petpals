@@ -22,7 +22,7 @@ public class LikeApiController {
     private final MessageService messageService;
     private final LikeService likeService;
 
-    @PostMapping("/{postId}/like")
+    @PutMapping("/{postId}/like")
     public ApiResponse<Boolean> like(@PathVariable Long postId,
                                      HttpSession session) {
         if (doesUserLogin(session)) {
