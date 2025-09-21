@@ -56,7 +56,7 @@ class ReactionRepositoryTest extends IntegrationTestSupport {
         reactionRepository.saveAll(List.of(reaction1, reaction2, reaction3));
 
         //when
-        Reaction findReaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndTypeWithLock(
+        Reaction findReaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
                 memberId, postId, POST, LIKE
         ).get();
 
