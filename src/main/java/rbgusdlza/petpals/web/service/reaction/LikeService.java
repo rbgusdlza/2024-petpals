@@ -22,7 +22,7 @@ public class LikeService {
 
     @Transactional
     public Boolean like(Long memberId, Long targetId, TargetType targetType) {
-        Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndTypeWithLock(
+        Reaction reaction = reactionRepository.findByMemberIdAndTargetIdAndTargetTypeAndType(
                 memberId,
                 targetId,
                 targetType,
