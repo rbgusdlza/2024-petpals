@@ -9,6 +9,9 @@ import rbgusdlza.petpals.domain.reaction.Reaction;
 import rbgusdlza.petpals.domain.reaction.ReactionRepository;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static rbgusdlza.petpals.domain.reaction.ReactionType.LIKE;
@@ -51,5 +54,32 @@ class LikeServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(likeCount).isEqualTo(2);
+    }
+
+    @DisplayName("동시에 같은 요청이 들어와도 좋아요는 하나만 생성된다.")
+    @Test
+    void like_concurrent() throws Exception {
+        // given
+        int threadCount = 5;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        // when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    likeService.like(1L, 1L, POST);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        // then
+        List<Reaction> reactions = reactionRepository.findAll();
+        assertThat(reactions).hasSize(1);
+        assertThat(reactions.get(0).getMemberId()).isEqualTo(1L);
+        assertThat(reactions.get(0).getTargetId()).isEqualTo(1L);
     }
 }
