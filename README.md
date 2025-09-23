@@ -55,7 +55,7 @@ lombok: 1.18.32
 
 * Reaction
  - (POST) /api/post/{postId}/like: 해당 게시물 좋아요 처리
- - (POST) /api/post/popular/{postId}/like: 해당 인기 게시물 좋아요 처리
+ - (PUT) /api/post/popular/{postId}/like: 해당 인기 게시물 좋아요 처리
  - (GET) /api/post/{postId}/count-like: 해당 게시물 좋아요 수 조회
  - (GET) /api/post/popular/{postId}/count-like: 해당 인기 게시물 좋아요 수 조회
 ```
