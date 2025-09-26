@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface ReactionRepository extends JpaRepository<Reaction, Long> {
 
+    @Query("SELECT r FROM Reaction r WHERE r.memberId = :memberId AND r.targetId = :targetId AND r.targetType = :targetType AND r.type = :type")
     Optional<Reaction> findByMemberIdAndTargetIdAndTargetTypeAndType(
             @Param("memberId") Long memberId,
             @Param("targetId") Long targetId,
