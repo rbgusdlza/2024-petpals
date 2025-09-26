@@ -26,30 +26,26 @@ public class LikeCachedService {
         if (Boolean.TRUE.equals(isMember)) {
             return false;
         }
-        return updateLikeCacheFromDB(memberId, targetId, targetType, key);
+
+        redisTemplate.opsForSet().add(key, memberId);
+        LikeCacheUpdateMessage message = LikeCacheUpdateMessage.of(memberId, targetId, targetType, key);
+        messageService.sendMessage(LIKE_EXCHANGE_NAME, LIKE_ROUTING_KEY, message);
+        return true;
     }
 
     public long countLike(Long targetId, TargetType targetType) {
-        long likeCount = likeService.countLike(targetId, targetType);
-        if (likeCount > 0) {
-            updateLikeCacheFrom(targetId, targetType, createCacheKey(targetId, targetType));
+        String key = createCacheKey(targetId, targetType);
+        Long cacheCount = redisTemplate.opsForSet().size(key);
+        if (cacheCount != null && cacheCount > 0) {
+            return cacheCount;
         }
-        return likeCount;
-    }
 
-    private Boolean updateLikeCacheFromDB(Long memberId, Long targetId, TargetType targetType, String key) {
-        boolean isLiked = likeService.like(memberId, targetId, targetType);
-        if (isLiked) {
-            redisTemplate.opsForSet().add(key, memberId);
-            return true;
+        long dbCount = likeService.countLike(targetId, targetType);
+        if (dbCount > 0) {
+            likeService.findLikedMemberIds(targetId, targetType)
+                    .forEach(memberId -> redisTemplate.opsForSet().add(key, memberId));
         }
-        updateLikeCacheFrom(targetId, targetType, key);
-        return false;
-    }
-
-    private void updateLikeCacheFrom(Long targetId, TargetType targetType, String key) {
-        LikeCacheUpdateMessage message = LikeCacheUpdateMessage.of(targetId, targetType, key);
-        messageService.sendMessage(LIKE_EXCHANGE_NAME, LIKE_ROUTING_KEY, message);
+        return dbCount;
     }
 
     private String createCacheKey(Long targetId, TargetType targetType) {

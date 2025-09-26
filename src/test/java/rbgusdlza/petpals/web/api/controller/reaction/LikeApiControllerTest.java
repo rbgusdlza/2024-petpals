@@ -4,8 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import rbgusdlza.petpals.ControllerTestSupport;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,7 +15,7 @@ class LikeApiControllerTest extends ControllerTestSupport {
     @Test
     void like() throws Exception {
         mockMvc.perform(
-                        post("/api/post/{postId}/like", 1L)
+                        put("/api/post/{postId}/like", 1L)
                                 .sessionAttr("id", 1L)
                 )
                 .andDo(print())
@@ -30,7 +29,7 @@ class LikeApiControllerTest extends ControllerTestSupport {
     @Test
     void likeWithFail() throws Exception {
         mockMvc.perform(
-                        post("/api/post/{postId}/like", 1L)
+                        put("/api/post/{postId}/like", 1L)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
